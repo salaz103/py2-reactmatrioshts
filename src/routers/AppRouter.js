@@ -8,7 +8,7 @@ import Header from '../components/Header';
 
 
 const AppRouter=()=>(
-    <BrowserRouter basename="/ReactMatrioshts">
+    <BrowserRouter basename="/py2-reactmatrioshts">
     <div>
     <Header title='ReactMatrioshTS- 201213181'></Header>
       <Switch>
