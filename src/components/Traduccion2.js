@@ -11,7 +11,7 @@ import "ace-builds/src-noconflict/theme-tomorrow_night_blue";
 import "ace-builds/src-noconflict/ext-language_tools";
 import {desanidar,AST_grafo} from '../ArchivosTS/Desanidar';
 import inicioEjecucion from '../ArchivosTS/Ejecutar';
-
+import {entorno} from '../ArchivosTS/desanidamiento/entorno';
 class Traduccion2 extends React.Component {
   state = {
     valorEditor1: " ",
@@ -46,8 +46,8 @@ class Traduccion2 extends React.Component {
       console.log(ast);
       
       
-
-      let codigofinal=desanidar(ast);
+      let ambito= new entorno();
+      let codigofinal=desanidar(ast,ambito);
       graphviz= AST_grafo(ast);
       console.log(codigofinal);
       this.onChange2(codigofinal);

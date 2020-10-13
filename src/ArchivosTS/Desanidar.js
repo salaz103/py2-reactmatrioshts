@@ -1,5 +1,7 @@
 "use strict";
 exports.__esModule = true;
+var entorno_1 = require("./desanidamiento/entorno");
+var funcion_1 = require("./desanidamiento/funcion");
 var nodobase = require('../arbolBase/nodobase').nodobase;
 var grafo = '';
 var contador;
@@ -31,51 +33,51 @@ function graficar(ast) {
         }
     }
 }
-function desanidar(ast) {
+function desanidar(ast, ambito) {
     //PRIMERO RECIBIMOS LA RAIZ DEL AST
     if (ast.tipo == 'INSTRUCCIONES') {
         var recolector_1 = '';
         ast.hijos.forEach(function (instruccion) {
-            recolector_1 += desanidar(instruccion);
+            recolector_1 += desanidar(instruccion, ambito);
         });
         return recolector_1;
     }
     //*******************INSTRUCCIONES*******************************
     else if (ast.tipo == 'IMPRIMIR') {
         var recolector = '';
-        var expresion = desanidar(ast.hijos[4]);
+        var expresion = desanidar(ast.hijos[4], ambito);
         recolector = "console.log(" + expresion + "); \n";
         return recolector;
     }
     else if (ast.tipo == 'DECLARACION_VARIABLE') {
         var recolector = '';
-        var tipovariable = desanidar(ast.hijos[0]);
-        var listavariables = desanidar(ast.hijos[1]);
+        var tipovariable = desanidar(ast.hijos[0], ambito);
+        var listavariables = desanidar(ast.hijos[1], ambito);
         recolector = tipovariable + " " + listavariables;
         return recolector;
     }
     else if (ast.tipo == 'IDECLARACIONES') {
-        var recolector = desanidar(ast.hijos[0]) + ";\n";
+        var recolector = desanidar(ast.hijos[0], ambito) + ";\n";
         return recolector;
     }
     else if (ast.tipo == 'ASIGNACION') {
         var recolector = '';
         var id = ast.hijos[0];
-        var expresion = desanidar(ast.hijos[2]);
+        var expresion = desanidar(ast.hijos[2], ambito);
         recolector = id + "=" + expresion;
         return recolector;
     }
     else if (ast.tipo == 'WHILE') {
         var recolector = '';
-        var expresion = desanidar(ast.hijos[2]);
-        var lista = desanidar(ast.hijos[5]);
+        var expresion = desanidar(ast.hijos[2], ambito);
+        var lista = desanidar(ast.hijos[5], ambito);
         recolector = "while(" + expresion + "){\n" + lista + "}\n";
         return recolector;
     }
     else if (ast.tipo == 'DO_WHILE') {
         var recolector = '';
-        var lista = desanidar(ast.hijos[2]);
-        var expresion = desanidar(ast.hijos[6]);
+        var lista = desanidar(ast.hijos[2], ambito);
+        var expresion = desanidar(ast.hijos[6], ambito);
         recolector = "do{\n" + lista + "}while(" + expresion + ")\n";
         return recolector;
     }
@@ -87,120 +89,144 @@ function desanidar(ast) {
         // function id(){instrucciones}
         if (ast.hijos.length == 7) {
             var instrucciones = ast.hijos[5].hijos;
-            if (vieneFuncion(instrucciones)) {
-                //SI VIENE UNA FUNCION HAY QUE IMPRIMIR ESA FUNCION Y CAMBIARLE EL NOMBRE
-                var nombrePadre_1 = ast.hijos[1];
+            var nombrefuncion = ast.hijos[1];
+            var id = ambito.getNombrePadre(nombrefuncion);
+            var fn = new funcion_1.funcion(nombrefuncion);
+            if (nombrefuncion != id) {
+                fn.setNuevoNombre(id);
+            }
+            ambito.guardarFuncion(fn);
+            if (!vieneFuncion(instrucciones)) {
+                //SI NO VIENE UNA FUNCION, ENTONCES SOLO RECORREMOS ESA FUNCION
+                var ins = desanidar(ast.hijos[5], new entorno_1.entorno(ambito));
+                recolector = "function " + id + "(){\n" + ins + "}\n";
+                return recolector;
+            }
+            else {
+                //SIGNIFICA QUE SI VIENEN FUNCIONES
+                var nuevoe_1 = new entorno_1.entorno(ambito, nombrefuncion);
+                console.log(nuevoe_1);
                 instrucciones.forEach(function (instruccion) {
                     if (instruccion.tipo == 'FUNCION') {
-                        //AQUI LE CAMBIAMOS EL NOMBRE A LA FUNCION ANIDADA
-                        instruccion.hijos[1] = nombrePadre_1 + "_" + instruccion.hijos[1];
-                        recolector2_1 += desanidar(instruccion);
+                        recolector2_1 += desanidar(instruccion, nuevoe_1);
                     }
                 });
                 //TOCA IMPRIMIR LA FUNCION PADRE, ES DECIR LA FUNCION ACTUAL
                 instrucciones.forEach(function (instruccion) {
                     if (instruccion.tipo != 'FUNCION') {
-                        instruccionesPadre_1 += desanidar(instruccion);
+                        instruccionesPadre_1 += desanidar(instruccion, ambito);
                     }
                 });
-                recolector = "function " + nombrePadre_1 + "(){\n" + instruccionesPadre_1 + "}\n" + recolector2_1;
-                return recolector;
-            }
-            else {
-                var id = ast.hijos[1];
-                var instrucciones_1 = desanidar(ast.hijos[5]);
-                recolector = "function " + id + "(){\n" + instrucciones_1 + "}\n";
+                recolector = "function " + id + "(){\n" + instruccionesPadre_1 + "}\n" + recolector2_1;
                 return recolector;
             }
             //function id (parametros) {lista}
         }
         else if (ast.hijos.length == 8) {
             var instrucciones = ast.hijos[6].hijos;
-            var parametros = desanidar(ast.hijos[3]);
-            if (vieneFuncion(instrucciones)) {
-                //SI VIENE UNA FUNCION HAY QUE IMPRIMIR ESA FUNCION Y CAMBIARLE EL NOMBRE
-                var nombrePadre_2 = ast.hijos[1];
+            var parametros = desanidar(ast.hijos[3], ambito);
+            var nombrefuncion = ast.hijos[1];
+            var id = ambito.getNombrePadre(nombrefuncion);
+            var fn = new funcion_1.funcion(nombrefuncion);
+            if (nombrefuncion != id) {
+                fn.setNuevoNombre(id);
+            }
+            ambito.guardarFuncion(fn);
+            if (!vieneFuncion(instrucciones)) {
+                //SI NO VIENE UNA FUNCION, ENTONCES SOLO RECORREMOS ESA FUNCION
+                var ins = desanidar(ast.hijos[6], new entorno_1.entorno(ambito));
+                recolector = "function " + id + "(" + parametros + "){\n" + ins + "}\n";
+                return recolector;
+            }
+            else {
+                //SIGNIFICA QUE SI VIENEN FUNCIONES
+                var nuevoe_2 = new entorno_1.entorno(ambito, nombrefuncion);
+                console.log(nuevoe_2);
                 instrucciones.forEach(function (instruccion) {
                     if (instruccion.tipo == 'FUNCION') {
-                        //AQUI LE CAMBIAMOS EL NOMBRE A LA FUNCION ANIDADA
-                        instruccion.hijos[1] = nombrePadre_2 + "_" + instruccion.hijos[1];
-                        recolector2_1 += desanidar(instruccion);
+                        recolector2_1 += desanidar(instruccion, nuevoe_2);
                     }
                 });
                 //TOCA IMPRIMIR LA FUNCION PADRE, ES DECIR LA FUNCION ACTUAL
                 instrucciones.forEach(function (instruccion) {
                     if (instruccion.tipo != 'FUNCION') {
-                        instruccionesPadre_1 += desanidar(instruccion);
+                        instruccionesPadre_1 += desanidar(instruccion, ambito);
                     }
                 });
-                recolector = "function " + nombrePadre_2 + "(" + parametros + "){\n" + instruccionesPadre_1 + "}\n" + recolector2_1;
-                return recolector;
-            }
-            else {
-                var id = ast.hijos[1];
-                var instrucciones_2 = desanidar(ast.hijos[6]);
-                recolector = "function " + id + "(" + parametros + "){\n" + instrucciones_2 + "}\n";
+                recolector = "function " + id + "(" + parametros + "){\n" + instruccionesPadre_1 + "}\n" + recolector2_1;
                 return recolector;
             }
             //function id ( ) : tipodato {lista}
         }
         else if (ast.hijos.length == 9) {
             var instrucciones = ast.hijos[7].hijos;
-            var tipodato = desanidar(ast.hijos[5]);
-            if (vieneFuncion(instrucciones)) {
-                //SI VIENE UNA FUNCION HAY QUE IMPRIMIR ESA FUNCION Y CAMBIARLE EL NOMBRE
-                var nombrePadre_3 = ast.hijos[1];
+            var tipodato = desanidar(ast.hijos[5], ambito);
+            var nombrefuncion = ast.hijos[1];
+            var id = ambito.getNombrePadre(nombrefuncion);
+            var fn = new funcion_1.funcion(nombrefuncion);
+            if (nombrefuncion != id) {
+                fn.setNuevoNombre(id);
+            }
+            ambito.guardarFuncion(fn);
+            if (!vieneFuncion(instrucciones)) {
+                //SI NO VIENE UNA FUNCION, ENTONCES SOLO RECORREMOS ESA FUNCION
+                var ins = desanidar(ast.hijos[7], new entorno_1.entorno(ambito));
+                recolector = "function " + id + "():" + tipodato + "{\n" + ins + "}\n";
+                return recolector;
+            }
+            else {
+                //SIGNIFICA QUE SI VIENEN FUNCIONES
+                var nuevoe_3 = new entorno_1.entorno(ambito, nombrefuncion);
+                console.log(nuevoe_3);
                 instrucciones.forEach(function (instruccion) {
                     if (instruccion.tipo == 'FUNCION') {
-                        //AQUI LE CAMBIAMOS EL NOMBRE A LA FUNCION ANIDADA
-                        instruccion.hijos[1] = nombrePadre_3 + "_" + instruccion.hijos[1];
-                        recolector2_1 += desanidar(instruccion);
+                        recolector2_1 += desanidar(instruccion, nuevoe_3);
                     }
                 });
                 //TOCA IMPRIMIR LA FUNCION PADRE, ES DECIR LA FUNCION ACTUAL
                 instrucciones.forEach(function (instruccion) {
                     if (instruccion.tipo != 'FUNCION') {
-                        instruccionesPadre_1 += desanidar(instruccion);
+                        instruccionesPadre_1 += desanidar(instruccion, ambito);
                     }
                 });
-                recolector = "function " + nombrePadre_3 + "():" + tipodato + "{\n" + instruccionesPadre_1 + "}\n" + recolector2_1;
-                return recolector;
-            }
-            else {
-                var id = ast.hijos[1];
-                var instrucciones_3 = desanidar(ast.hijos[7]);
-                recolector = "function " + id + "():" + tipodato + "{\n" + instrucciones_3 + "}\n";
+                recolector = "function " + id + "():" + tipodato + "{\n" + instruccionesPadre_1 + "}\n" + recolector2_1;
                 return recolector;
             }
             //function id (parametros) : tipodato {lista}
         }
         else if (ast.hijos.length == 10) {
             var instrucciones = ast.hijos[8].hijos;
-            var parametros = desanidar(ast.hijos[3]);
-            var tipodato = desanidar(ast.hijos[6]);
-            if (vieneFuncion(instrucciones)) {
-                //SI VIENE UNA FUNCION HAY QUE IMPRIMIR ESA FUNCION Y CAMBIARLE EL NOMBRE
-                var nombrePadre_4 = ast.hijos[1];
+            var parametros = desanidar(ast.hijos[3], ambito);
+            var tipodato = desanidar(ast.hijos[6], ambito);
+            var nombrefuncion = ast.hijos[1];
+            var id = ambito.getNombrePadre(nombrefuncion);
+            var fn = new funcion_1.funcion(nombrefuncion);
+            if (nombrefuncion != id) {
+                fn.setNuevoNombre(id);
+            }
+            ambito.guardarFuncion(fn);
+            if (!vieneFuncion(instrucciones)) {
+                //SI NO VIENE UNA FUNCION, ENTONCES SOLO RECORREMOS ESA FUNCION
+                var ins = desanidar(ast.hijos[8], new entorno_1.entorno(ambito));
+                recolector = "function " + id + "(" + parametros + "):" + tipodato + "{\n" + ins + "}\n";
+                return recolector;
+            }
+            else {
+                //SIGNIFICA QUE SI VIENEN FUNCIONES
+                var nuevoe_4 = new entorno_1.entorno(ambito, nombrefuncion);
+                console.log(nuevoe_4);
                 instrucciones.forEach(function (instruccion) {
                     if (instruccion.tipo == 'FUNCION') {
-                        //AQUI LE CAMBIAMOS EL NOMBRE A LA FUNCION ANIDADA
-                        instruccion.hijos[1] = nombrePadre_4 + "_" + instruccion.hijos[1];
-                        recolector2_1 += desanidar(instruccion);
+                        recolector2_1 += desanidar(instruccion, nuevoe_4);
                     }
                 });
                 //TOCA IMPRIMIR LA FUNCION PADRE, ES DECIR LA FUNCION ACTUAL
                 instrucciones.forEach(function (instruccion) {
                     if (instruccion.tipo != 'FUNCION') {
-                        instruccionesPadre_1 += desanidar(instruccion);
+                        instruccionesPadre_1 += desanidar(instruccion, ambito);
                     }
                 });
-                recolector = "function " + nombrePadre_4 + "(" + parametros + "):" + tipodato + "{\n" + instruccionesPadre_1 + "}\n" + recolector2_1;
-                return recolector;
-            }
-            else {
-                var id = ast.hijos[1];
-                var instrucciones_4 = desanidar(ast.hijos[8]);
-                recolector = "function " + id + "(" + parametros + "):" + tipodato + "{\n" + instrucciones_4 + "}\n";
+                recolector = "function " + id + "(" + parametros + "):" + tipodato + "{\n" + instruccionesPadre_1 + "}\n" + recolector2_1;
                 return recolector;
             }
         }
@@ -211,40 +237,40 @@ function desanidar(ast) {
             recolector = "return ;";
         }
         else if (ast.hijos.length == 3) {
-            var expresion = desanidar(ast.hijos[1]);
+            var expresion = desanidar(ast.hijos[1], ambito);
             recolector = "return " + expresion + ";\n";
         }
         return recolector;
     }
     else if (ast.tipo == 'IF_SIMPLE') {
         var recolector = '';
-        var expresion = desanidar(ast.hijos[2]);
-        var lista = desanidar(ast.hijos[5]);
+        var expresion = desanidar(ast.hijos[2], ambito);
+        var lista = desanidar(ast.hijos[5], ambito);
         recolector = "if (" + expresion + "){ \n          " + lista + " }\n";
         return recolector;
     }
     else if (ast.tipo == 'IF_ELSE') {
         var recolector = '';
-        var expresion = desanidar(ast.hijos[2]);
-        var lista = desanidar(ast.hijos[5]);
-        var instruccionelse = desanidar(ast.hijos[7]);
+        var expresion = desanidar(ast.hijos[2], ambito);
+        var lista = desanidar(ast.hijos[5], ambito);
+        var instruccionelse = desanidar(ast.hijos[7], ambito);
         recolector = "if (" + expresion + "){ \n        " + lista + "}" + instruccionelse;
         return recolector;
     }
     else if (ast.tipo == 'ELSE_IF') {
         var recolector = '';
-        var instruccionif = desanidar(ast.hijos[1]);
+        var instruccionif = desanidar(ast.hijos[1], ambito);
         recolector = "else " + instruccionif;
         return recolector;
     }
     else if (ast.tipo == 'ELSE') {
         var recolector = '';
-        var lista = desanidar(ast.hijos[2]);
+        var lista = desanidar(ast.hijos[2], ambito);
         recolector = "else { \n        " + lista + "}";
         return recolector;
     }
     else if (ast.tipo == 'IMAS_MAS') {
-        var recolector = desanidar(ast.hijos[0]) + ";\n";
+        var recolector = desanidar(ast.hijos[0], ambito) + ";\n";
         return recolector;
     }
     else if (ast.tipo == 'MAS_MAS') {
@@ -257,17 +283,17 @@ function desanidar(ast) {
     }
     else if (ast.tipo == 'FOR') {
         var recolector = '';
-        var declaraciones = desanidar(ast.hijos[2]);
-        var expresion = desanidar(ast.hijos[4]);
-        var masmenos = desanidar(ast.hijos[6]);
-        var lista = desanidar(ast.hijos[9]);
+        var declaraciones = desanidar(ast.hijos[2], ambito);
+        var expresion = desanidar(ast.hijos[4], ambito);
+        var masmenos = desanidar(ast.hijos[6], ambito);
+        var lista = desanidar(ast.hijos[9], ambito);
         recolector = "for(" + declaraciones + ";" + expresion + ";" + masmenos + "){\n       " + lista + "} \n   ";
         return recolector;
     }
     else if (ast.tipo == 'FOR_OF') {
         var recolector = '';
-        var tipovariable = desanidar(ast.hijos[2]);
-        var lista = desanidar(ast.hijos[8]);
+        var tipovariable = desanidar(ast.hijos[2], ambito);
+        var lista = desanidar(ast.hijos[8], ambito);
         var iterador = ast.hijos[3];
         var iterado = ast.hijos[5];
         recolector = "for (" + tipovariable + " " + iterador + " of " + iterado + " ){\n" + lista + "} \n";
@@ -275,8 +301,8 @@ function desanidar(ast) {
     }
     else if (ast.tipo == 'SWITCH') {
         var recolector = '';
-        var expresion = desanidar(ast.hijos[2]);
-        var casos = desanidar(ast.hijos[5]);
+        var expresion = desanidar(ast.hijos[2], ambito);
+        var casos = desanidar(ast.hijos[5], ambito);
         recolector = 'switch(' + expresion + '){\n' + casos + '}\n';
         return recolector;
     }
@@ -295,150 +321,158 @@ function desanidar(ast) {
     else if (ast.tipo == 'LLAMADA_FUNCION1') {
         var recolector = '';
         var id = ast.hijos[0];
+        var fn = ambito.getFuncion(id);
+        if (fn.getNuevoNombre() != "") {
+            id = fn.getNuevoNombre();
+        }
         recolector = id + "()";
         return recolector;
     }
     else if (ast.tipo == 'LLAMADA_FUNCION2') {
         var recolector = '';
         var id = ast.hijos[0];
-        var lista = desanidar(ast.hijos[2]);
+        var lista = desanidar(ast.hijos[2], ambito);
+        var fn = ambito.getFuncion(id);
+        if (fn.getNuevoNombre() != "") {
+            id = fn.getNuevoNombre();
+        }
         recolector = id + "(" + lista + ")";
         return recolector;
     }
     else if (ast.tipo == 'LFUNCION') {
         var recolector = '';
-        var funcion = desanidar(ast.hijos[0]);
-        recolector = funcion + ";\n";
+        var funcion_2 = desanidar(ast.hijos[0], ambito);
+        recolector = funcion_2 + ";\n";
         return recolector;
     }
     else if (ast.tipo == 'NATIVA') {
         var recolector = '';
-        var nativa = desanidar(ast.hijos[0]);
+        var nativa = desanidar(ast.hijos[0], ambito);
         recolector = nativa + ";\n";
         return recolector;
     }
     //****************************EXPRESIONES***********************/
     else if (ast.tipo == 'NEGATIVO') {
         var recolector = '';
-        var expresion = desanidar(ast.hijos[1]);
+        var expresion = desanidar(ast.hijos[1], ambito);
         recolector = '-' + expresion;
         return recolector;
     }
     else if (ast.tipo == 'MAS') {
         var recolector = '';
-        var operizq = desanidar(ast.hijos[0]);
-        var operder = desanidar(ast.hijos[2]);
+        var operizq = desanidar(ast.hijos[0], ambito);
+        var operder = desanidar(ast.hijos[2], ambito);
         recolector = operizq + "+" + operder;
         return recolector;
     }
     else if (ast.tipo == 'MENOS') {
         var recolector = '';
-        var operizq = desanidar(ast.hijos[0]);
-        var operder = desanidar(ast.hijos[2]);
+        var operizq = desanidar(ast.hijos[0], ambito);
+        var operder = desanidar(ast.hijos[2], ambito);
         recolector = operizq + "-" + operder;
         return recolector;
     }
     else if (ast.tipo == 'POR') {
         var recolector = '';
-        var operizq = desanidar(ast.hijos[0]);
-        var operder = desanidar(ast.hijos[2]);
+        var operizq = desanidar(ast.hijos[0], ambito);
+        var operder = desanidar(ast.hijos[2], ambito);
         recolector = operizq + "*" + operder;
         return recolector;
     }
     else if (ast.tipo == 'DIVISION') {
         var recolector = '';
-        var operizq = desanidar(ast.hijos[0]);
-        var operder = desanidar(ast.hijos[2]);
+        var operizq = desanidar(ast.hijos[0], ambito);
+        var operder = desanidar(ast.hijos[2], ambito);
         recolector = operizq + "/" + operder;
         return recolector;
     }
     else if (ast.tipo == 'MODULO') {
         var recolector = '';
-        var operizq = desanidar(ast.hijos[0]);
-        var operder = desanidar(ast.hijos[2]);
+        var operizq = desanidar(ast.hijos[0], ambito);
+        var operder = desanidar(ast.hijos[2], ambito);
         recolector = operizq + "%" + operder;
         return recolector;
     }
     else if (ast.tipo == 'EXPONENTE') {
         var recolector = '';
-        var operizq = desanidar(ast.hijos[0]);
-        var operder = desanidar(ast.hijos[2]);
+        var operizq = desanidar(ast.hijos[0], ambito);
+        var operder = desanidar(ast.hijos[2], ambito);
         recolector = operizq + "**" + operder;
         return recolector;
     }
     else if (ast.tipo == 'MAYORQUE') {
         var recolector = '';
-        var operizq = desanidar(ast.hijos[0]);
-        var operder = desanidar(ast.hijos[2]);
+        var operizq = desanidar(ast.hijos[0], ambito);
+        var operder = desanidar(ast.hijos[2], ambito);
         recolector = operizq + ">" + operder;
         return recolector;
     }
     else if (ast.tipo == 'MENORQUE') {
         var recolector = '';
-        var operizq = desanidar(ast.hijos[0]);
-        var operder = desanidar(ast.hijos[2]);
+        var operizq = desanidar(ast.hijos[0], ambito);
+        var operder = desanidar(ast.hijos[2], ambito);
         recolector = operizq + "<" + operder;
         return recolector;
     }
     else if (ast.tipo == 'MAYORIGUALQUE') {
         var recolector = '';
-        var operizq = desanidar(ast.hijos[0]);
-        var operder = desanidar(ast.hijos[2]);
+        var operizq = desanidar(ast.hijos[0], ambito);
+        var operder = desanidar(ast.hijos[2], ambito);
         recolector = operizq + ">=" + operder;
         return recolector;
     }
     else if (ast.tipo == 'MENORIGUALQUE') {
         var recolector = '';
-        var operizq = desanidar(ast.hijos[0]);
-        var operder = desanidar(ast.hijos[2]);
+        var operizq = desanidar(ast.hijos[0], ambito);
+        var operder = desanidar(ast.hijos[2], ambito);
         recolector = operizq + "<=" + operder;
         return recolector;
     }
     else if (ast.tipo == 'IGUALQUE') {
         var recolector = '';
-        var operizq = desanidar(ast.hijos[0]);
-        var operder = desanidar(ast.hijos[2]);
+        var operizq = desanidar(ast.hijos[0], ambito);
+        var operder = desanidar(ast.hijos[2], ambito);
         recolector = operizq + "==" + operder;
         return recolector;
     }
     else if (ast.tipo == 'DIFERENTEQUE') {
         var recolector = '';
-        var operizq = desanidar(ast.hijos[0]);
-        var operder = desanidar(ast.hijos[2]);
+        var operizq = desanidar(ast.hijos[0], ambito);
+        var operder = desanidar(ast.hijos[2], ambito);
         recolector = operizq + "!=" + operder;
         return recolector;
     }
     else if (ast.tipo == 'AND') {
         var recolector = '';
-        var operizq = desanidar(ast.hijos[0]);
-        var operder = desanidar(ast.hijos[2]);
+        var operizq = desanidar(ast.hijos[0], ambito);
+        var operder = desanidar(ast.hijos[2], ambito);
         recolector = operizq + "&&" + operder;
         return recolector;
     }
     else if (ast.tipo == 'OR') {
         var recolector = '';
-        var operizq = desanidar(ast.hijos[0]);
-        var operder = desanidar(ast.hijos[2]);
+        var operizq = desanidar(ast.hijos[0], ambito);
+        var operder = desanidar(ast.hijos[2], ambito);
         recolector = operizq + "||" + operder;
         return recolector;
     }
     else if (ast.tipo == 'NOT') {
         var recolector = '';
-        var operando = desanidar(ast.hijos[1]);
+        var operando = desanidar(ast.hijos[1], ambito);
         recolector = "!" + operando;
         return recolector;
     }
     else if (ast.tipo == 'PAREXPRESION') {
         var recolector = '';
-        var expresion = desanidar(ast.hijos[1]);
+        var expresion = desanidar(ast.hijos[1], ambito);
         recolector = "(" + expresion + ")";
         return recolector;
     }
     else if (ast.tipo == 'TERNARIO') {
         var recolector = '';
-        var condicion = desanidar(ast.hijos[0]);
-        var expt = desanidar(ast.hijos[2]);
-        var expf = desanidar(ast.hijos[4]);
+        var condicion = desanidar(ast.hijos[0], ambito);
+        var expt = desanidar(ast.hijos[2], ambito);
+        var expf = desanidar(ast.hijos[4], ambito);
         recolector = condicion + "?" + expt + ":" + expf;
         return recolector;
     }
@@ -449,7 +483,7 @@ function desanidar(ast) {
             //SI LA LISTA SOLO TRAE UN HIJO
             //ENTONCES NO LE AGREGAMOS COMAS
             ast.hijos.forEach(function (variable) {
-                recolector_2 += desanidar(variable) + "\n";
+                recolector_2 += desanidar(variable, ambito) + "\n";
             });
         }
         else {
@@ -460,10 +494,10 @@ function desanidar(ast) {
             ast.hijos.forEach(function (variable) {
                 contador_1++;
                 if (contador_1 == hijos_1) {
-                    recolector_2 += desanidar(variable) + "\n";
+                    recolector_2 += desanidar(variable, ambito) + "\n";
                 }
                 else {
-                    recolector_2 += desanidar(variable) + "\n";
+                    recolector_2 += desanidar(variable, ambito) + "\n";
                 }
             });
         }
@@ -475,7 +509,7 @@ function desanidar(ast) {
             //SI LA LISTA SOLO TRAE UN HIJO
             //ENTONCES NO LE AGREGAMOS COMAS
             ast.hijos.forEach(function (variable) {
-                recolector_3 += desanidar(variable);
+                recolector_3 += desanidar(variable, ambito);
             });
         }
         else {
@@ -486,10 +520,10 @@ function desanidar(ast) {
             ast.hijos.forEach(function (variable) {
                 contador_2++;
                 if (contador_2 == hijos_2) {
-                    recolector_3 += desanidar(variable);
+                    recolector_3 += desanidar(variable, ambito);
                 }
                 else {
-                    recolector_3 += desanidar(variable) + ",";
+                    recolector_3 += desanidar(variable, ambito) + ",";
                 }
             });
         }
@@ -501,7 +535,7 @@ function desanidar(ast) {
             //SI LA LISTA SOLO TRAE UN HIJO
             //ENTONCES NO LE AGREGAMOS COMAS
             ast.hijos.forEach(function (variable) {
-                recolector_4 += desanidar(variable);
+                recolector_4 += desanidar(variable, ambito);
             });
         }
         else {
@@ -512,10 +546,10 @@ function desanidar(ast) {
             ast.hijos.forEach(function (variable) {
                 contador_3++;
                 if (contador_3 == hijos_3) {
-                    recolector_4 += desanidar(variable);
+                    recolector_4 += desanidar(variable, ambito);
                 }
                 else {
-                    recolector_4 += desanidar(variable) + ",";
+                    recolector_4 += desanidar(variable, ambito) + ",";
                 }
             });
         }
@@ -527,7 +561,7 @@ function desanidar(ast) {
             //SI LA LISTA SOLO TRAE UN HIJO
             //ENTONCES NO LE AGREGAMOS COMAS
             ast.hijos.forEach(function (variable) {
-                recolector_5 += desanidar(variable);
+                recolector_5 += desanidar(variable, ambito);
             });
         }
         else {
@@ -538,10 +572,10 @@ function desanidar(ast) {
             ast.hijos.forEach(function (variable) {
                 contador_4++;
                 if (contador_4 == hijos_4) {
-                    recolector_5 += desanidar(variable);
+                    recolector_5 += desanidar(variable, ambito);
                 }
                 else {
-                    recolector_5 += desanidar(variable) + ",";
+                    recolector_5 += desanidar(variable, ambito) + ",";
                 }
             });
         }
@@ -550,22 +584,22 @@ function desanidar(ast) {
     else if (ast.tipo == 'VARIABLE_FULL') {
         var recolector = '';
         var id = ast.hijos[0];
-        var tipodato = desanidar(ast.hijos[2]);
-        var expresion = desanidar(ast.hijos[4]);
+        var tipodato = desanidar(ast.hijos[2], ambito);
+        var expresion = desanidar(ast.hijos[4], ambito);
         recolector = id + ":" + tipodato + "=" + expresion;
         return recolector;
     }
     else if (ast.tipo == 'VARIABLE_CON_EXPRESION') {
         var recolector = '';
         var id = ast.hijos[0];
-        var expresion = desanidar(ast.hijos[2]);
+        var expresion = desanidar(ast.hijos[2], ambito);
         recolector = id + "=" + expresion;
         return recolector;
     }
     else if (ast.tipo == 'VARIABLE_SIN_EXPRESION') {
         var recolector = '';
         var id = ast.hijos[0];
-        var tipodato = desanidar(ast.hijos[2]);
+        var tipodato = desanidar(ast.hijos[2], ambito);
         recolector = id + ":" + tipodato;
         return recolector;
     }
@@ -578,42 +612,42 @@ function desanidar(ast) {
     else if (ast.tipo == 'PARAMETRO') {
         var recolector = '';
         var id = ast.hijos[0];
-        var tipodato = desanidar(ast.hijos[2]);
+        var tipodato = desanidar(ast.hijos[2], ambito);
         recolector = id + ":" + tipodato;
         return recolector;
     }
     else if (ast.tipo == 'CASE') {
         var recolector = '';
-        var expresion = desanidar(ast.hijos[1]);
-        var lista = desanidar(ast.hijos[3]);
+        var expresion = desanidar(ast.hijos[1], ambito);
+        var lista = desanidar(ast.hijos[3], ambito);
         recolector = 'case ' + expresion + ":\n" + lista;
         return recolector;
     }
     else if (ast.tipo == 'CASE_DEFAULT') {
         var recolector = '';
-        var lista = desanidar(ast.hijos[2]);
+        var lista = desanidar(ast.hijos[2], ambito);
         recolector = 'default:\n   ' + lista;
         return recolector;
     }
     else if (ast.tipo == 'ARREGLO_COMPLETO1') {
         var recolector = '';
         var id = ast.hijos[0];
-        var tipodato = desanidar(ast.hijos[2]);
-        var lista = desanidar(ast.hijos[5]);
+        var tipodato = desanidar(ast.hijos[2], ambito);
+        var lista = desanidar(ast.hijos[5], ambito);
         recolector = id + ":" + tipodato + " = [" + lista + "]";
         return recolector;
     }
     else if (ast.tipo == 'ARREGLO_COMPLETO2') {
         var recolector = '';
         var id = ast.hijos[0];
-        var tipodato = desanidar(ast.hijos[2]);
+        var tipodato = desanidar(ast.hijos[2], ambito);
         recolector = id + ":" + tipodato + " = [ ]";
         return recolector;
     }
     else if (ast.tipo == 'ARREGLO') {
         var recolector = '';
         var id = ast.hijos[0];
-        var lista = desanidar(ast.hijos[3]);
+        var lista = desanidar(ast.hijos[3], ambito);
         recolector = id + "= [" + lista + "]";
         return recolector;
     }
@@ -626,7 +660,7 @@ function desanidar(ast) {
     else if (ast.tipo == 'PUSH') {
         var recolector = '';
         var id = ast.hijos[0];
-        var lista = desanidar(ast.hijos[4]);
+        var lista = desanidar(ast.hijos[4], ambito);
         recolector = id + ".push(" + lista + ")";
         return recolector;
     }
