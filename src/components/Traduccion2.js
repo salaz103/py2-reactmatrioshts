@@ -10,8 +10,9 @@ import "ace-builds/src-noconflict/mode-typescript";
 import "ace-builds/src-noconflict/theme-tomorrow_night_blue";
 import "ace-builds/src-noconflict/ext-language_tools";
 import {desanidar,AST_grafo} from '../ArchivosTS/Desanidar';
-import inicioEjecucion from '../ArchivosTS/Ejecutar';
 import {entorno} from '../ArchivosTS/desanidamiento/entorno';
+import {listaerrores} from '../ArchivosTS/entorno/listaerrores';
+
 class Traduccion2 extends React.Component {
   state = {
     valorEditor1: " ",
@@ -55,14 +56,13 @@ class Traduccion2 extends React.Component {
   }
 
   ejecutar=()=>{
-      ///////**************************RECORDATORIO************************************ */
-    // *****FALTA AGREGAR QUE GRAFIQUE CUANDO SE PRESIONE EL BOTON EJECUTAR
 
-
+    listaerrores.obtenerLista().limpiar();
     let ast=null;
     ast= Ejecutar.parse(this.state.codigoDesanidado);
     console.log(ast);
-    inicioEjecucion(ast);
+    let lista= listaerrores.obtenerLista();
+    console.log(lista);
   }
 
 
