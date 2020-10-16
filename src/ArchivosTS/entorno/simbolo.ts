@@ -1,22 +1,30 @@
-import {tipo_valor, tipo_variable} from './tipo';
+import {tipo_valor, tipo_rol} from './tipo';
 
 export class simbolo{
 
+    nombre:string;
     tipovalor:tipo_valor;
-    id:string;
-    valor:object;
-    reasignable:boolean;
+    ambito:string;
+    Rol:tipo_rol;
+    apuntador:number;
+    fila:number;
+    columna:number;
+    
 
-    constructor(id_e:string,reasignable:boolean,tipo_e?:tipo_valor,valor?:object){
-        this.id=id_e;
+
+
+    constructor(id_e:string,tipo_e:tipo_valor,amb:string,r:tipo_rol,fila:number,columna:number,direccion?:number){
+        this.nombre=id_e;
         this.tipovalor=tipo_e;
-        this.valor=valor;
-        this.reasignable=reasignable;
+        this.ambito=amb;
+        this.fila=fila;
+        this.columna=columna;
+        this.apuntador=direccion!=null?direccion:0;
     }
 
     
-    getId(){
-        return this.id;
+    getNombre(){
+        return this.nombre;
     }
 
     getTipo(){
@@ -27,17 +35,8 @@ export class simbolo{
         this.tipovalor= tipo;
     }
 
-    getValor(){
-        return this.valor;
-    }
 
-    setValor(valor_e:object){
-        this.valor= valor_e;
-    }
-
-    getReasignable(){
-        return this.reasignable;
-    }
+    
 
 }
 

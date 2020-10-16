@@ -8,6 +8,12 @@
     ARRAy= "ARRAY"
 }
 
+enum tipo_rol{
+    CLASE="CLASE",
+    VARIABLE="VARIABLE",
+    VARCLASE="VARCLASE"
+}
+
 enum tipo_variable{
     CONST="CONST",
     LET ="LET"
@@ -47,4 +53,4 @@ enum operador{
 
 
 
-export {tipo_valor,operador,tipo_variable,tipo_instruccion};
+export {tipo_valor,operador,tipo_variable,tipo_instruccion,tipo_rol};

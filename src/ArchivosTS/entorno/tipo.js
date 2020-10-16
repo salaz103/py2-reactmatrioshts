@@ -11,6 +11,13 @@ var tipo_valor;
     tipo_valor["ARRAy"] = "ARRAY";
 })(tipo_valor || (tipo_valor = {}));
 exports.tipo_valor = tipo_valor;
+var tipo_rol;
+(function (tipo_rol) {
+    tipo_rol["CLASE"] = "CLASE";
+    tipo_rol["VARIABLE"] = "VARIABLE";
+    tipo_rol["VARCLASE"] = "VARCLASE";
+})(tipo_rol || (tipo_rol = {}));
+exports.tipo_rol = tipo_rol;
 var tipo_variable;
 (function (tipo_variable) {
     tipo_variable["CONST"] = "CONST";

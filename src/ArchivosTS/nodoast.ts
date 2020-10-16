@@ -1,4 +1,5 @@
 interface nodoast{
 
+    traducir();
     
 }

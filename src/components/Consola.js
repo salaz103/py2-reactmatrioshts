@@ -8,7 +8,7 @@ import "ace-builds/src-noconflict/theme-twilight";
 
 const Consola= (props)=>(
     <AceEditor
-            width='1000px'
+            width='1200px'
             height='180px'
             mode= 'plain_text'
             readOnly= {true}

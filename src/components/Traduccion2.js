@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import {agregarCodigo,guardartextotraduccion} from '../actions/ts';
 import Consola from './Consola';
 import "ace-builds/src-noconflict/mode-typescript";
+import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/theme-tomorrow_night_blue";
 import "ace-builds/src-noconflict/ext-language_tools";
 import {desanidar,AST_grafo} from '../ArchivosTS/Desanidar';
@@ -17,7 +18,9 @@ class Traduccion2 extends React.Component {
   state = {
     valorEditor1: " ",
     codigoDesanidado:"",
-    textot:''
+    valorEditor3D: " ",
+    textot:'',
+    encabezado:''
   };
 
   onChange= (newvalue)=>{
@@ -32,14 +35,26 @@ class Traduccion2 extends React.Component {
     }))
   };
 
+  ingresoManual2= (newvalue)=>{
+    this.setState(()=>({
+      valorEditor3D:newvalue
+    }))
+  };
+
   onChange2= (codigo)=>{
     this.setState(()=>({
       codigoDesanidado:codigo
     }))
   };
 
+  setearC3D= (codigo)=>{
+    this.setState(()=>({
+      valorEditor3D:codigo
+    }))
+  };
 
-  traducir=()=>{
+
+  desanidar=()=>{
       let ast;
       let graphviz;
       ast = Traducir.parse(this.state.valorEditor1);
@@ -55,14 +70,21 @@ class Traduccion2 extends React.Component {
       this.props.agregarCodigo(graphviz);
   }
 
-  ejecutar=()=>{
+  traducir=()=>{
 
-    listaerrores.obtenerLista().limpiar();
-    let ast=null;
+    //listaerrores.obtenerLista().limpiar();
+    /*let ast=null;
     ast= Ejecutar.parse(this.state.codigoDesanidado);
-    console.log(ast);
-    let lista= listaerrores.obtenerLista();
-    console.log(lista);
+    console.log(ast);*/
+    //1. Poner el encabezado
+    this.setearC3D(this.props.encabezado);
+
+    /*let lista= listaerrores.obtenerLista();
+    console.log(lista);*/
+  }
+
+  optimizar=()=>{
+
   }
 
 
@@ -74,8 +96,7 @@ class Traduccion2 extends React.Component {
         <div className='container'>
 
         <div className='container-inline2'>
-          <h1>Entrada traduccion</h1>
-          <h1>Salida traduccion</h1>
+          <h1>Entrada C-Alto nivel</h1>
         </div>
 
         <div className='container-inline'>
@@ -90,6 +111,16 @@ class Traduccion2 extends React.Component {
             fontSize='20px'
         />
 
+      
+        </div>
+
+        <div className='container-inline2'>
+          <h1>Salida Desanidada</h1>
+          <h1>Salida C3D</h1>
+        </div>
+
+        <div className='container-inline'>
+
         <AceEditor
             onChange={this.ingresoManual}
             width='1900px'
@@ -100,22 +131,41 @@ class Traduccion2 extends React.Component {
             value={this.state.codigoDesanidado}
             fontSize='20px'
         />
+
+
+        <AceEditor
+            onChange={this.ingresoManual2}
+            width='1900px'
+            height='400px'
+            mode="c_cpp"
+            theme="tomorrow_night_blue"
+            name="editor1"
+            value= {this.state.valorEditor3D}
+            fontSize='20px'
+        />
+
+        
         </div>
-      
 
         <div className='inline-buttons'>
         <Action
-            action={this.traducir}
-            nombre='Traducir'
+            action={this.desanidar}
+            nombre='Desanidar'
         />
         <Action
-            action={this.ejecutar}
-            nombre= 'Ejecutar'
+            action={this.traducir}
+            nombre= 'TraducirC3D'
+        />
+        <Action
+            action={this.optimizar}
+            nombre= 'Optimizar'
         />
 
-       <Consola/>
-
         </div>
+
+        
+        
+        <Consola/>
         </div>
       </div>
     );
@@ -124,7 +174,8 @@ class Traduccion2 extends React.Component {
 
 const mapStateToProps = state =>{
   return{
-    textot: state.storecodigo.textot
+    textot: state.storecodigo.textot,
+    encabezado: state.storecodigo.encabezado
   }
 }
 

@@ -6,6 +6,9 @@ const codigoReducerDefaultState={
     funcionesfinales:[],
     simbolos:[],
     errores:[],
+    encabezado:'#include <stdio.h> \n float heap[16384]; \n float stack[16394]; \n float p;\n float h;\n',
+    temporales:'',
+    etiquetas:'',
     s:'date'
 };
 
