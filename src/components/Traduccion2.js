@@ -13,6 +13,7 @@ import "ace-builds/src-noconflict/ext-language_tools";
 import {desanidar,AST_grafo} from '../ArchivosTS/Desanidar';
 import {entorno} from '../ArchivosTS/desanidamiento/entorno';
 import {listaerrores} from '../ArchivosTS/entorno/listaerrores';
+import inicioTraduccion from '../ArchivosTS/Traducir';
 
 class Traduccion2 extends React.Component {
   state = {
@@ -73,9 +74,11 @@ class Traduccion2 extends React.Component {
   traducir=()=>{
 
     //listaerrores.obtenerLista().limpiar();
-    /*let ast=null;
+    let ast=null;
     ast= Ejecutar.parse(this.state.codigoDesanidado);
-    console.log(ast);*/
+    
+    inicioTraduccion(ast);
+
     //1. Poner el encabezado
     this.setearC3D(this.props.encabezado);
 

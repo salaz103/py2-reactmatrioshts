@@ -9,6 +9,9 @@ const codigoReducerDefaultState={
     encabezado:'#include <stdio.h> \n float heap[16384]; \n float stack[16394]; \n float p;\n float h;\n',
     temporales:'',
     etiquetas:'',
+    codigo3d:'',
+    contadortemporales:-1,
+    contadoretiquetas:-1,
     s:'date'
 };
 
@@ -28,6 +31,11 @@ const reducerGeneral=(state=codigoReducerDefaultState,action)=>{
             return{
                 ...state,
                 codigoconsola: state.codigoconsola+ action.codigoconsola
+            }
+        case 'CODIGO3D':
+            return{
+                ...state,
+                codigo3d: state.codigo3d+ action.codigo3d
             }
         case 'LIMPIAR_CONSOLA':
             return{

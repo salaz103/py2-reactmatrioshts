@@ -70,3 +70,5 @@ class entorno{
     }
 
 }
+
+export default entorno;

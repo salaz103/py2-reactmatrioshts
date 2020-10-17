@@ -110,6 +110,20 @@
   const error= require("../ArchivosTS/entorno/error");
   const lista= require("../ArchivosTS/entorno/listaerrores");
 
+  //******************INSTRUCCIONES***********************************
+  const declaracion= require('../ArchivosTS/instrucciones/declaracion'); 
+
+
+  //******************INTERMEDIOS************************************
+  const variable= require('../ArchivosTS/expresiones/variable');
+
+
+  //****************OTROS***********************************
+  const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
+  const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;
+  const tipo_instruccion= require('../ArchivosTS/entorno/tipo').tipo_instruccion;
+  const operador= require('../ArchivosTS/entorno/tipo').operador;
+
 %}
 
 
@@ -136,8 +150,8 @@ s : lista EOF { return $1; }
   ;
 
 
-lista : lista instruccion
-      | instruccion
+lista : lista instruccion {$1.push($2); $$=$1;}
+      | instruccion  {$$=[$1];}
       ;
 
 instruccion:  declaraciones RPUNTOCOMA{$$=$1;}
@@ -172,17 +186,19 @@ nativa: IDENTIFICADOR RPUNTO RPUSH RPARA listaexpresiones RPARC
        |IDENTIFICADOR RPUNTO RCONCAT RPARA listaexpresiones RPARC
        ;
 
-declaraciones: tipovariable listavariables;
+declaraciones: tipovariable listavariables {$$=new declaracion.declaracion($1,$2);};
 
 
 
-listavariables:   listavariables RCOMA variable
-                | variable
+listavariables:   listavariables RCOMA variable {$1.push($3); $$=$1;}
+                | variable {$$=[$1];}
                 ;
 
 
-variable:  IDENTIFICADOR RDOSPUNTOS tipodato RIGUAL expresion 
+variable:  IDENTIFICADOR RDOSPUNTOS tipodato RIGUAL expresion
+          {$$=new variable.variable($1,$3,@1.first_line,@1.first_column,$5);} 
          | IDENTIFICADOR RDOSPUNTOS tipodato
+         {$$=new variable.variable($1,$3,@1.first_line,@1.first_column,null);}
          ///*****ARREGLOS****////
          | IDENTIFICADOR RDOSPUNTOS tipodato dimensiones  RIGUAL expresion
          | IDENTIFICADOR RIGUAL expresion
@@ -191,8 +207,8 @@ variable:  IDENTIFICADOR RDOSPUNTOS tipodato RIGUAL expresion
 dimensiones: dimensiones RCORCHETEA RCORCHETEC
             | RCORCHETEA RCORCHETEC;
 
-tipovariable: RLET   
-            | RCONST 
+tipovariable: RLET  {$$=tipo_variable.LET;}  
+            | RCONST {$$=tipo_variable.CONST;} 
             ;
 
 asignacion: IDENTIFICADOR RIGUAL expresion;

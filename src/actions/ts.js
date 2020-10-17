@@ -8,6 +8,11 @@ export const guardartextotraduccion=(textot='')=>({
     textot
 });
 
+export const agregarcodigo3d=(codigo3d='')=>({
+    type:'CODIGO3D',
+    codigo3d
+});
+
 export const codigoconsola=(codigoconsola='')=>({
     type:'CONSOLA',
     codigoconsola

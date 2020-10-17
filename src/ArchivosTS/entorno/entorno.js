@@ -44,3 +44,4 @@ var entorno = /** @class */ (function () {
     };
     return entorno;
 }());
+exports["default"] = entorno;
