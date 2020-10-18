@@ -2,15 +2,16 @@ import entorno from './entorno/entorno';
 import {almacen} from '../../src/app';
 import {limpiarconsola,tsfinal} from '../actions/ts.js';
 import { declaracionfuncion } from './instrucciones/declaracionfuncion';
+import { tipo_ambito } from './entorno/tipo';
 
 
 
 function inicioTraduccion(ast:any){
-    //ANTES DE EJECUTAR, LIMPIAR LA CONSOLA
+    //ANTES DE EJECUTAR, LIMPIAR LA CONSOLA Y EL STORE CON LO QUE SE UTILIZA
     almacen.dispatch(limpiarconsola());
 
 //CADA ENTORNO TIENE UNA TABLA DE SIMBOLOS COMO UN VALOR
-const entornoGlobal= new entorno("global",);
+const entornoGlobal= new entorno("global",tipo_ambito.GLOBAL,);
 
 console.log("Recibiendo el AST para EJECUTAR:");
 console.log(ast);

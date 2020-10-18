@@ -1,19 +1,21 @@
 import { declaracionfuncion } from '../instrucciones/declaracionfuncion';
 import simbolo from './simbolo';
-import {tipo_valor} from './tipo';
+import {tipo_ambito, tipo_valor} from './tipo';
 
 class entorno{
 
     apuntadorPadre:entorno;
     tablasimbolos: Map<String,simbolo>
     nombre:string;
+    tipoambito:tipo_ambito;
     tablaf: Map<String,declaracionfuncion>
 
-    constructor(nombre:string,ambitoPadre?:entorno){
+    constructor(nombre:string,tipoambito:tipo_ambito,ambitoPadre?:entorno){
         this.nombre= nombre;
         this.apuntadorPadre = ambitoPadre != null ? ambitoPadre : null;
         this.tablasimbolos= new Map();
         this.tablaf= new Map();
+        this.tipoambito=tipoambito;
     }
 
     agregarSimbolo(nuevoSimbolo:simbolo){

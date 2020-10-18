@@ -114,6 +114,9 @@
   const declaracion= require('../ArchivosTS/instrucciones/declaracion'); 
 
 
+  //******************EXPRESIONES*************************************
+  const numero= require('../ArchivosTS/expresiones/numero');
+
   //******************INTERMEDIOS************************************
   const variable= require('../ArchivosTS/expresiones/variable');
 
@@ -205,7 +208,7 @@ variable:  IDENTIFICADOR RDOSPUNTOS tipodato RIGUAL expresion
          ;
 
 dimensiones: dimensiones RCORCHETEA RCORCHETEC
-            | RCORCHETEA RCORCHETEC;
+            | RCORCHETEA RCORCHETEC ;
 
 tipovariable: RLET  {$$=tipo_variable.LET;}  
             | RCONST {$$=tipo_variable.CONST;} 
@@ -273,11 +276,11 @@ parametro: IDENTIFICADOR RDOSPUNTOS tipodato
 
 
 tipodato:  
-           RSTRING 
-          |RNUMBER 
-          |RBOOLEAN 
-          |RVOID   
-          |RARRAY  
+           RSTRING {$$=tipo_valor.STRING;}
+          |RNUMBER {$$=tipo_valor.NUMBER;}
+          |RBOOLEAN {$$=tipo_valor.BOOLEAN;} 
+          |RVOID   {$$=tipo_valor.VOID;}
+          |RARRAY  {$$=tipo_valor.ARRAY;}
           ;
 
 
@@ -318,7 +321,7 @@ expresion:
           /*RESTANTES*/
           |RPARA expresion RPARC  {$$=$2;}
           |expresion RINTERROGACION expresion RDOSPUNTOS expresion
-          |NUM                    
+          |NUM              {$$=new numero.numero(Number($1),tipo_valor.NUMBER);}      
           |RTRUE                 
           |RFALSE                 
           |CADENACOMILLADOBLE    

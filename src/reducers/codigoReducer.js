@@ -12,6 +12,8 @@ const codigoReducerDefaultState={
     codigo3d:'',
     contadortemporales:-1,
     contadoretiquetas:-1,
+    heap:-1,
+    stack:-1,
     s:'date'
 };
 
@@ -35,7 +37,27 @@ const reducerGeneral=(state=codigoReducerDefaultState,action)=>{
         case 'CODIGO3D':
             return{
                 ...state,
-                codigo3d: state.codigo3d+ action.codigo3d
+                codigo3d: state.codigo3d.concat(action.codigo3d)
+            }
+        case 'AUMENTARTEMP':
+            return{
+                ...state,
+                contadortemporales: state.contadortemporales + 1
+            }
+        case 'AUMENTARETIQUETAS':
+            return{
+                ...state,
+                contadoretiquetas: state.contadoretiquetas + 1
+            }
+        case 'AUMENTARHEAP':
+            return{
+                ...state,
+                heap: state.heap + 1
+            }
+        case 'AUMENTARSTACK':
+            return{
+                ...state,
+                stack: state.stack + 1
             }
         case 'LIMPIAR_CONSOLA':
             return{

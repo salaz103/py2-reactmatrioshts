@@ -8,10 +8,30 @@ export const guardartextotraduccion=(textot='')=>({
     textot
 });
 
+//********************ACCIONES PARA CREACION C3D********************************************/
+
+export const aumentartemporales=()=>({
+    type:'AUMENTARTEMP'
+}); 
+
+export const aumentaretiquetas=()=>({
+    type:'AUMENTARETIQUETAS'
+}); 
+
+export const aumentarheap=()=>({
+    type:'AUMENTARHEAP'
+}); 
+
+export const aumentarstack=()=>({
+    type:'AUMENTARSTACK'
+}); 
+
 export const agregarcodigo3d=(codigo3d='')=>({
     type:'CODIGO3D',
     codigo3d
 });
+
+//********************************************************************************************* */
 
 export const codigoconsola=(codigoconsola='')=>({
     type:'CONSOLA',

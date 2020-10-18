@@ -8,9 +8,15 @@ var tipo_valor;
     tipo_valor["TYPE"] = "TYPE";
     tipo_valor["VOID"] = "VOID";
     tipo_valor["ANY"] = "ANY";
-    tipo_valor["ARRAy"] = "ARRAY";
+    tipo_valor["ARRAY"] = "ARRAY";
 })(tipo_valor || (tipo_valor = {}));
 exports.tipo_valor = tipo_valor;
+var tipo_ambito;
+(function (tipo_ambito) {
+    tipo_ambito["GLOBAL"] = "GLOBAL";
+    tipo_ambito["LOCAL"] = "LOCAL";
+})(tipo_ambito || (tipo_ambito = {}));
+exports.tipo_ambito = tipo_ambito;
 var tipo_rol;
 (function (tipo_rol) {
     tipo_rol["CLASE"] = "CLASE";

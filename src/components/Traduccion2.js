@@ -14,6 +14,7 @@ import {desanidar,AST_grafo} from '../ArchivosTS/Desanidar';
 import {entorno} from '../ArchivosTS/desanidamiento/entorno';
 import {listaerrores} from '../ArchivosTS/entorno/listaerrores';
 import inicioTraduccion from '../ArchivosTS/Traducir';
+import {codigo3dfinal} from '../ArchivosTS/helpers/helpers';
 
 class Traduccion2 extends React.Component {
   state = {
@@ -21,7 +22,8 @@ class Traduccion2 extends React.Component {
     codigoDesanidado:"",
     valorEditor3D: " ",
     textot:'',
-    encabezado:''
+    encabezado:'',
+    codigo3d:''
   };
 
   onChange= (newvalue)=>{
@@ -76,11 +78,14 @@ class Traduccion2 extends React.Component {
     //listaerrores.obtenerLista().limpiar();
     let ast=null;
     ast= Ejecutar.parse(this.state.codigoDesanidado);
-    
+    //AQUI COMIENZA LA TRADUCCIÓN
     inicioTraduccion(ast);
+    //UNA VEZ TERMINA LA TRADUCCION, EN LA STORE YA ESTA EL C3D
+    //SOLO HAY QUE SETEAR EL CODIGO, PARA ESO USAREMOS UNA FUNCION HELPER
+    let c3d= codigo3dfinal();
+    //console.log(c3d);
 
-    //1. Poner el encabezado
-    this.setearC3D(this.props.encabezado);
+    this.setearC3D(c3d);
 
     /*let lista= listaerrores.obtenerLista();
     console.log(lista);*/

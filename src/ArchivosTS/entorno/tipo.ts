@@ -5,7 +5,12 @@
     TYPE ="TYPE",
     VOID="VOID",
     ANY="ANY",
-    ARRAy= "ARRAY"
+    ARRAY= "ARRAY"
+}
+
+enum tipo_ambito{
+    GLOBAL="GLOBAL",
+    LOCAL="LOCAL"
 }
 
 enum tipo_rol{
@@ -53,4 +58,4 @@ enum operador{
 
 
 
-export {tipo_valor,operador,tipo_variable,tipo_instruccion,tipo_rol};
+export {tipo_valor,operador,tipo_variable,tipo_instruccion,tipo_rol,tipo_ambito};

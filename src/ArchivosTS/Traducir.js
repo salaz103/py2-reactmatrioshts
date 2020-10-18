@@ -4,11 +4,12 @@ var entorno_1 = require("./entorno/entorno");
 var app_1 = require("../../src/app");
 var ts_js_1 = require("../actions/ts.js");
 var declaracionfuncion_1 = require("./instrucciones/declaracionfuncion");
+var tipo_1 = require("./entorno/tipo");
 function inicioTraduccion(ast) {
-    //ANTES DE EJECUTAR, LIMPIAR LA CONSOLA
+    //ANTES DE EJECUTAR, LIMPIAR LA CONSOLA Y EL STORE CON LO QUE SE UTILIZA
     app_1.almacen.dispatch(ts_js_1.limpiarconsola());
     //CADA ENTORNO TIENE UNA TABLA DE SIMBOLOS COMO UN VALOR
-    var entornoGlobal = new entorno_1["default"]("global");
+    var entornoGlobal = new entorno_1["default"]("global", tipo_1.tipo_ambito.GLOBAL);
     console.log("Recibiendo el AST para EJECUTAR:");
     console.log(ast);
     traducir(ast, entornoGlobal);

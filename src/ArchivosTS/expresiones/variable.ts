@@ -20,7 +20,6 @@ export class variable{
         this.columna=c;
         //EXPRESION
         this.exp=ex!=null?ex:null;
-
         
     }
 

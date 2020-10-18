@@ -1,11 +1,12 @@
 "use strict";
 exports.__esModule = true;
 var entorno = /** @class */ (function () {
-    function entorno(nombre, ambitoPadre) {
+    function entorno(nombre, tipoambito, ambitoPadre) {
         this.nombre = nombre;
         this.apuntadorPadre = ambitoPadre != null ? ambitoPadre : null;
         this.tablasimbolos = new Map();
         this.tablaf = new Map();
+        this.tipoambito = tipoambito;
     }
     entorno.prototype.agregarSimbolo = function (nuevoSimbolo) {
         this.tablasimbolos.set(nuevoSimbolo.getNombre(), nuevoSimbolo);
