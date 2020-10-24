@@ -1,8 +1,12 @@
-export class declaracionfuncion implements nodoast{
+import entorno from "../entorno/entorno";
+import instruccion from "./instruccion";
+
+export class declaracionfuncion implements instruccion{
 
 
-    traducir() {
-        ///TENDRIA  QUE INICIAR LA TRADUCCION DE LA DECLARACION DE UNA FUNCION
+
+    traducir(ambito: entorno) {
+        throw new Error("Method not implemented.");
     }
 
 }

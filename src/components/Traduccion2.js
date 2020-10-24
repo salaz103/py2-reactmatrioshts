@@ -14,7 +14,7 @@ import {desanidar,AST_grafo} from '../ArchivosTS/Desanidar';
 import {entorno} from '../ArchivosTS/desanidamiento/entorno';
 import {listaerrores} from '../ArchivosTS/entorno/listaerrores';
 import inicioTraduccion from '../ArchivosTS/Traducir';
-import {codigo3dfinal} from '../ArchivosTS/helpers/helpers';
+import {codigo3dfinal,limpiarTodo} from '../ArchivosTS/helpers/helpers';
 
 class Traduccion2 extends React.Component {
   state = {
@@ -79,8 +79,11 @@ class Traduccion2 extends React.Component {
     let ast=null;
     ast= Ejecutar.parse(this.state.codigoDesanidado);
     //AQUI COMIENZA LA TRADUCCIÓN
+    //console.log(ast);
+    //ANTES DE COMENZAR LA TRADUCCION, VAMOS A LIMPIAR TODO
+    limpiarTodo();
     inicioTraduccion(ast);
-    //UNA VEZ TERMINA LA TRADUCCION, EN LA STORE YA ESTA EL C3D
+    //UNA VEZ TERMINA LA TRADUCCION, EN LA SINGLETON YA ESTA EL C3D
     //SOLO HAY QUE SETEAR EL CODIGO, PARA ESO USAREMOS UNA FUNCION HELPER
     let c3d= codigo3dfinal();
     //console.log(c3d);

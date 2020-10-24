@@ -1,4 +1,4 @@
-import { tipo_valor } from "../entorno/tipo";
+import { tipo_dato } from "../entorno/tipo";
 import {almacen} from '../../../src/app';
 import {agregarcodigo3d} from '../../actions/ts.js';
 import {generartmp} from '../helpers/helpers';
@@ -9,20 +9,22 @@ import entorno from "../entorno/entorno";
 export class numero implements expresion{
 
     valor:number;
-    tipovalor:tipo_valor;
+    tipodato:tipo_dato;
+    linea:number;
+    columna:number;
 
-    constructor(valor:number,tipo:tipo_valor){
+    constructor(valor:number,tipo:tipo_dato,linea:number,columna:number){
         this.valor=valor;
-        this.tipovalor=tipo;
+        this.tipodato=tipo;
+        this.linea=linea;
+        this.columna=columna;
+
     }
     traducir(ambito: entorno) {
-        //return new Number(this.valor);
-        let temporal= generartmp();
-        let c3d:string= temporal+" ="+this.valor+";\n";
-        //console.log(c3d);
-        almacen.dispatch(agregarcodigo3d(c3d));
-        //console.log(almacen.getState());
-        return new traduccionexp(temporal,tipo_valor.NUMBER,false,[],[]);
+        ///TODAS LAS CLASES QUE HEREDEN DE EXPRESION SIEMPRE ANTES DE TRADUCIRLAS
+        // SE LES COLOCARA EL TIPO 
+        //EN ESTE CASO POR SER UN PRIMITIVO EL TIPO YA LO TIENEN DE FIJO
+        return new traduccionexp(this.valor.toString(),false,this.tipodato,false);
     }
 
 

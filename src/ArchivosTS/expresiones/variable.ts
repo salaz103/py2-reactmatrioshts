@@ -1,17 +1,17 @@
-import { tipo_valor } from "../entorno/tipo";
+import { tipo_dato } from "../entorno/tipo";
 import expresion from "../expresiones/expresion";
 
 export class variable{
 
     id:string;
-    tipodato:tipo_valor;
+    tipodato:tipo_dato;
     exp:expresion;
     linea:number;
     columna:number;
     
 
-    constructor(id:string,tipodato:tipo_valor,l:number,c:number)
-    constructor(id:string,tipodato:tipo_valor,l:number,c:number,ex?:expresion){
+    constructor(id:string,tipodato:tipo_dato,l:number,c:number)
+    constructor(id:string,tipodato:tipo_dato,l:number,c:number,ex?:expresion){
 
         this.id=id;
         this.tipodato=tipodato;

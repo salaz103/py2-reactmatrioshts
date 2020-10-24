@@ -1,22 +1,30 @@
-import { tipo_valor } from "../entorno/tipo";
+import { tipo_dato } from "../entorno/tipo";
+import {generacion} from "../helpers/generacion";
+
 
 export class traduccionexp{
     
-    temp:string;
-    tipovalor:tipo_valor;
-    etiquetas:boolean;
+    valor:string;
+    tipodato:tipo_dato;
+    tiene_etiquetas:boolean;
+    es_temporal:boolean;
     etiquetastrue:string[];
     etiquetasfalse:string[];
 
 
-    constructor(temporal:string,tipovalor:tipo_valor,etiquetas:boolean,etiquetastrue:string[],etiquetasfalse:string[]){
-        this.temp=temporal;
-        this.tipovalor=tipovalor;
-        this.etiquetas=etiquetas;
-        this.etiquetastrue= etiquetastrue;
-        this.etiquetasfalse= etiquetasfalse;
+    constructor(val:string,temp:boolean,tipodato:tipo_dato,etiquetas:boolean){
+        this.valor=val;
+        this.es_temporal= temp;
+        this.tipodato=tipodato;
+        this.tiene_etiquetas=etiquetas;
+        this.etiquetastrue= [];
+        this.etiquetasfalse= [];
     }
 
+    public obtenerValor(){
+        generacion.getGenerador().sacarTemporal(this.valor);
+        return this.valor;
+    }
 
 
 }

@@ -1,5 +1,6 @@
 import {almacen} from '../../../src/app';
 import {aumentartemporales,aumentaretiquetas,aumentarheap,aumentarstack} from '../../actions/ts';
+import { generacion } from './generacion';
 
 export function generartmp():string{
 
@@ -22,49 +23,16 @@ export function generaretiqueta():string{
     return etiqueta;
 }
 
-export function listaTemporales():string{
-    //EN ESTA FUNCIÓN SE GENERARA LA LISTA DE TEMPORALES, IREMOS A LA "STORE" A TRAER EL # DE TEMPORALES 
-    //UTILIZADOS
-    let cantidad:number= almacen.getState().storecodigo.contadortemporales;
-    let lista="float ";
-    if(cantidad!=-1){
-        //SI LA CANTIDAD ES DIFERENTE DE -1 ENTONCES SIGNIFICA QUE SI HAY TEMPORALES
-        for (let i = 0; i <= cantidad; i++) {
-            
-            if(i==cantidad){
-                lista+= "t"+i+"; \n"
-            }else{
-                lista+= "t"+i+","
-            }
-            
-        }
-    }
-
-    return lista;
-}
 
 
-export function getPosicionLibreHeap():number{
-
-    almacen.dispatch(aumentarheap());
-    let pos:number= almacen.getState().storecodigo.heap;
-    return pos;
-
-}
 
 export function codigo3dfinal():string{
 
-    //EL CODIGO SE DEBE ARMAR
-    //ENCABEZADO
-    //LISTA TEMPORALES
-    //VOID MAIN(){ CODIGO3D  RETURN; }
+    const codigofinal:string = generacion.getGenerador().getCodigoFinal();
+    return codigofinal;
 
-    let codigo3dfinal="";
+}
 
-    let encabezado:string= almacen.getState().storecodigo.encabezado;
-    let listatmp= listaTemporales();
-    let c3d:string= almacen.getState().storecodigo.codigo3d;
-    codigo3dfinal= encabezado + listatmp + "void main(){\n"+ c3d + "return; \n}";
-
-    return codigo3dfinal;
+export function limpiarTodo(){
+    generacion.getGenerador().limpiarTodo();
 }

@@ -1,6 +1,5 @@
 import { entorno } from "./desanidamiento/entorno";
 import { funcion } from "./desanidamiento/funcion";
-import { tipo_valor } from "./entorno/tipo";
 
 const nodobase= require('../arbolBase/nodobase').nodobase;
 

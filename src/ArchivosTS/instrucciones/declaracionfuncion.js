@@ -3,8 +3,8 @@ exports.__esModule = true;
 var declaracionfuncion = /** @class */ (function () {
     function declaracionfuncion() {
     }
-    declaracionfuncion.prototype.traducir = function () {
-        ///TENDRIA  QUE INICIAR LA TRADUCCION DE LA DECLARACION DE UNA FUNCION
+    declaracionfuncion.prototype.traducir = function (ambito) {
+        throw new Error("Method not implemented.");
     };
     return declaracionfuncion;
 }());

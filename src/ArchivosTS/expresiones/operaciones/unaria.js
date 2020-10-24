@@ -8,7 +8,7 @@ var unaria = /** @class */ (function () {
         this.columna = columna;
     }
     unaria.prototype.traducir = function (ambito) {
-        throw new Error("Method not implemented.");
+        return null;
     };
     return unaria;
 }());

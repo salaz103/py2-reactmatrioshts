@@ -1,13 +1,19 @@
 "use strict";
 exports.__esModule = true;
+var generacion_1 = require("../helpers/generacion");
 var traduccionexp = /** @class */ (function () {
-    function traduccionexp(temporal, tipovalor, etiquetas, etiquetastrue, etiquetasfalse) {
-        this.temp = temporal;
-        this.tipovalor = tipovalor;
-        this.etiquetas = etiquetas;
-        this.etiquetastrue = etiquetastrue;
-        this.etiquetasfalse = etiquetasfalse;
+    function traduccionexp(val, temp, tipodato, etiquetas) {
+        this.valor = val;
+        this.es_temporal = temp;
+        this.tipodato = tipodato;
+        this.tiene_etiquetas = etiquetas;
+        this.etiquetastrue = [];
+        this.etiquetasfalse = [];
     }
+    traduccionexp.prototype.obtenerValor = function () {
+        generacion_1.generacion.getGenerador().sacarTemporal(this.valor);
+        return this.valor;
+    };
     return traduccionexp;
 }());
 exports.traduccionexp = traduccionexp;

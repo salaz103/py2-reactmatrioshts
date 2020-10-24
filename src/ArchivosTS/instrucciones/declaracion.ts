@@ -3,34 +3,27 @@ import { tipo_ambito, tipo_rol, tipo_variable } from "../entorno/tipo";
 import instruccion from "./instruccion";
 import {almacen} from '../../../src/app';
 import {agregarcodigo3d} from '../../actions/ts.js';
-import {generartmp,getPosicionLibreHeap} from '../helpers/helpers';
 import {errores} from '../../actions/ts.js';
 import { variable } from "../expresiones/variable";
 import simbolo from "../entorno/simbolo";
 import { traduccionexp } from "../expresiones/traduccionexp";
+import { generacion } from "../helpers/generacion";
 
 
 export class declaracion implements instruccion{
 
     tipovariable:tipo_variable;
-    //EL ARREGLO NO TIENE UN TIPO ESPECÍFICO POR QUE PUEDE QUE VENGA VARIABLE NORMAL O ARREGLO
-    variables;
+    variables:variable[];
 
 
-    constructor(tipov:tipo_variable,vars:[]){
+    constructor(tipov:tipo_variable,vars:variable[]){
         this.tipovariable=tipov;
         this.variables= vars;
     }
 
 
     traducir(ambito: entorno) {
-        //console.log("TRADUCCION DE DECLARACION");
-        //console.log(almacen.getState().storecodigo.contadortemporales);
-        // let tmp= generartmp();
-        // let lista= listaTemporales();
-        // console.log(tmp);
-        // console.log(lista);
-
+        const generador= generacion.getGenerador();
         //1. Recorrer el arreglo de variables
         //2. Revisar si la variable ya existe SOLO EN ESTE AMBITO, YA SEA NUEVO O GLOBAL
 
@@ -41,7 +34,9 @@ export class declaracion implements instruccion{
                 almacen.dispatch(errores({
                     tipo:'SEMANTICO',
                     descripcion:'IDENTIFICADOR '+ this.variables[i].id+' YA EXISTE EN AMBITO '+ ambito.nombre,
-                    ambito:ambito.nombre
+                    ambito:ambito.nombre,
+                    linea: this.variables[i].linea,
+                    columna: this.variables[i].columna
                 }));
                 console.log("ERROR- ID: "+this.variables[i].id+" YA EXISTE EN ESTE AMBITO "+ ambito.nombre);    
             }else{
@@ -60,15 +55,46 @@ export class declaracion implements instruccion{
                         //1. ID:TIPODATO= EXPRESION
                         //2. ID:TIPODATO
                     if(this.variables[i].exp!=null){
-                        const valor:traduccionexp= this.variables[i].exp.traducir(ambito);
-                        let pos= getPosicionLibreHeap();
-                        let tmp_intermedio= generartmp();
-                        let c3d= tmp_intermedio+" = "+pos+";\n";
-                        c3d += "heap[(int)"+tmp_intermedio+"]= "+valor.temp+";\n";
+                        //SIGNIFICA QUE LA VARIABLE LET TRAE UNA EXPRESION
+                          let retornoexpresion:traduccionexp= this.variables[i].exp.traducir(ambito);
+                          //VALIDAMOS QUE EL TIPO DE DATO ENTRANTE ES SIMILAR A LA DE LA EXPRESION
+                          if(this.variables[i].tipodato==retornoexpresion.tipodato){
+                              //SI SON IGUALES ENTONCES GUARDAMOS LA VARIABLE EN LA TS Y COMIENZA 
+                              //LA TRADUCCION
+                              let nuevosim:simbolo= ambito.agregarSimbolo(this.variables[i].id,retornoexpresion.tipodato,ambito.nombre,this.variables[i].linea,this.variables[i].columna);
+                              //SIEMPRE QUE AGREGAMOS UN NUEVO SIMBOLO, DEVUELVE EL SIMBOLO CREADO
+                              //AQUI PREGUNTAMOS SI ES VARIABLE GLOBAL O LOCAL, ESTO PARA VER SI MOVEMOS O NO
+                              //EL APUNTADOR "P"
+                              if(nuevosim.esGlobal){
+                                  let tmp= generador.generarTemporal();
+                                  generador.sacarTemporal(tmp);
+                                  generador.agregarExpresion(tmp,"p","+",nuevosim.direccionrelativa);
+                                  generador.stack(tmp,retornoexpresion.obtenerValor());
+                                
+                              }else{
+                                let tmp= generador.generarTemporal();
+                                generador.sacarTemporal(tmp);
+                                generador.agregarExpresion(tmp,"p","+",nuevosim.direccionrelativa);
+                                generador.stack(tmp,retornoexpresion.obtenerValor());
+                              }
 
-                        const nuevosimbolo= new simbolo(this.variables[i].id,valor.tipovalor,ambito.nombre,tipo_rol.VARIABLE,this.variables[i].linea,this.variables[i].columna,pos);
-                        ambito.agregarSimbolo(nuevosimbolo);
-                        almacen.dispatch(agregarcodigo3d(c3d));
+
+                          }else{
+                              //ERROR - SEMANTICO - TIPO DATO VARIABLE NO COMPATIBLE CON TIPO DATO DE EXPRESION
+
+
+                          }
+
+                    }else{
+                        //SIGNIFICA QUE LA VARIABLE LET NO TRAE EXPRESION, SE DEBE RESERVAR EL ESPACIO Y PONER VALORES POR DEFECTO
+                        /**
+                         NUMBER-> 0 
+                         BOOLEAN-> FALSE
+                         STRING-> NULL
+                         TYPE-> NULL
+                         ARRAY-> NULL
+                         */
+
                     }
 
 
@@ -86,19 +112,6 @@ export class declaracion implements instruccion{
 
 
 
-
-
-
-
-                //PERO ANTES DE GUARDAR LA VARIABLE, TENEMOS QUE VERIFICAR
-                //SI EL AMBITO ES "GLOBAL" U OTRO(LOCAL), YA QUE SI ES OTRO
-                //NO TENEMOS QUE "RESERVAR ESPACIO EN EL HEAP"
-                if(ambito.tipoambito=tipo_ambito.GLOBAL){
-                    //SI EL AMBITO ES GLOBAL ENTONCES ES EL HEAP EL QUE TENEMOS QUE UTILIZAR
-
-                }else{
-                    //SI EL AMBITO ES LOCAL, ES EL STACK EL QUE DEBEMOS UTILIZAR
-                }
 
             }//FINALIZACION DE GUARDAR VARIABLE
             

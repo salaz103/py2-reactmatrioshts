@@ -116,13 +116,16 @@
 
   //******************EXPRESIONES*************************************
   const numero= require('../ArchivosTS/expresiones/numero');
+  const valorLogico= require('../ArchivosTS/expresiones/valorLogico');
+  const cadena= require('../ArchivosTS/expresiones/cadena');
+  const aritmetica= require('../ArchivosTS/expresiones/operaciones/aritmetica');
 
   //******************INTERMEDIOS************************************
   const variable= require('../ArchivosTS/expresiones/variable');
 
 
   //****************OTROS***********************************
-  const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
+  const tipo_dato= require('../ArchivosTS/entorno/tipo').tipo_dato;
   const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;
   const tipo_instruccion= require('../ArchivosTS/entorno/tipo').tipo_instruccion;
   const operador= require('../ArchivosTS/entorno/tipo').operador;
@@ -180,9 +183,7 @@ masmenos: IDENTIFICADOR RMASMAS
          |IDENTIFICADOR RMENOSMENOS
          ;
 
-nativa: IDENTIFICADOR RPUNTO RPUSH RPARA listaexpresiones RPARC
-       |IDENTIFICADOR RPUNTO RPOP RPARA RPARC
-       |IDENTIFICADOR RPUNTO RLENGTH
+nativa: IDENTIFICADOR RPUNTO RLENGTH
        |IDENTIFICADOR RPUNTO RCHARAT RPARA NUM RPARC 
        |IDENTIFICADOR RPUNTO RTOLOWERCASE RPARA RPARC
        |IDENTIFICADOR RPUNTO RTOUPPERCASE RPARA RPARC
@@ -201,7 +202,7 @@ listavariables:   listavariables RCOMA variable {$1.push($3); $$=$1;}
 variable:  IDENTIFICADOR RDOSPUNTOS tipodato RIGUAL expresion
           {$$=new variable.variable($1,$3,@1.first_line,@1.first_column,$5);} 
          | IDENTIFICADOR RDOSPUNTOS tipodato
-         {$$=new variable.variable($1,$3,@1.first_line,@1.first_column,null);}
+          {$$=new variable.variable($1,$3,@1.first_line,@1.first_column,null);}
          ///*****ARREGLOS****////
          | IDENTIFICADOR RDOSPUNTOS tipodato dimensiones  RIGUAL expresion
          | IDENTIFICADOR RIGUAL expresion
@@ -276,11 +277,11 @@ parametro: IDENTIFICADOR RDOSPUNTOS tipodato
 
 
 tipodato:  
-           RSTRING {$$=tipo_valor.STRING;}
-          |RNUMBER {$$=tipo_valor.NUMBER;}
-          |RBOOLEAN {$$=tipo_valor.BOOLEAN;} 
-          |RVOID   {$$=tipo_valor.VOID;}
-          |RARRAY  {$$=tipo_valor.ARRAY;}
+           RSTRING {$$=tipo_dato.STRING;}
+          |RNUMBER {$$=tipo_dato.NUMBER;}
+          |RBOOLEAN {$$=tipo_dato.BOOLEAN;} 
+          |RVOID   {$$=tipo_dato.VOID;}
+          |RARRAY  {$$=tipo_dato.ARRAY;}
           ;
 
 
@@ -298,11 +299,16 @@ listaexpresiones: listaexpresiones RCOMA expresion
 expresion: 
            /*EXPRESIONES ARITMETICAS*/
            RMENOS expresion %prec UMENOS   
-          | expresion RMAS expresion      
-          |expresion RMENOS expresion     
-          |expresion RPOR expresion       
+          | expresion RMAS expresion
+          {$$= new aritmetica.aritmetica($1,operador.MAS,$3,@1.first_line,@1.first_column);}      
+          |expresion RMENOS expresion
+          {$$= new aritmetica.aritmetica($1,operador.MENOS,$3,@1.first_line,@1.first_column);}     
+          |expresion RPOR expresion
+          {$$= new aritmetica.aritmetica($1,operador.POR,$3,@1.first_line,@1.first_column);}        
           |expresion RDIVISION expresion  
-          |expresion RMODULO expresion    
+          {$$= new aritmetica.aritmetica($1,operador.DIVISION,$3,@1.first_line,@1.first_column);}
+          |expresion RMODULO expresion 
+          {$$= new aritmetica.aritmetica($1,operador.MODULO,$3,@1.first_line,@1.first_column);}   
           |expresion REXPONENTE expresion 
           |IDENTIFICADOR RMASMAS          
           |IDENTIFICADOR RMENOSMENOS      
@@ -321,15 +327,15 @@ expresion:
           /*RESTANTES*/
           |RPARA expresion RPARC  {$$=$2;}
           |expresion RINTERROGACION expresion RDOSPUNTOS expresion
-          |NUM              {$$=new numero.numero(Number($1),tipo_valor.NUMBER);}      
-          |RTRUE                 
-          |RFALSE                 
-          |CADENACOMILLADOBLE    
-          |CADENACOMILLASIMPLE     
+          |NUM              {$$=new numero.numero(Number($1),tipo_dato.NUMBER,@1.first_line,@1.first_column);}      
+          |RTRUE            {$$=new valorLogico.valorLogico("TRUE",tipo_dato.BOOLEAN,@1.first_line,@1.first_column);}     
+          |RFALSE           {$$=new valorLogico.valorLogico("FALSE",tipo_dato.BOOLEAN,@1.first_line,@1.first_column);}      
+          |CADENACOMILLADOBLE {$$=new cadena.cadena($1,tipo_dato.STRING,@1.first_line,@1.first_column);}     
+          |CADENACOMILLASIMPLE {$$=new cadena.cadena($1,tipo_dato.STRING,@1.first_line,@1.first_column);}      
           |IDENTIFICADOR
           /*ARREGLOS*/
-          |RCORCHETEA listaerrores RCORCHETEC
-          |RCORCHETEA RCORCHETEC          
+          /*|RCORCHETEA listaerrores RCORCHETEC
+          |RCORCHETEA RCORCHETEC */         
           //LLAMADA A FUNCIONES 
           | llamarfuncion       {$$=$1;}
           | nativa              {$$=$1;}

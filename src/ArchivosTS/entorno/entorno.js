@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
+var simbolo_1 = require("./simbolo");
 var entorno = /** @class */ (function () {
     function entorno(nombre, tipoambito, ambitoPadre) {
         this.nombre = nombre;
@@ -7,9 +8,13 @@ var entorno = /** @class */ (function () {
         this.tablasimbolos = new Map();
         this.tablaf = new Map();
         this.tipoambito = tipoambito;
+        this.tamaño = ambitoPadre != null ? ambitoPadre.tamaño : 0;
+        this.funcionActual = ambitoPadre != null ? ambitoPadre.funcionActual : null;
     }
-    entorno.prototype.agregarSimbolo = function (nuevoSimbolo) {
-        this.tablasimbolos.set(nuevoSimbolo.getNombre(), nuevoSimbolo);
+    entorno.prototype.agregarSimbolo = function (id, tipodato, nombreambito, fila, columna) {
+        var nuevosim = new simbolo_1["default"](id, tipodato, nombreambito, fila, columna, this.apuntadorPadre == null, this.tamaño++);
+        this.tablasimbolos.set(id, nuevosim);
+        return nuevosim;
     };
     entorno.prototype.agregarFuncion = function (funcion) {
         //this.tablaf.set(funcion.nombre,funcion);
@@ -28,9 +33,9 @@ var entorno = /** @class */ (function () {
     };
     entorno.prototype.getSimbolo = function (id) {
         for (var entornoactual = this; entornoactual != null; entornoactual = entornoactual.apuntadorPadre) {
-            var simbolo_1 = entornoactual.tablasimbolos.get(id);
-            if (simbolo_1 != null) {
-                return simbolo_1;
+            var simbolo_2 = entornoactual.tablasimbolos.get(id);
+            if (simbolo_2 != null) {
+                return simbolo_2;
             }
         }
     };

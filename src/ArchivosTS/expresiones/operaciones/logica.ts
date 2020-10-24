@@ -1,5 +1,5 @@
 import entorno from "../../entorno/entorno";
-import { operador, tipo_valor } from "../../entorno/tipo";
+import { operador, tipo_dato } from "../../entorno/tipo";
 import expresion from "../expresion";
 import operacion from "./operacion";
 
@@ -8,7 +8,7 @@ export class logica extends operacion implements expresion{
 
     linea:number;
     columna:number;
-    tipo:tipo_valor;
+    tipodato:tipo_dato;
 
     constructor(expiz:expresion,op:operador,expder:expresion,linea:number,columna:number){
         super(expiz,op,expder);
@@ -19,7 +19,8 @@ export class logica extends operacion implements expresion{
 
 
     traducir(ambito: entorno) {
-        throw new Error("Method not implemented.");
+        return null;
+        
     }
 
     

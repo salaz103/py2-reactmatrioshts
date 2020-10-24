@@ -1,6 +1,6 @@
 import { declaracionfuncion } from '../instrucciones/declaracionfuncion';
 import simbolo from './simbolo';
-import {tipo_ambito, tipo_valor} from './tipo';
+import {tipo_ambito, tipo_dato} from './tipo';
 
 class entorno{
 
@@ -9,6 +9,8 @@ class entorno{
     nombre:string;
     tipoambito:tipo_ambito;
     tablaf: Map<String,declaracionfuncion>
+    tamaño:number;
+    funcionActual: declaracionfuncion;
 
     constructor(nombre:string,tipoambito:tipo_ambito,ambitoPadre?:entorno){
         this.nombre= nombre;
@@ -16,17 +18,21 @@ class entorno{
         this.tablasimbolos= new Map();
         this.tablaf= new Map();
         this.tipoambito=tipoambito;
+        this.tamaño= ambitoPadre!=null? ambitoPadre.tamaño:0;
+        this.funcionActual= ambitoPadre!=null? ambitoPadre.funcionActual: null;
     }
 
-    agregarSimbolo(nuevoSimbolo:simbolo){
-        this.tablasimbolos.set(nuevoSimbolo.getNombre(),nuevoSimbolo);
+    agregarSimbolo(id:string,tipodato:tipo_dato,nombreambito:string,fila:number,columna:number){
+        const nuevosim= new simbolo(id,tipodato,nombreambito,fila,columna,this.apuntadorPadre==null,this.tamaño++);
+        this.tablasimbolos.set(id,nuevosim);
+        return nuevosim;
     }
 
     agregarFuncion(funcion:declaracionfuncion){
         //this.tablaf.set(funcion.nombre,funcion);
     }
 
-    asignarValor(id:string,valor:object,tipo:tipo_valor){
+    asignarValor(id:string,valor:object,tipo:tipo_dato){
 
 
     }
@@ -38,7 +44,6 @@ class entorno{
     }   
 
     existeLocal(id:string):boolean{
-
         let simbolo= this.tablasimbolos.get(id);
         if(simbolo!=null){
             return true;

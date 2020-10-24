@@ -3,15 +3,18 @@ import {almacen} from '../../src/app';
 import {limpiarconsola,tsfinal} from '../actions/ts.js';
 import { declaracionfuncion } from './instrucciones/declaracionfuncion';
 import { tipo_ambito } from './entorno/tipo';
+import instruccion from './instrucciones/instruccion';
+import { generacion } from './helpers/generacion';
 
 
 
 function inicioTraduccion(ast:any){
-    //ANTES DE EJECUTAR, LIMPIAR LA CONSOLA Y EL STORE CON LO QUE SE UTILIZA
+    //LIMPIAR LA CONSOLA
     almacen.dispatch(limpiarconsola());
 
-//CADA ENTORNO TIENE UNA TABLA DE SIMBOLOS COMO UN VALOR
+//PRIMERO DECLARAMOS EL ENTORNO GLOBAL
 const entornoGlobal= new entorno("global",tipo_ambito.GLOBAL,);
+
 
 console.log("Recibiendo el AST para EJECUTAR:");
 console.log(ast);
@@ -42,22 +45,33 @@ almacen.dispatch(tsfinal(simbolosfinales,funcionesfinales));*/
 
 function traducir(ast:any,entorno:entorno){
     
-    //PRIMERA PASADA, GUARDAR TODAS LAS FUNCIONES
-    /*for (let i = 0; i < ast.length; i++) {
-        if(ast[i] instanceof declaracionfuncion){
-            entorno.agregarFuncion(ast[i]);
-        }
-    }*/
+   //EN LA PRIMERA PASADA LO QUE HAREMOS SERA TRADUCIR FUNCIONES Y TYPES
+   //FALTA AGREGAR TYPES
+   ast.forEach((ins:instruccion) => {
+       if(ins instanceof declaracionfuncion){
+            ins.traducir(entorno);
+       }
+   });
     
-    
-    //COMIENZA LA TRADUCCION
-    for (let a = 0; a < ast.length; a++) {
-        if(ast[a] instanceof declaracionfuncion){
-            continue;
-        }
-        ast[a].traducir(entorno);
-    }
+   //AQUI IRIA EL ESPACIO DONDE TENDRIAMOS QUE INGRESAR LA FUNCIONES NATIVAS
 
+
+    //AQUI COMIENZA LA SEGUNDA PASADA DONDE TRADUCIREMOS TODO A EXCEPCION DE LAS FUNCIONES Y TYPES
+    //PERO AQUI YA ESTAMOS EN EL AMBITO GLOBAL ENTONCES TENEMOS QUE PONER EN EL CODIGO el main()
+    let generador= generacion.getGenerador();
+    generador.agregarcodigo3d("void main(){");
+    ast.forEach((ins:instruccion) => {
+        //AQUI TENDRIAMOS QUE LEER EL AST, TODAS LAS INSTRUCCIONES A EXCEPCION DE LOS TYPES, POR QUE ESOS
+        //YA FUERON TRADUCIDOS ARRIBA
+        
+        //PENDIENTE
+        //IF(INSTRUCCION != TYPE ){ ENTONCES TRADUCIMOS}
+        
+        ins.traducir(entorno);
+    });
+    //UNA VEZ YA TERMINAMOS DE TRADUCIR, TENEMOS QUE "CERRAR" EL AMBITO MAIN
+    generador.agregarcodigo3d("return;");
+    generador.agregarcodigo3d("}");
 }
 
 export default inicioTraduccion;

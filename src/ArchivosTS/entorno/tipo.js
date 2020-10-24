@@ -1,16 +1,17 @@
 "use strict";
 exports.__esModule = true;
-var tipo_valor;
-(function (tipo_valor) {
-    tipo_valor["NUMBER"] = "NUMBER";
-    tipo_valor["STRING"] = "STRING";
-    tipo_valor["BOOLEAN"] = "BOOLEAN";
-    tipo_valor["TYPE"] = "TYPE";
-    tipo_valor["VOID"] = "VOID";
-    tipo_valor["ANY"] = "ANY";
-    tipo_valor["ARRAY"] = "ARRAY";
-})(tipo_valor || (tipo_valor = {}));
-exports.tipo_valor = tipo_valor;
+var tipo_dato;
+(function (tipo_dato) {
+    tipo_dato["NUMBER"] = "NUMBER";
+    tipo_dato["STRING"] = "STRING";
+    tipo_dato["BOOLEAN"] = "BOOLEAN";
+    tipo_dato["TYPE"] = "TYPE";
+    tipo_dato["VOID"] = "VOID";
+    tipo_dato["ANY"] = "ANY";
+    tipo_dato["ARRAY"] = "ARRAY";
+    tipo_dato["UNDEFINED"] = "UNDEFINED";
+})(tipo_dato || (tipo_dato = {}));
+exports.tipo_dato = tipo_dato;
 var tipo_ambito;
 (function (tipo_ambito) {
     tipo_ambito["GLOBAL"] = "GLOBAL";

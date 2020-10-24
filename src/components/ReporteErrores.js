@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 const ReporteErrores= (props)=>(
     <div>
         <div className='container-inline2'>
-          <h1>REPORTE DE ERRORES EN EJECUCION</h1>
+          <h1>REPORTE DE ERRORES EN COMPILACIÓN</h1>
         </div>
 
        <table>
@@ -14,6 +14,8 @@ const ReporteErrores= (props)=>(
         <th>Tipo</th>
         <th>Descripción</th>
         <th>Ambito</th>
+        <th>Línea</th>
+        <th>Columna</th>
         </tr>
          {
            console.log(props.errores),
@@ -37,6 +39,8 @@ function renderTableData(errores) {
                   <td>{error_e.tipo}</td>
                   <td>{error_e.descripcion}</td>
                   <td>{error_e.ambito}</td>
+                  <td>{error_e.linea}</td>
+                  <td>{error_e.columna}</td>
                </tr>
         ))
     }

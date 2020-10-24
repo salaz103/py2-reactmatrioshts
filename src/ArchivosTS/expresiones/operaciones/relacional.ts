@@ -1,11 +1,11 @@
 import entorno from "../../entorno/entorno";
-import { operador, tipo_valor } from "../../entorno/tipo";
+import { operador, tipo_dato } from "../../entorno/tipo";
 import expresion from "../expresion";
 import operacion from "./operacion";
 
 export class relacional extends operacion implements expresion{
 
-    tipo:tipo_valor;
+    tipodato:tipo_dato;
     linea:number;
     columna:number;
 
@@ -16,7 +16,7 @@ export class relacional extends operacion implements expresion{
     }
 
     traducir(ambito: entorno) {
-        throw new Error("Method not implemented.");
+        return null;
     }
 
 }

@@ -23,7 +23,7 @@ var relacional = /** @class */ (function (_super) {
         return _this;
     }
     relacional.prototype.traducir = function (ambito) {
-        throw new Error("Method not implemented.");
+        return null;
     };
     return relacional;
 }(operacion_1["default"]));

@@ -1,11 +1,12 @@
- enum tipo_valor{
+ enum tipo_dato{
     NUMBER="NUMBER",
     STRING ="STRING",
     BOOLEAN ="BOOLEAN",
     TYPE ="TYPE",
     VOID="VOID",
     ANY="ANY",
-    ARRAY= "ARRAY"
+    ARRAY= "ARRAY",
+    UNDEFINED= "UNDEFINED"
 }
 
 enum tipo_ambito{
@@ -58,4 +59,4 @@ enum operador{
 
 
 
-export {tipo_valor,operador,tipo_variable,tipo_instruccion,tipo_rol,tipo_ambito};
+export {tipo_dato,operador,tipo_variable,tipo_instruccion,tipo_rol,tipo_ambito};

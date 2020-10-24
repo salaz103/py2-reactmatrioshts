@@ -23,7 +23,7 @@ var logica = /** @class */ (function (_super) {
         return _this;
     }
     logica.prototype.traducir = function (ambito) {
-        throw new Error("Method not implemented.");
+        return null;
     };
     return logica;
 }(operacion_1["default"]));

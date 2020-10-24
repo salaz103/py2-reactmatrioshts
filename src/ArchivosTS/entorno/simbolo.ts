@@ -1,25 +1,26 @@
-import {tipo_valor, tipo_rol} from './tipo';
+import {tipo_dato, tipo_rol} from './tipo';
 
 export class simbolo{
 
     nombre:string;
-    tipovalor:tipo_valor;
+    tipodato:tipo_dato;
     ambito:string;
-    Rol:tipo_rol;
-    apuntador:number;
+    direccionrelativa:number;
     fila:number;
     columna:number;
+    esGlobal:boolean;
     
 
 
 
-    constructor(id_e:string,tipo_e:tipo_valor,amb:string,r:tipo_rol,fila:number,columna:number,direccion?:number){
+    constructor(id_e:string,tipo_d:tipo_dato,amb:string,fila:number,columna:number,esGlobal:boolean,direccion?:number){
         this.nombre=id_e;
-        this.tipovalor=tipo_e;
+        this.tipodato=tipo_d;
         this.ambito=amb;
         this.fila=fila;
         this.columna=columna;
-        this.apuntador=direccion!=null?direccion:0;
+        this.esGlobal=esGlobal;
+        this.direccionrelativa=direccion!=null?direccion:0;
     }
 
     
@@ -27,12 +28,12 @@ export class simbolo{
         return this.nombre;
     }
 
-    getTipo(){
-        return this.tipovalor;
+    getTipoDato(){
+        return this.tipodato;
     }
 
-    setTipo(tipo:tipo_valor){
-        this.tipovalor= tipo;
+    setTipoDato(tipo_d:tipo_dato){
+        this.tipodato= tipo_d;
     }
 
 

@@ -1,10 +1,10 @@
 import entorno from "../../entorno/entorno";
-import { operador, tipo_valor } from "../../entorno/tipo";
+import { operador, tipo_dato } from "../../entorno/tipo";
 import expresion from "../expresion";
 
 export class unaria implements expresion{
 
-    tipo:tipo_valor;
+    tipodato:tipo_dato;
     expresionderecha:expresion;
     tipooperador:operador;
     linea:number;
@@ -19,7 +19,8 @@ export class unaria implements expresion{
 
 
     traducir(ambito: entorno) {
-        throw new Error("Method not implemented.");
+        
+        return null;
     }
 
 }

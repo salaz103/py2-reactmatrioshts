@@ -1,22 +1,23 @@
 "use strict";
 exports.__esModule = true;
 var simbolo = /** @class */ (function () {
-    function simbolo(id_e, tipo_e, amb, r, fila, columna, direccion) {
+    function simbolo(id_e, tipo_d, amb, fila, columna, esGlobal, direccion) {
         this.nombre = id_e;
-        this.tipovalor = tipo_e;
+        this.tipodato = tipo_d;
         this.ambito = amb;
         this.fila = fila;
         this.columna = columna;
-        this.apuntador = direccion != null ? direccion : 0;
+        this.esGlobal = esGlobal;
+        this.direccionrelativa = direccion != null ? direccion : 0;
     }
     simbolo.prototype.getNombre = function () {
         return this.nombre;
     };
-    simbolo.prototype.getTipo = function () {
-        return this.tipovalor;
+    simbolo.prototype.getTipoDato = function () {
+        return this.tipodato;
     };
-    simbolo.prototype.setTipo = function (tipo) {
-        this.tipovalor = tipo;
+    simbolo.prototype.setTipoDato = function (tipo_d) {
+        this.tipodato = tipo_d;
     };
     return simbolo;
 }());

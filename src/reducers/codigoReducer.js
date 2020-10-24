@@ -6,14 +6,15 @@ const codigoReducerDefaultState={
     funcionesfinales:[],
     simbolos:[],
     errores:[],
-    encabezado:'#include <stdio.h> \n float heap[16384]; \n float stack[16394]; \n float p;\n float h;\n',
+    encabezado:'#include <stdio.h> \n double heap[16384]; \n double stack[16394]; \n double p;\n double h;\n',
     temporales:'',
     etiquetas:'',
     codigo3d:'',
     contadortemporales:-1,
     contadoretiquetas:-1,
-    heap:-1,
-    stack:-1,
+    heap:0,
+    stack:0,
+    //tempstorage:new Set(String),
     s:'date'
 };
 
