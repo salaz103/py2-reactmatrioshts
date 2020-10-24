@@ -28,9 +28,9 @@ export class aritmetica extends operacion implements expresion{
         if(this.tipooperador==operador.MAS){
             //SUMA - POSIBLES COMBINACIONES
             //NUMBER -NUMBER --->HECHO
-            //NUMBER- BOOLEAN
-            //STRING - NUMBER
-            //STRING - BOOLEAN
+            //NUMBER- BOOLEAN(Numero), SALIDA= NUMERO
+            //STRING - NUMBER, SALIDA= STRING
+            //STRING - BOOLEAN, SALIDA =STRING
             //STRING - STRING
             if(valorizquierdo.tipodato == tipo_dato.NUMBER && valorderecha.tipodato== tipo_dato.NUMBER){
                 generador.agregarExpresion(temporalresultado,valorizquierdo.obtenerValor(),"+",valorderecha.obtenerValor());

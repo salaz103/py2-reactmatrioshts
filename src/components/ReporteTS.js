@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 const ReporteTS= (props)=>(
     <div>
         <div className='container-inline2'>
-          <h1>TS DESPUES DE EJECUCIÓN</h1>
+          <h1>TS DESPUES DE TRADUCIR A C3D</h1>
         </div>
 
        <table>
@@ -15,8 +15,10 @@ const ReporteTS= (props)=>(
         <tr>
         <th>Nombre</th>
         <th>Tipo</th>
-        <th>Valor</th>
+        <th>Ambito</th>
         <th>Tipo Variable</th>
+        <th>Fila</th>
+        <th>Columna</th>
         </tr>
         {/*console.log(props.funcionesfinales)*/}
          {renderTableData(props.simbolosfinales)}
@@ -25,69 +27,25 @@ const ReporteTS= (props)=>(
        </table>
 
 
-       <div className='container-inline2'>
-       <h1>TS INSTRUCCION graficar_ts</h1>
-      </div>
-       
-      {
-        /*console.log("SIMBOLOS DE LA STORE"),
-        console.log(props.simbolos)*/
-        props.simbolos.map((arreglosim, index) => (
-        <div key={index}>
-        <table  >
-        <tbody>
-        <tr>
-        <th>Nombre</th>
-        <th>Tipo</th>
-        <th>Ambito</th>
-        <th>Valor</th>
-        <th>Tipo Variable</th>
-        </tr>
-        {graficar_ts(arreglosim)}
-        </tbody>
-        </table>
-        <br></br>
-        <br></br>
-        <br></br>
-        </div>
-      ))
-      }
-        
-
     </div>
     
     
 );
 
 
-function graficar_ts(arreglosim){
-    
-    if(arreglosim){
-      //console.log(arreglosim);
-         return arreglosim.map((simbolo,index)=>(
 
-                <tr key={index}>
-                <td>{simbolo.nombre}</td>
-                <td>{simbolo.tipo}</td>
-                <td>{simbolo.ambito}</td>
-                <td>{Array.isArray(simbolo.valor)? JSON.stringify(simbolo.valor):simbolo.valor.valueOf()}</td>
-                <td>{simbolo.reasignable?"LET":"CONST"}</td>
-                </tr>
-         ))
-        
-    }
-
-}
 
 function renderTableData(ts) {
 
     if(ts){
         return ts.map((simbolo, index) => (
                <tr key={index}>
-                  <td>{simbolo.id}</td>
-                  <td>{simbolo.tipovalor}</td>
-                  <td>{Array.isArray(simbolo.valor)? JSON.stringify(simbolo.valor):simbolo.valor.valueOf()}</td>
+                  <td>{simbolo.nombre}</td>
+                  <td>{simbolo.tipodato}</td>
+                  <td>{simbolo.ambito}</td>
                   <td>{simbolo.reasignable?"LET":"CONST"}</td>
+                  <td>{simbolo.fila}</td>
+                  <td>{simbolo.columna}</td>
                </tr>
         ))
     }

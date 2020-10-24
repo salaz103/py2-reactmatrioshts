@@ -11,8 +11,8 @@ var entorno = /** @class */ (function () {
         this.tamaño = ambitoPadre != null ? ambitoPadre.tamaño : 0;
         this.funcionActual = ambitoPadre != null ? ambitoPadre.funcionActual : null;
     }
-    entorno.prototype.agregarSimbolo = function (id, tipodato, nombreambito, fila, columna) {
-        var nuevosim = new simbolo_1["default"](id, tipodato, nombreambito, fila, columna, this.apuntadorPadre == null, this.tamaño++);
+    entorno.prototype.agregarSimbolo = function (id, tipodato, nombreambito, fila, columna, reasignable) {
+        var nuevosim = new simbolo_1["default"](id, tipodato, nombreambito, fila, columna, this.apuntadorPadre == null, reasignable, this.tamaño++);
         this.tablasimbolos.set(id, nuevosim);
         return nuevosim;
     };
@@ -22,6 +22,12 @@ var entorno = /** @class */ (function () {
     entorno.prototype.asignarValor = function (id, valor, tipo) {
     };
     entorno.prototype.existe = function (id) {
+        for (var entornoactual = this; entornoactual != null; entornoactual = entornoactual.apuntadorPadre) {
+            var simbolo_2 = entornoactual.tablasimbolos.get(id);
+            if (simbolo_2 != null) {
+                return true;
+            }
+        }
         return false;
     };
     entorno.prototype.existeLocal = function (id) {
@@ -33,9 +39,9 @@ var entorno = /** @class */ (function () {
     };
     entorno.prototype.getSimbolo = function (id) {
         for (var entornoactual = this; entornoactual != null; entornoactual = entornoactual.apuntadorPadre) {
-            var simbolo_2 = entornoactual.tablasimbolos.get(id);
-            if (simbolo_2 != null) {
-                return simbolo_2;
+            var simbolo_3 = entornoactual.tablasimbolos.get(id);
+            if (simbolo_3 != null) {
+                return simbolo_3;
             }
         }
     };

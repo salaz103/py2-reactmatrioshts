@@ -14,22 +14,20 @@ function inicioTraduccion(ast) {
     console.log("Recibiendo el AST para EJECUTAR:");
     console.log(ast);
     traducir(ast, entornoGlobal);
-    //console.log("MI ENTORNO FINAL, CON TODAS LAS VARIABLES");
-    //console.log(entornoGlobal.tablasimbolos);
+    console.log("MI ENTORNO FINAL, CON TODAS LAS VARIABLES");
+    console.log(entornoGlobal.tablasimbolos);
     ////**********************  CODIGO DONDE SE GUARDAN LAS FUNCIONES Y SIMBOLOS GLOBALES FINALES**********/
-    /*let ts= entornoGlobal.tablasimbolos;
-    let tf= entornoGlobal.tablaf;
-    let simbolosfinales=[];
-    let funcionesfinales=[];
-    
-    ts.forEach(element => {
+    var ts = entornoGlobal.tablasimbolos;
+    //let tf= entornoGlobal.tablaf;
+    var simbolosfinales = [];
+    var funcionesfinales = [];
+    ts.forEach(function (element) {
         simbolosfinales.push(element);
     });
-    
-    tf.forEach(funcion => {
-        funcionesfinales.push(funcion);
-    });
-    almacen.dispatch(tsfinal(simbolosfinales,funcionesfinales));*/
+    // tf.forEach(funcion => {
+    //     funcionesfinales.push(funcion);
+    // });
+    app_1.almacen.dispatch(ts_js_1.tsfinal(simbolosfinales, funcionesfinales));
 }
 function traducir(ast, entorno) {
     //EN LA PRIMERA PASADA LO QUE HAREMOS SERA TRADUCIR FUNCIONES Y TYPES

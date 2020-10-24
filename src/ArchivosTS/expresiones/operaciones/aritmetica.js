@@ -35,9 +35,9 @@ var aritmetica = /** @class */ (function (_super) {
         if (this.tipooperador == tipo_1.operador.MAS) {
             //SUMA - POSIBLES COMBINACIONES
             //NUMBER -NUMBER --->HECHO
-            //NUMBER- BOOLEAN
-            //STRING - NUMBER
-            //STRING - BOOLEAN
+            //NUMBER- BOOLEAN(Numero), SALIDA= NUMERO
+            //STRING - NUMBER, SALIDA= STRING
+            //STRING - BOOLEAN, SALIDA =STRING
             //STRING - STRING
             if (valorizquierdo.tipodato == tipo_1.tipo_dato.NUMBER && valorderecha.tipodato == tipo_1.tipo_dato.NUMBER) {
                 generador.agregarExpresion(temporalresultado, valorizquierdo.obtenerValor(), "+", valorderecha.obtenerValor());

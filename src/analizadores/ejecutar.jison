@@ -119,6 +119,7 @@
   const valorLogico= require('../ArchivosTS/expresiones/valorLogico');
   const cadena= require('../ArchivosTS/expresiones/cadena');
   const aritmetica= require('../ArchivosTS/expresiones/operaciones/aritmetica');
+  const identificador= require('../ArchivosTS/expresiones/identificador');
 
   //******************INTERMEDIOS************************************
   const variable= require('../ArchivosTS/expresiones/variable');
@@ -332,7 +333,7 @@ expresion:
           |RFALSE           {$$=new valorLogico.valorLogico("FALSE",tipo_dato.BOOLEAN,@1.first_line,@1.first_column);}      
           |CADENACOMILLADOBLE {$$=new cadena.cadena($1,tipo_dato.STRING,@1.first_line,@1.first_column);}     
           |CADENACOMILLASIMPLE {$$=new cadena.cadena($1,tipo_dato.STRING,@1.first_line,@1.first_column);}      
-          |IDENTIFICADOR
+          |IDENTIFICADOR      {$$=new identificador.identificador($1,@1.first_line,@1.first_column);}
           /*ARREGLOS*/
           /*|RCORCHETEA listaerrores RCORCHETEC
           |RCORCHETEA RCORCHETEC */         

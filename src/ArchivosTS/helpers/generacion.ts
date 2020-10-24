@@ -91,13 +91,19 @@ export class generacion{
         this.codigo.push("stack[(int)"+pos+"]="+valor+";");
     }
 
+    public heap(pos:any,valor){
+        this.codigo.push("heap[(int)"+pos+"]="+valor+";");
+    }
+
+    public getValorStack(tmp_guardar:string,pos_stack:string){
+        this.codigo.push(tmp_guardar+"="+"stack[(int)"+pos_stack+"];");
+    }
+
 
     //*******************METODOS PARA EL MANEJO DEL HEAP Y STACK**************/
     public siguienteHeap(){
         this.codigo.push('h=h+1;');
     }
-
-
 
 
 }

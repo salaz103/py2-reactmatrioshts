@@ -61,7 +61,7 @@ export class declaracion implements instruccion{
                           if(this.variables[i].tipodato==retornoexpresion.tipodato){
                               //SI SON IGUALES ENTONCES GUARDAMOS LA VARIABLE EN LA TS Y COMIENZA 
                               //LA TRADUCCION
-                              let nuevosim:simbolo= ambito.agregarSimbolo(this.variables[i].id,retornoexpresion.tipodato,ambito.nombre,this.variables[i].linea,this.variables[i].columna);
+                              let nuevosim:simbolo= ambito.agregarSimbolo(this.variables[i].id,retornoexpresion.tipodato,ambito.nombre,this.variables[i].linea,this.variables[i].columna,true);
                               //SIEMPRE QUE AGREGAMOS UN NUEVO SIMBOLO, DEVUELVE EL SIMBOLO CREADO
                               //AQUI PREGUNTAMOS SI ES VARIABLE GLOBAL O LOCAL, ESTO PARA VER SI MOVEMOS O NO
                               //EL APUNTADOR "P"

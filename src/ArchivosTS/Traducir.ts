@@ -19,14 +19,13 @@ const entornoGlobal= new entorno("global",tipo_ambito.GLOBAL,);
 console.log("Recibiendo el AST para EJECUTAR:");
 console.log(ast);
 traducir(ast,entornoGlobal);
-//console.log("MI ENTORNO FINAL, CON TODAS LAS VARIABLES");
-//console.log(entornoGlobal.tablasimbolos);
-
+console.log("MI ENTORNO FINAL, CON TODAS LAS VARIABLES");
+console.log(entornoGlobal.tablasimbolos);
 
 
 ////**********************  CODIGO DONDE SE GUARDAN LAS FUNCIONES Y SIMBOLOS GLOBALES FINALES**********/
-/*let ts= entornoGlobal.tablasimbolos;
-let tf= entornoGlobal.tablaf;
+let ts= entornoGlobal.tablasimbolos;
+//let tf= entornoGlobal.tablaf;
 let simbolosfinales=[];
 let funcionesfinales=[];
 
@@ -34,10 +33,10 @@ ts.forEach(element => {
     simbolosfinales.push(element);
 });
 
-tf.forEach(funcion => {
-    funcionesfinales.push(funcion);
-});
-almacen.dispatch(tsfinal(simbolosfinales,funcionesfinales));*/
+// tf.forEach(funcion => {
+//     funcionesfinales.push(funcion);
+// });
+almacen.dispatch(tsfinal(simbolosfinales,funcionesfinales));
 
 
 }

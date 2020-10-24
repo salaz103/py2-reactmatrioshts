@@ -9,17 +9,19 @@ export class simbolo{
     fila:number;
     columna:number;
     esGlobal:boolean;
+    reasignable:boolean;
     
 
 
 
-    constructor(id_e:string,tipo_d:tipo_dato,amb:string,fila:number,columna:number,esGlobal:boolean,direccion?:number){
+    constructor(id_e:string,tipo_d:tipo_dato,amb:string,fila:number,columna:number,esGlobal:boolean,reasignable:boolean,direccion?:number){
         this.nombre=id_e;
         this.tipodato=tipo_d;
         this.ambito=amb;
         this.fila=fila;
         this.columna=columna;
         this.esGlobal=esGlobal;
+        this.reasignable= reasignable;
         this.direccionrelativa=direccion!=null?direccion:0;
     }
 

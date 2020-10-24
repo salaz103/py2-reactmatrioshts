@@ -22,8 +22,8 @@ class entorno{
         this.funcionActual= ambitoPadre!=null? ambitoPadre.funcionActual: null;
     }
 
-    agregarSimbolo(id:string,tipodato:tipo_dato,nombreambito:string,fila:number,columna:number){
-        const nuevosim= new simbolo(id,tipodato,nombreambito,fila,columna,this.apuntadorPadre==null,this.tamaño++);
+    agregarSimbolo(id:string,tipodato:tipo_dato,nombreambito:string,fila:number,columna:number,reasignable:boolean){
+        const nuevosim= new simbolo(id,tipodato,nombreambito,fila,columna,this.apuntadorPadre==null,reasignable,this.tamaño++);
         this.tablasimbolos.set(id,nuevosim);
         return nuevosim;
     }
@@ -40,6 +40,12 @@ class entorno{
    
 
     existe(id:string):boolean{
+        for (let entornoactual:entorno = this; entornoactual!=null ; entornoactual=entornoactual.apuntadorPadre) {
+            let simbolo= entornoactual.tablasimbolos.get(id);
+            if(simbolo!=null){
+                return true;
+            }
+        }
         return false;
     }   
 
