@@ -99,6 +99,10 @@ export class generacion{
         this.codigo.push(tmp_guardar+"="+"stack[(int)"+pos_stack+"];");
     }
 
+    public printf(formato:string,casteo:string, valor:any){
+        this.codigo.push("printf(\"%"+formato+"\",("+casteo+")"+valor+");");
+    }
+
 
     //*******************METODOS PARA EL MANEJO DEL HEAP Y STACK**************/
     public siguienteHeap(){

@@ -1,5 +1,7 @@
  enum tipo_dato{
     NUMBER="NUMBER",
+    ENTERO="ENTERO",
+    DECIMAL="DECIMAL",
     STRING ="STRING",
     BOOLEAN ="BOOLEAN",
     TYPE ="TYPE",

@@ -89,8 +89,16 @@
 "("                   return 'RPARA';
 ")"                   return 'RPARC';
 
-\"[^\"]*\"            { yytext = yytext.substr(1,yyleng-2); return 'CADENACOMILLADOBLE'; }
-\'[^\']*\'            { yytext = yytext.substr(1,yyleng-2); return 'CADENACOMILLASIMPLE'; }
+//\"[^\"]*\"            { yytext = yytext.substr(1,yyleng-2); return 'CADENACOMILLADOBLE'; }
+\"[^"]+\" { yytext = yytext.slice(1,-1).replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r").replace("\\\\", "\\").replace("\\\"", "\""); 
+            return 'CADENACOMILLADOBLE'; 
+            }
+
+\'[^"]+\' { yytext = yytext.slice(1,-1).replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r").replace("\\\\", "\\").replace("\\\"", "\""); 
+            return 'CADENACOMILLASIMPLE'; 
+            }
+//\'[^\']*\'            { yytext = yytext.substr(1,yyleng-2); return 'CADENACOMILLASIMPLE'; }
+
 [0-9]+("."[0-9]+)?\b          return 'NUM';
 ([a-zA-Z])[a-zA-Z0-9_]*       return 'IDENTIFICADOR';
 
@@ -111,6 +119,7 @@
   const lista= require("../ArchivosTS/entorno/listaerrores");
 
   //******************INSTRUCCIONES***********************************
+  const imprimir= require('../ArchivosTS/instrucciones/imprimir');
   const declaracion= require('../ArchivosTS/instrucciones/declaracion'); 
 
 
@@ -120,6 +129,7 @@
   const cadena= require('../ArchivosTS/expresiones/cadena');
   const aritmetica= require('../ArchivosTS/expresiones/operaciones/aritmetica');
   const identificador= require('../ArchivosTS/expresiones/identificador');
+  const unaria= require('../ArchivosTS/expresiones/operaciones/unaria');
 
   //******************INTERMEDIOS************************************
   const variable= require('../ArchivosTS/expresiones/variable');
@@ -287,6 +297,7 @@ tipodato:
 
 
 imprimir  : RCONSOLE RPUNTO RLOG RPARA expresion RPARC RPUNTOCOMA
+            {$$=new imprimir.imprimir($5);}
             ;  
 
 instruccionreturn: RRETURN RPUNTOCOMA
@@ -299,7 +310,8 @@ listaexpresiones: listaexpresiones RCOMA expresion
 
 expresion: 
            /*EXPRESIONES ARITMETICAS*/
-           RMENOS expresion %prec UMENOS   
+           RMENOS expresion %prec UMENOS
+           {$$= new unaria.unaria(operador.MENOS,$2,@1.first_line,@1.first_column);}    
           | expresion RMAS expresion
           {$$= new aritmetica.aritmetica($1,operador.MAS,$3,@1.first_line,@1.first_column);}      
           |expresion RMENOS expresion

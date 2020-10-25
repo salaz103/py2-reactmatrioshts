@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
+var tipo_1 = require("../entorno/tipo");
 var traduccionexp_1 = require("./traduccionexp");
 var numero = /** @class */ (function () {
     function numero(valor, tipo, linea, columna) {
@@ -9,10 +10,15 @@ var numero = /** @class */ (function () {
         this.columna = columna;
     }
     numero.prototype.traducir = function (ambito) {
-        ///TODAS LAS CLASES QUE HEREDEN DE EXPRESION SIEMPRE ANTES DE TRADUCIRLAS
-        // SE LES COLOCARA EL TIPO 
-        //EN ESTE CASO POR SER UN PRIMITIVO EL TIPO YA LO TIENEN DE FIJO
-        return new traduccionexp_1.traduccionexp(this.valor.toString(), false, this.tipodato, false);
+        //EL VALOR PUEDE QUE SEA ENTERO Y DECIMAL, PRIMERO TENEMOS QUE VER QUE TIPO ES
+        var ret = new traduccionexp_1.traduccionexp(this.valor.toString(), false, tipo_1.tipo_dato.UNDEFINED, false);
+        if (Number.isInteger(this.valor)) {
+            ret.tipodato = tipo_1.tipo_dato.ENTERO;
+        }
+        else {
+            ret.tipodato = tipo_1.tipo_dato.DECIMAL;
+        }
+        return ret;
     };
     return numero;
 }());

@@ -1,5 +1,9 @@
 "use strict";
 exports.__esModule = true;
+var tipo_1 = require("../entorno/tipo");
+var generacion_1 = require("../helpers/generacion");
+var app_1 = require("../../../src/app");
+var ts_js_1 = require("../../actions/ts.js");
 var imprimir = /** @class */ (function () {
     function imprimir(exp, linea, columna) {
         this.expresion = exp;
@@ -7,11 +11,32 @@ var imprimir = /** @class */ (function () {
         this.columna = columna;
     }
     imprimir.prototype.traducir = function (ambito) {
+        var retornoexpresion = this.expresion.traducir(ambito);
+        var generador = generacion_1.generacion.getGenerador();
         //SEGUN EL ANEXO SOLO SE VAN A IMPRIMIR VALORES DE TIPO DE DATO:
         //1. STRING
         //2. BOOLEAN
         //3. NUMBER
-        throw new Error("Method not implemented.");
+        if (retornoexpresion.tipodato == tipo_1.tipo_dato.ENTERO) {
+            generador.printf("d", "int", retornoexpresion.obtenerValor());
+        }
+        else if (retornoexpresion.tipodato == tipo_1.tipo_dato.DECIMAL) {
+            generador.printf("f", "float", retornoexpresion.obtenerValor());
+        }
+        else if (retornoexpresion.tipodato == tipo_1.tipo_dato.BOOLEAN) {
+            generador.printf("d", "int", retornoexpresion.obtenerValor());
+        }
+        else if (retornoexpresion.tipodato == tipo_1.tipo_dato.STRING) {
+        }
+        else {
+            app_1.almacen.dispatch(ts_js_1.errores({
+                tipo: 'SEMANTICO',
+                descripcion: 'NO SE PUEDE IMPRIMIR EL TIPO DE DATO:' + retornoexpresion.tipodato,
+                ambito: ambito.nombre,
+                linea: this.linea,
+                columna: this.columna
+            }));
+        }
     };
     return imprimir;
 }());

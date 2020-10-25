@@ -42,7 +42,6 @@ export class identificador implements expresion{
 
         return new traduccionexp(tmp_guardado,true,sim.getTipoDato(),false);
 
-
     }else{
         almacen.dispatch(errores({
             tipo:'SEMANTICO',

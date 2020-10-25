@@ -1,6 +1,10 @@
 import entorno from "../../entorno/entorno";
 import { operador, tipo_dato } from "../../entorno/tipo";
 import expresion from "../expresion";
+import {almacen} from '../../../../src/app';
+import {errores} from '../../../actions/ts.js';
+import { traduccionexp } from "../traduccionexp";
+
 
 export class unaria implements expresion{
 
@@ -18,9 +22,31 @@ export class unaria implements expresion{
     }
 
 
-    traducir(ambito: entorno) {
-        
-        return null;
+    traducir(ambito: entorno){
+        const retornoexp= this.expresionderecha.traducir(ambito);
+
+        if(this.tipooperador==operador.MENOS){
+
+            if(retornoexp.tipodato==tipo_dato.NUMBER){
+                return new traduccionexp("-"+retornoexp.obtenerValor(),retornoexp.es_temporal,retornoexp.tipodato,retornoexp.tiene_etiquetas);
+
+            }else{
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion:'OPERADOR NEGATIVO SOLO ES APLICABLE A NUMBER',
+                    ambito:ambito.nombre,
+                    linea:this.linea,
+                    columna:this.columna
+                }));
+            }
+
+        }else if(this.tipooperador==operador.NOT){
+
+
+        }
+
+
+        return new traduccionexp("",false,tipo_dato.UNDEFINED,false);
     }
 
 }

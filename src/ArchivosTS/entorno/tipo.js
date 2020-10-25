@@ -3,6 +3,8 @@ exports.__esModule = true;
 var tipo_dato;
 (function (tipo_dato) {
     tipo_dato["NUMBER"] = "NUMBER";
+    tipo_dato["ENTERO"] = "ENTERO";
+    tipo_dato["DECIMAL"] = "DECIMAL";
     tipo_dato["STRING"] = "STRING";
     tipo_dato["BOOLEAN"] = "BOOLEAN";
     tipo_dato["TYPE"] = "TYPE";

@@ -32,22 +32,91 @@ var aritmetica = /** @class */ (function (_super) {
         var valorizquierdo = this.expresionizquierda.traducir(ambito);
         var valorderecha = this.expresionderecha.traducir(ambito);
         var temporalresultado = generador.generarTemporal();
+        //**********************************SUMA********************************************************** */
         if (this.tipooperador == tipo_1.operador.MAS) {
-            //SUMA - POSIBLES COMBINACIONES
-            //NUMBER -NUMBER --->HECHO
-            //NUMBER- BOOLEAN(Numero), SALIDA= NUMERO
             //STRING - NUMBER, SALIDA= STRING
             //STRING - BOOLEAN, SALIDA =STRING
             //STRING - STRING
-            if (valorizquierdo.tipodato == tipo_1.tipo_dato.NUMBER && valorderecha.tipodato == tipo_1.tipo_dato.NUMBER) {
-                generador.agregarExpresion(temporalresultado, valorizquierdo.obtenerValor(), "+", valorderecha.obtenerValor());
-                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.NUMBER, false);
+            switch (valorizquierdo.tipodato) {
+                case tipo_1.tipo_dato.ENTERO:
+                    switch (valorderecha.tipodato) {
+                        case tipo_1.tipo_dato.ENTERO:
+                        case tipo_1.tipo_dato.DECIMAL:
+                        case tipo_1.tipo_dato.BOOLEAN:
+                            generador.agregarExpresion(temporalresultado, valorizquierdo.obtenerValor(), "+", valorderecha.obtenerValor());
+                            return new traduccionexp_1.traduccionexp(temporalresultado, true, valorderecha.tipodato == tipo_1.tipo_dato.DECIMAL ? valorderecha.tipodato : valorizquierdo.tipodato, false);
+                        //FALTA
+                        //ENTERO -STRING
+                        default:
+                            app_1.almacen.dispatch(ts_js_1.errores({
+                                tipo: 'SEMANTICO',
+                                descripcion: valorizquierdo.tipodato + ' NO SE PUEDE SUMAR CON ' + valorderecha.tipodato,
+                                ambito: ambito.nombre,
+                                linea: this.linea,
+                                columna: this.columna
+                            }));
+                            break;
+                    }
+                case tipo_1.tipo_dato.DECIMAL:
+                    switch (valorderecha.tipodato) {
+                        case tipo_1.tipo_dato.ENTERO:
+                        case tipo_1.tipo_dato.DECIMAL:
+                        case tipo_1.tipo_dato.BOOLEAN:
+                            generador.agregarExpresion(temporalresultado, valorizquierdo.obtenerValor(), "+", valorderecha.obtenerValor());
+                            return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.DECIMAL, false);
+                        //FALTA
+                        //DECIMAL -STRING
+                        default:
+                            app_1.almacen.dispatch(ts_js_1.errores({
+                                tipo: 'SEMANTICO',
+                                descripcion: valorizquierdo.tipodato + ' NO SE PUEDE SUMAR CON ' + valorderecha.tipodato,
+                                ambito: ambito.nombre,
+                                linea: this.linea,
+                                columna: this.columna
+                            }));
+                            break;
+                    }
+                case tipo_1.tipo_dato.BOOLEAN:
+                    switch (valorderecha.tipodato) {
+                        case tipo_1.tipo_dato.ENTERO:
+                        case tipo_1.tipo_dato.DECIMAL:
+                            generador.agregarExpresion(temporalresultado, valorizquierdo.obtenerValor(), "+", valorderecha.obtenerValor());
+                            return new traduccionexp_1.traduccionexp(temporalresultado, true, valorderecha.tipodato == tipo_1.tipo_dato.ENTERO ? tipo_1.tipo_dato.ENTERO : tipo_1.tipo_dato.DECIMAL, false);
+                        //FALTA
+                        //BOOLEAN -STRING
+                        default:
+                            app_1.almacen.dispatch(ts_js_1.errores({
+                                tipo: 'SEMANTICO',
+                                descripcion: valorizquierdo.tipodato + ' NO SE PUEDE SUMAR CON ' + valorderecha.tipodato,
+                                ambito: ambito.nombre,
+                                linea: this.linea,
+                                columna: this.columna
+                            }));
+                            break;
+                    }
+                case tipo_1.tipo_dato.STRING:
+                    break;
+                default:
+                    break;
             }
+            //***************************************************RESTA************************************* */
         }
         else if (this.tipooperador == tipo_1.operador.MENOS) {
-            if (valorizquierdo.tipodato == tipo_1.tipo_dato.NUMBER && valorderecha.tipodato == tipo_1.tipo_dato.NUMBER) {
+            if (valorizquierdo.tipodato == tipo_1.tipo_dato.ENTERO && valorderecha.tipodato == tipo_1.tipo_dato.ENTERO) {
                 generador.agregarExpresion(temporalresultado, valorizquierdo.obtenerValor(), "-", valorderecha.obtenerValor());
-                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.NUMBER, false);
+                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.ENTERO, false);
+            }
+            else if (valorizquierdo.tipodato == tipo_1.tipo_dato.ENTERO && valorderecha.tipodato == tipo_1.tipo_dato.DECIMAL) {
+                generador.agregarExpresion(temporalresultado, valorizquierdo.obtenerValor(), "-", valorderecha.obtenerValor());
+                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.DECIMAL, false);
+            }
+            else if (valorizquierdo.tipodato == tipo_1.tipo_dato.DECIMAL && valorderecha.tipodato == tipo_1.tipo_dato.ENTERO) {
+                generador.agregarExpresion(temporalresultado, valorizquierdo.obtenerValor(), "-", valorderecha.obtenerValor());
+                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.DECIMAL, false);
+            }
+            else if (valorizquierdo.tipodato == tipo_1.tipo_dato.DECIMAL && valorderecha.tipodato == tipo_1.tipo_dato.DECIMAL) {
+                generador.agregarExpresion(temporalresultado, valorizquierdo.obtenerValor(), "-", valorderecha.obtenerValor());
+                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.DECIMAL, false);
             }
             else {
                 app_1.almacen.dispatch(ts_js_1.errores({
@@ -58,11 +127,24 @@ var aritmetica = /** @class */ (function (_super) {
                     columna: this.columna
                 }));
             }
+            //***************************************************MULTIPLICACION************************************* */
         }
         else if (this.tipooperador == tipo_1.operador.POR) {
-            if (valorizquierdo.tipodato == tipo_1.tipo_dato.NUMBER && valorderecha.tipodato == tipo_1.tipo_dato.NUMBER) {
+            if (valorizquierdo.tipodato == tipo_1.tipo_dato.ENTERO && valorderecha.tipodato == tipo_1.tipo_dato.ENTERO) {
                 generador.agregarExpresion(temporalresultado, valorizquierdo.obtenerValor(), "*", valorderecha.obtenerValor());
-                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.NUMBER, false);
+                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.ENTERO, false);
+            }
+            else if (valorizquierdo.tipodato == tipo_1.tipo_dato.ENTERO && valorderecha.tipodato == tipo_1.tipo_dato.DECIMAL) {
+                generador.agregarExpresion(temporalresultado, valorizquierdo.obtenerValor(), "*", valorderecha.obtenerValor());
+                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.DECIMAL, false);
+            }
+            else if (valorizquierdo.tipodato == tipo_1.tipo_dato.DECIMAL && valorderecha.tipodato == tipo_1.tipo_dato.ENTERO) {
+                generador.agregarExpresion(temporalresultado, valorizquierdo.obtenerValor(), "*", valorderecha.obtenerValor());
+                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.DECIMAL, false);
+            }
+            else if (valorizquierdo.tipodato == tipo_1.tipo_dato.DECIMAL && valorderecha.tipodato == tipo_1.tipo_dato.DECIMAL) {
+                generador.agregarExpresion(temporalresultado, valorizquierdo.obtenerValor(), "*", valorderecha.obtenerValor());
+                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.DECIMAL, false);
             }
             else {
                 app_1.almacen.dispatch(ts_js_1.errores({
@@ -73,11 +155,24 @@ var aritmetica = /** @class */ (function (_super) {
                     columna: this.columna
                 }));
             }
+            //***************************************************DIVISION************************************* */
         }
         else if (this.tipooperador == tipo_1.operador.DIVISION) {
-            if (valorizquierdo.tipodato == tipo_1.tipo_dato.NUMBER && valorderecha.tipodato == tipo_1.tipo_dato.NUMBER) {
+            if (valorizquierdo.tipodato == tipo_1.tipo_dato.ENTERO && valorderecha.tipodato == tipo_1.tipo_dato.ENTERO) {
                 generador.agregarExpresion(temporalresultado, valorizquierdo.obtenerValor(), "/", valorderecha.obtenerValor());
-                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.NUMBER, false);
+                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.ENTERO, false);
+            }
+            else if (valorizquierdo.tipodato == tipo_1.tipo_dato.ENTERO && valorderecha.tipodato == tipo_1.tipo_dato.DECIMAL) {
+                generador.agregarExpresion(temporalresultado, valorizquierdo.obtenerValor(), "/", valorderecha.obtenerValor());
+                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.DECIMAL, false);
+            }
+            else if (valorizquierdo.tipodato == tipo_1.tipo_dato.DECIMAL && valorderecha.tipodato == tipo_1.tipo_dato.ENTERO) {
+                generador.agregarExpresion(temporalresultado, valorizquierdo.obtenerValor(), "/", valorderecha.obtenerValor());
+                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.DECIMAL, false);
+            }
+            else if (valorizquierdo.tipodato == tipo_1.tipo_dato.DECIMAL && valorderecha.tipodato == tipo_1.tipo_dato.DECIMAL) {
+                generador.agregarExpresion(temporalresultado, valorizquierdo.obtenerValor(), "/", valorderecha.obtenerValor());
+                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.DECIMAL, false);
             }
             else {
                 app_1.almacen.dispatch(ts_js_1.errores({
@@ -88,21 +183,35 @@ var aritmetica = /** @class */ (function (_super) {
                     columna: this.columna
                 }));
             }
+            //***************************************************MODULO************************************* */
         }
         else if (this.tipooperador == tipo_1.operador.MODULO) {
-            if (valorizquierdo.tipodato == tipo_1.tipo_dato.NUMBER && valorderecha.tipodato == tipo_1.tipo_dato.NUMBER) {
+            if (valorizquierdo.tipodato == tipo_1.tipo_dato.ENTERO && valorderecha.tipodato == tipo_1.tipo_dato.ENTERO) {
                 generador.agregarExpresion(temporalresultado, "fmod(" + valorizquierdo.obtenerValor() + "," + valorderecha.obtenerValor() + ")", "", "");
-                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.NUMBER, false);
+                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.DECIMAL, false);
+            }
+            else if (valorizquierdo.tipodato == tipo_1.tipo_dato.ENTERO && valorderecha.tipodato == tipo_1.tipo_dato.DECIMAL) {
+                generador.agregarExpresion(temporalresultado, "fmod(" + valorizquierdo.obtenerValor() + "," + valorderecha.obtenerValor() + ")", "", "");
+                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.DECIMAL, false);
+            }
+            else if (valorizquierdo.tipodato == tipo_1.tipo_dato.DECIMAL && valorderecha.tipodato == tipo_1.tipo_dato.ENTERO) {
+                generador.agregarExpresion(temporalresultado, "fmod(" + valorizquierdo.obtenerValor() + "," + valorderecha.obtenerValor() + ")", "", "");
+                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.DECIMAL, false);
+            }
+            if (valorizquierdo.tipodato == tipo_1.tipo_dato.DECIMAL && valorderecha.tipodato == tipo_1.tipo_dato.DECIMAL) {
+                generador.agregarExpresion(temporalresultado, "fmod(" + valorizquierdo.obtenerValor() + "," + valorderecha.obtenerValor() + ")", "", "");
+                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.DECIMAL, false);
             }
             else {
                 app_1.almacen.dispatch(ts_js_1.errores({
                     tipo: 'SEMANTICO',
-                    descripcion: valorizquierdo.tipodato + ' NO SE PUEDE DIVIDIR CON ' + valorderecha.tipodato,
+                    descripcion: valorizquierdo.tipodato + ' NO SE PUEDE REALIZAR MOD CON ' + valorderecha.tipodato,
                     ambito: ambito.nombre,
                     linea: this.linea,
                     columna: this.columna
                 }));
             }
+            //***************************************************POTENCIA-EXPONENTE************************************* */
         }
         else if (this.tipooperador == tipo_1.operador.EXPONENTE) {
         }

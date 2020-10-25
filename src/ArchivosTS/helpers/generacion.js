@@ -75,6 +75,9 @@ var generacion = /** @class */ (function () {
     generacion.prototype.getValorStack = function (tmp_guardar, pos_stack) {
         this.codigo.push(tmp_guardar + "=" + "stack[(int)" + pos_stack + "];");
     };
+    generacion.prototype.printf = function (formato, casteo, valor) {
+        this.codigo.push("printf(\"%" + formato + "\",(" + casteo + ")" + valor + ");");
+    };
     //*******************METODOS PARA EL MANEJO DEL HEAP Y STACK**************/
     generacion.prototype.siguienteHeap = function () {
         this.codigo.push('h=h+1;');

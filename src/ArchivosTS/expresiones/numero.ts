@@ -21,10 +21,16 @@ export class numero implements expresion{
 
     }
     traducir(ambito: entorno) {
-        ///TODAS LAS CLASES QUE HEREDEN DE EXPRESION SIEMPRE ANTES DE TRADUCIRLAS
-        // SE LES COLOCARA EL TIPO 
-        //EN ESTE CASO POR SER UN PRIMITIVO EL TIPO YA LO TIENEN DE FIJO
-        return new traduccionexp(this.valor.toString(),false,this.tipodato,false);
+
+        //EL VALOR PUEDE QUE SEA ENTERO Y DECIMAL, PRIMERO TENEMOS QUE VER QUE TIPO ES
+        let ret:traduccionexp= new traduccionexp(this.valor.toString(),false,tipo_dato.UNDEFINED,false);
+        if(Number.isInteger(this.valor)){
+            ret.tipodato=tipo_dato.ENTERO;
+        }else{
+            ret.tipodato=tipo_dato.DECIMAL;
+        }
+        
+        return ret;
     }
 
 

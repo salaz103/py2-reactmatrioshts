@@ -131,6 +131,12 @@ break;
 case 70:
 this.$=tipo_dato.ARRAY;
 break;
+case 71:
+this.$=new imprimir.imprimir($$[$0-2]);
+break;
+case 76:
+this.$= new unaria.unaria(operador.MENOS,$$[$0],_$[$0-1].first_line,_$[$0-1].first_column);
+break;
 case 77:
 this.$= new aritmetica.aritmetica($$[$0-2],operador.MAS,$$[$0],_$[$0-2].first_line,_$[$0-2].first_column);
 break;
@@ -418,6 +424,7 @@ _handle_error:
   const lista= require("../ArchivosTS/entorno/listaerrores");
 
   //******************INSTRUCCIONES***********************************
+  const imprimir= require('../ArchivosTS/instrucciones/imprimir');
   const declaracion= require('../ArchivosTS/instrucciones/declaracion'); 
 
 
@@ -427,6 +434,7 @@ _handle_error:
   const cadena= require('../ArchivosTS/expresiones/cadena');
   const aritmetica= require('../ArchivosTS/expresiones/operaciones/aritmetica');
   const identificador= require('../ArchivosTS/expresiones/identificador');
+  const unaria= require('../ArchivosTS/expresiones/operaciones/unaria');
 
   //******************INTERMEDIOS************************************
   const variable= require('../ArchivosTS/expresiones/variable');
@@ -896,9 +904,13 @@ case 63:return 19;
 break;
 case 64:return 20;
 break;
-case 65: yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 94; 
+case 65: yy_.yytext = yy_.yytext.slice(1,-1).replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r").replace("\\\\", "\\").replace("\\\"", "\""); 
+            return 94; 
+            
 break;
-case 66: yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 95; 
+case 66: yy_.yytext = yy_.yytext.slice(1,-1).replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r").replace("\\\\", "\\").replace("\\\"", "\""); 
+            return 95; 
+            
 break;
 case 67:return 32;
 break;
@@ -914,7 +926,7 @@ case 70:
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:\/\/.*)/,/^(?:[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])/,/^(?:break\b)/,/^(?:continue\b)/,/^(?:return\b)/,/^(?:string\b)/,/^(?:number\b)/,/^(?:boolean\b)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:void\b)/,/^(?:Array\b)/,/^(?:graficar_ts\b)/,/^(?:function\b)/,/^(?:console\b)/,/^(?:log\b)/,/^(?:push\b)/,/^(?:pop\b)/,/^(?:length\b)/,/^(?:charAt\b)/,/^(?:toLowerCase\b)/,/^(?:toUpperCase\b)/,/^(?:concat\b)/,/^(?:let\b)/,/^(?:const\b)/,/^(?:if\b)/,/^(?:else\b)/,/^(?:while\b)/,/^(?:do\b)/,/^(?:switch\b)/,/^(?:case\b)/,/^(?:default\b)/,/^(?:for\b)/,/^(?:in\b)/,/^(?:of\b)/,/^(?:\+)/,/^(?:-)/,/^(?:\*)/,/^(?:\/)/,/^(?:\*\*)/,/^(?:%)/,/^(?:\+\+)/,/^(?:--)/,/^(?:>)/,/^(?:<)/,/^(?:>=)/,/^(?:<=)/,/^(?:==)/,/^(?:!=)/,/^(?:&&)/,/^(?:\|\|)/,/^(?:!)/,/^(?:\?)/,/^(?::)/,/^(?:\.)/,/^(?:,)/,/^(?:;)/,/^(?:=)/,/^(?:\[)/,/^(?:\])/,/^(?:\{)/,/^(?:\})/,/^(?:\()/,/^(?:\))/,/^(?:"[^\"]*")/,/^(?:'[^\']*')/,/^(?:[0-9]+(\.[0-9]+)?\b)/,/^(?:([a-zA-Z])[a-zA-Z0-9_]*)/,/^(?:$)/,/^(?:.)/],
+rules: [/^(?:\s+)/,/^(?:\/\/.*)/,/^(?:[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])/,/^(?:break\b)/,/^(?:continue\b)/,/^(?:return\b)/,/^(?:string\b)/,/^(?:number\b)/,/^(?:boolean\b)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:void\b)/,/^(?:Array\b)/,/^(?:graficar_ts\b)/,/^(?:function\b)/,/^(?:console\b)/,/^(?:log\b)/,/^(?:push\b)/,/^(?:pop\b)/,/^(?:length\b)/,/^(?:charAt\b)/,/^(?:toLowerCase\b)/,/^(?:toUpperCase\b)/,/^(?:concat\b)/,/^(?:let\b)/,/^(?:const\b)/,/^(?:if\b)/,/^(?:else\b)/,/^(?:while\b)/,/^(?:do\b)/,/^(?:switch\b)/,/^(?:case\b)/,/^(?:default\b)/,/^(?:for\b)/,/^(?:in\b)/,/^(?:of\b)/,/^(?:\+)/,/^(?:-)/,/^(?:\*)/,/^(?:\/)/,/^(?:\*\*)/,/^(?:%)/,/^(?:\+\+)/,/^(?:--)/,/^(?:>)/,/^(?:<)/,/^(?:>=)/,/^(?:<=)/,/^(?:==)/,/^(?:!=)/,/^(?:&&)/,/^(?:\|\|)/,/^(?:!)/,/^(?:\?)/,/^(?::)/,/^(?:\.)/,/^(?:,)/,/^(?:;)/,/^(?:=)/,/^(?:\[)/,/^(?:\])/,/^(?:\{)/,/^(?:\})/,/^(?:\()/,/^(?:\))/,/^(?:"[^"]+")/,/^(?:'[^"]+')/,/^(?:[0-9]+(\.[0-9]+)?\b)/,/^(?:([a-zA-Z])[a-zA-Z0-9_]*)/,/^(?:$)/,/^(?:.)/],
 conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70],"inclusive":true}}
 });
 return lexer;

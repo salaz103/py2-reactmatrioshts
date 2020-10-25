@@ -1,5 +1,5 @@
 import entorno from "../entorno/entorno";
-import { tipo_ambito, tipo_rol, tipo_variable } from "../entorno/tipo";
+import { tipo_ambito, tipo_dato, tipo_rol, tipo_variable } from "../entorno/tipo";
 import instruccion from "./instruccion";
 import {almacen} from '../../../src/app';
 import {agregarcodigo3d} from '../../actions/ts.js';
@@ -58,7 +58,21 @@ export class declaracion implements instruccion{
                         //SIGNIFICA QUE LA VARIABLE LET TRAE UNA EXPRESION
                           let retornoexpresion:traduccionexp= this.variables[i].exp.traducir(ambito);
                           //VALIDAMOS QUE EL TIPO DE DATO ENTRANTE ES SIMILAR A LA DE LA EXPRESION
-                          if(this.variables[i].tipodato==retornoexpresion.tipodato){
+
+                          if(this.variables[i].tipodato==tipo_dato.NUMBER){
+
+                            if(retornoexpresion.tipodato== tipo_dato.ENTERO || retornoexpresion.tipodato== tipo_dato.DECIMAL){
+                                let nuevosim:simbolo= ambito.agregarSimbolo(this.variables[i].id,retornoexpresion.tipodato,ambito.nombre,this.variables[i].linea,this.variables[i].columna,true);
+                                let tmp= generador.generarTemporal();
+                                generador.sacarTemporal(tmp);
+                                generador.agregarExpresion(tmp,"p","+",nuevosim.direccionrelativa);
+                                generador.stack(tmp,retornoexpresion.obtenerValor());
+                            }else{
+                                //ERROR 
+                            }
+
+
+                          }else if(this.variables[i].tipodato==retornoexpresion.tipodato){
                               //SI SON IGUALES ENTONCES GUARDAMOS LA VARIABLE EN LA TS Y COMIENZA 
                               //LA TRADUCCION
                               let nuevosim:simbolo= ambito.agregarSimbolo(this.variables[i].id,retornoexpresion.tipodato,ambito.nombre,this.variables[i].linea,this.variables[i].columna,true);
@@ -81,7 +95,7 @@ export class declaracion implements instruccion{
 
                           }else{
                               //ERROR - SEMANTICO - TIPO DATO VARIABLE NO COMPATIBLE CON TIPO DATO DE EXPRESION
-
+                            
 
                           }
 

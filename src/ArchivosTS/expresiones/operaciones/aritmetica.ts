@@ -9,7 +9,6 @@ import {errores} from '../../../actions/ts.js';
 
 export class aritmetica extends operacion implements expresion{
 
-    tipodato:tipo_dato;
     linea:number;
     columna:number;
     
@@ -25,23 +24,98 @@ export class aritmetica extends operacion implements expresion{
         const valorizquierdo:traduccionexp= this.expresionizquierda.traducir(ambito);
         const valorderecha:traduccionexp= this.expresionderecha.traducir(ambito);
         const temporalresultado= generador.generarTemporal();
+
+        
+
+
+//**********************************SUMA********************************************************** */
         if(this.tipooperador==operador.MAS){
-            //SUMA - POSIBLES COMBINACIONES
-            //NUMBER -NUMBER --->HECHO
-            //NUMBER- BOOLEAN(Numero), SALIDA= NUMERO
             //STRING - NUMBER, SALIDA= STRING
             //STRING - BOOLEAN, SALIDA =STRING
             //STRING - STRING
-            if(valorizquierdo.tipodato == tipo_dato.NUMBER && valorderecha.tipodato== tipo_dato.NUMBER){
-                generador.agregarExpresion(temporalresultado,valorizquierdo.obtenerValor(),"+",valorderecha.obtenerValor());
-                return new traduccionexp(temporalresultado,true,tipo_dato.NUMBER,false);
+
+            switch (valorizquierdo.tipodato) {
+                case tipo_dato.ENTERO:
+                    switch (valorderecha.tipodato) {
+                        case tipo_dato.ENTERO:
+                        case tipo_dato.DECIMAL:
+                        case tipo_dato.BOOLEAN:
+                            generador.agregarExpresion(temporalresultado,valorizquierdo.obtenerValor(),"+",valorderecha.obtenerValor());
+                            return new traduccionexp(temporalresultado,true,valorderecha.tipodato==tipo_dato.DECIMAL? valorderecha.tipodato:valorizquierdo.tipodato,false);
+                        //FALTA
+                        //ENTERO -STRING
+                        default:
+                            almacen.dispatch(errores({
+                                tipo:'SEMANTICO',
+                                descripcion: valorizquierdo.tipodato+' NO SE PUEDE SUMAR CON '+ valorderecha.tipodato,
+                                ambito:ambito.nombre,
+                                linea: this.linea,
+                                columna: this.columna
+                            }));
+                            break;
+                    }
+                case tipo_dato.DECIMAL:
+                    switch (valorderecha.tipodato) {
+                        case tipo_dato.ENTERO:
+                        case tipo_dato.DECIMAL:
+                        case tipo_dato.BOOLEAN:
+                            generador.agregarExpresion(temporalresultado,valorizquierdo.obtenerValor(),"+",valorderecha.obtenerValor());
+                            return new traduccionexp(temporalresultado,true,tipo_dato.DECIMAL,false);
+                        //FALTA
+                        //DECIMAL -STRING
+                        default:
+                            almacen.dispatch(errores({
+                                tipo:'SEMANTICO',
+                                descripcion: valorizquierdo.tipodato+' NO SE PUEDE SUMAR CON '+ valorderecha.tipodato,
+                                ambito:ambito.nombre,
+                                linea: this.linea,
+                                columna: this.columna
+                            }));
+                            break;
+                    }
+                case tipo_dato.BOOLEAN:
+                    switch (valorderecha.tipodato) {
+                        case tipo_dato.ENTERO:
+                        case tipo_dato.DECIMAL:
+                            generador.agregarExpresion(temporalresultado,valorizquierdo.obtenerValor(),"+",valorderecha.obtenerValor());
+                            return new traduccionexp(temporalresultado,true,valorderecha.tipodato==tipo_dato.ENTERO?tipo_dato.ENTERO:tipo_dato.DECIMAL,false);
+                        //FALTA
+                        //BOOLEAN -STRING
+                        default:
+                            almacen.dispatch(errores({
+                                tipo:'SEMANTICO',
+                                descripcion: valorizquierdo.tipodato+' NO SE PUEDE SUMAR CON '+ valorderecha.tipodato,
+                                ambito:ambito.nombre,
+                                linea: this.linea,
+                                columna: this.columna
+                            }));
+                            break;
+                    }
+                
+    
+                case tipo_dato.STRING:
+                
+                break;
+    
+                default:
+                break;
             }
 
+    //***************************************************RESTA************************************* */
         }else if(this.tipooperador==operador.MENOS){
 
-            if(valorizquierdo.tipodato == tipo_dato.NUMBER && valorderecha.tipodato== tipo_dato.NUMBER){
+            if(valorizquierdo.tipodato == tipo_dato.ENTERO && valorderecha.tipodato== tipo_dato.ENTERO){
                 generador.agregarExpresion(temporalresultado,valorizquierdo.obtenerValor(),"-",valorderecha.obtenerValor());
-                return new traduccionexp(temporalresultado,true,tipo_dato.NUMBER,false);
+                return new traduccionexp(temporalresultado,true,tipo_dato.ENTERO,false);
+            }else if(valorizquierdo.tipodato == tipo_dato.ENTERO && valorderecha.tipodato== tipo_dato.DECIMAL){
+                generador.agregarExpresion(temporalresultado,valorizquierdo.obtenerValor(),"-",valorderecha.obtenerValor());
+                return new traduccionexp(temporalresultado,true,tipo_dato.DECIMAL,false);
+            }else if(valorizquierdo.tipodato == tipo_dato.DECIMAL && valorderecha.tipodato== tipo_dato.ENTERO){
+                generador.agregarExpresion(temporalresultado,valorizquierdo.obtenerValor(),"-",valorderecha.obtenerValor());
+                return new traduccionexp(temporalresultado,true,tipo_dato.DECIMAL,false);
+            }else if(valorizquierdo.tipodato == tipo_dato.DECIMAL && valorderecha.tipodato== tipo_dato.DECIMAL){
+                generador.agregarExpresion(temporalresultado,valorizquierdo.obtenerValor(),"-",valorderecha.obtenerValor());
+                return new traduccionexp(temporalresultado,true,tipo_dato.DECIMAL,false);
             }else{
                 almacen.dispatch(errores({
                     tipo:'SEMANTICO',
@@ -51,12 +125,21 @@ export class aritmetica extends operacion implements expresion{
                     columna: this.columna
                 }));
             }
-
+//***************************************************MULTIPLICACION************************************* */
         }else if(this.tipooperador==operador.POR){
 
-            if(valorizquierdo.tipodato == tipo_dato.NUMBER && valorderecha.tipodato== tipo_dato.NUMBER){
+            if(valorizquierdo.tipodato == tipo_dato.ENTERO && valorderecha.tipodato== tipo_dato.ENTERO){
                 generador.agregarExpresion(temporalresultado,valorizquierdo.obtenerValor(),"*",valorderecha.obtenerValor());
-                return new traduccionexp(temporalresultado,true,tipo_dato.NUMBER,false);
+                return new traduccionexp(temporalresultado,true,tipo_dato.ENTERO,false);
+            }else if(valorizquierdo.tipodato == tipo_dato.ENTERO && valorderecha.tipodato== tipo_dato.DECIMAL){
+                generador.agregarExpresion(temporalresultado,valorizquierdo.obtenerValor(),"*",valorderecha.obtenerValor());
+                return new traduccionexp(temporalresultado,true,tipo_dato.DECIMAL,false);
+            }else if(valorizquierdo.tipodato == tipo_dato.DECIMAL && valorderecha.tipodato== tipo_dato.ENTERO){
+                generador.agregarExpresion(temporalresultado,valorizquierdo.obtenerValor(),"*",valorderecha.obtenerValor());
+                return new traduccionexp(temporalresultado,true,tipo_dato.DECIMAL,false);
+            }else if(valorizquierdo.tipodato == tipo_dato.DECIMAL && valorderecha.tipodato== tipo_dato.DECIMAL){
+                generador.agregarExpresion(temporalresultado,valorizquierdo.obtenerValor(),"*",valorderecha.obtenerValor());
+                return new traduccionexp(temporalresultado,true,tipo_dato.DECIMAL,false);
             }else{
                 almacen.dispatch(errores({
                     tipo:'SEMANTICO',
@@ -67,12 +150,21 @@ export class aritmetica extends operacion implements expresion{
                 }));
             }
 
-
+//***************************************************DIVISION************************************* */
         }else if(this.tipooperador==operador.DIVISION){
 
-            if(valorizquierdo.tipodato == tipo_dato.NUMBER && valorderecha.tipodato== tipo_dato.NUMBER){
+            if(valorizquierdo.tipodato == tipo_dato.ENTERO && valorderecha.tipodato== tipo_dato.ENTERO){
                 generador.agregarExpresion(temporalresultado,valorizquierdo.obtenerValor(),"/",valorderecha.obtenerValor());
-                return new traduccionexp(temporalresultado,true,tipo_dato.NUMBER,false);
+                return new traduccionexp(temporalresultado,true,tipo_dato.ENTERO,false);
+            }else if(valorizquierdo.tipodato == tipo_dato.ENTERO && valorderecha.tipodato== tipo_dato.DECIMAL){
+                generador.agregarExpresion(temporalresultado,valorizquierdo.obtenerValor(),"/",valorderecha.obtenerValor());
+                return new traduccionexp(temporalresultado,true,tipo_dato.DECIMAL,false);
+            }else if(valorizquierdo.tipodato == tipo_dato.DECIMAL && valorderecha.tipodato== tipo_dato.ENTERO){
+                generador.agregarExpresion(temporalresultado,valorizquierdo.obtenerValor(),"/",valorderecha.obtenerValor());
+                return new traduccionexp(temporalresultado,true,tipo_dato.DECIMAL,false);
+            }else if(valorizquierdo.tipodato == tipo_dato.DECIMAL && valorderecha.tipodato== tipo_dato.DECIMAL){
+                generador.agregarExpresion(temporalresultado,valorizquierdo.obtenerValor(),"/",valorderecha.obtenerValor());
+                return new traduccionexp(temporalresultado,true,tipo_dato.DECIMAL,false);
             }else{
                 almacen.dispatch(errores({
                     tipo:'SEMANTICO',
@@ -83,22 +175,31 @@ export class aritmetica extends operacion implements expresion{
                 }));
             }
 
-
+//***************************************************MODULO************************************* */
         }else if(this.tipooperador==operador.MODULO){
 
-            if(valorizquierdo.tipodato == tipo_dato.NUMBER && valorderecha.tipodato== tipo_dato.NUMBER){
+            if(valorizquierdo.tipodato == tipo_dato.ENTERO && valorderecha.tipodato== tipo_dato.ENTERO){
                 generador.agregarExpresion(temporalresultado,"fmod("+valorizquierdo.obtenerValor()+","+valorderecha.obtenerValor()+")","","");
-                return new traduccionexp(temporalresultado,true,tipo_dato.NUMBER,false);
+                return new traduccionexp(temporalresultado,true,tipo_dato.DECIMAL,false);
+            }else if(valorizquierdo.tipodato == tipo_dato.ENTERO && valorderecha.tipodato== tipo_dato.DECIMAL){
+                generador.agregarExpresion(temporalresultado,"fmod("+valorizquierdo.obtenerValor()+","+valorderecha.obtenerValor()+")","","");
+                return new traduccionexp(temporalresultado,true,tipo_dato.DECIMAL,false);
+            }else if(valorizquierdo.tipodato == tipo_dato.DECIMAL && valorderecha.tipodato== tipo_dato.ENTERO){
+                generador.agregarExpresion(temporalresultado,"fmod("+valorizquierdo.obtenerValor()+","+valorderecha.obtenerValor()+")","","");
+                return new traduccionexp(temporalresultado,true,tipo_dato.DECIMAL,false);
+            }if(valorizquierdo.tipodato == tipo_dato.DECIMAL && valorderecha.tipodato== tipo_dato.DECIMAL){
+                generador.agregarExpresion(temporalresultado,"fmod("+valorizquierdo.obtenerValor()+","+valorderecha.obtenerValor()+")","","");
+                return new traduccionexp(temporalresultado,true,tipo_dato.DECIMAL,false);
             }else{
                 almacen.dispatch(errores({
                     tipo:'SEMANTICO',
-                    descripcion: valorizquierdo.tipodato+' NO SE PUEDE DIVIDIR CON '+ valorderecha.tipodato,
+                    descripcion: valorizquierdo.tipodato+' NO SE PUEDE REALIZAR MOD CON '+ valorderecha.tipodato,
                     ambito:ambito.nombre,
                     linea: this.linea,
                     columna: this.columna
                 }));
             }
-
+//***************************************************POTENCIA-EXPONENTE************************************* */
         }else if(this.tipooperador==operador.EXPONENTE){
 
         }
