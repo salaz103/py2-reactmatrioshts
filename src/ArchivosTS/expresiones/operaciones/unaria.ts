@@ -24,12 +24,12 @@ export class unaria implements expresion{
 
     traducir(ambito: entorno){
         const retornoexp= this.expresionderecha.traducir(ambito);
-
+        console.log(retornoexp);
         if(this.tipooperador==operador.MENOS){
 
-            if(retornoexp.tipodato==tipo_dato.NUMBER){
+            if(retornoexp.tipodato==tipo_dato.ENTERO || retornoexp.tipodato==tipo_dato.DECIMAL){
+                
                 return new traduccionexp("-"+retornoexp.obtenerValor(),retornoexp.es_temporal,retornoexp.tipodato,retornoexp.tiene_etiquetas);
-
             }else{
                 almacen.dispatch(errores({
                     tipo:'SEMANTICO',

@@ -13,8 +13,9 @@ var unaria = /** @class */ (function () {
     }
     unaria.prototype.traducir = function (ambito) {
         var retornoexp = this.expresionderecha.traducir(ambito);
+        console.log(retornoexp);
         if (this.tipooperador == tipo_1.operador.MENOS) {
-            if (retornoexp.tipodato == tipo_1.tipo_dato.NUMBER) {
+            if (retornoexp.tipodato == tipo_1.tipo_dato.ENTERO || retornoexp.tipodato == tipo_1.tipo_dato.DECIMAL) {
                 return new traduccionexp_1.traduccionexp("-" + retornoexp.obtenerValor(), retornoexp.es_temporal, retornoexp.tipodato, retornoexp.tiene_etiquetas);
             }
             else {
