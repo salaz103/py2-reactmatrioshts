@@ -50,7 +50,13 @@ var declaracion = /** @class */ (function () {
                                     generador.stack(tmp, retornoexpresion.obtenerValor());
                                 }
                                 else {
-                                    //ERROR 
+                                    app_1.almacen.dispatch(ts_js_1.errores({
+                                        tipo: 'SEMANTICO',
+                                        descripcion: 'VARIABLE ' + this.variables[i].id + ' NO ES COMPATIBLE CON ' + retornoexpresion.tipodato,
+                                        ambito: ambito.nombre,
+                                        linea: this.variables[i].linea,
+                                        columna: this.variables[i].columna
+                                    }));
                                 }
                             }
                             else if (this.variables[i].tipodato == retornoexpresion.tipodato) {
@@ -60,11 +66,29 @@ var declaracion = /** @class */ (function () {
                                 //SIEMPRE QUE AGREGAMOS UN NUEVO SIMBOLO, DEVUELVE EL SIMBOLO CREADO
                                 //AQUI PREGUNTAMOS SI ES VARIABLE GLOBAL O LOCAL, ESTO PARA VER SI MOVEMOS O NO
                                 //EL APUNTADOR "P"
-                                if (nuevosim.esGlobal) {
-                                    var tmp = generador.generarTemporal();
-                                    generador.sacarTemporal(tmp);
-                                    generador.agregarExpresion(tmp, "p", "+", nuevosim.direccionrelativa);
-                                    generador.stack(tmp, retornoexpresion.obtenerValor());
+                                if (nuevosim.tipodato == tipo_1.tipo_dato.BOOLEAN) {
+                                    //TOCA VERIFICAR SI TRAE O NO VALOR
+                                    if (retornoexpresion.valor != "" || !retornoexpresion.tiene_etiquetas) {
+                                        var tmp = generador.generarTemporal();
+                                        generador.sacarTemporal(tmp);
+                                        generador.agregarExpresion(tmp, "p", "+", nuevosim.direccionrelativa);
+                                        generador.stack(tmp, retornoexpresion.obtenerValor());
+                                    }
+                                    else {
+                                        var tmp_guardado = generador.generarTemporal();
+                                        generador.sacarTemporal(tmp_guardado);
+                                        var etiqueta_salida = generador.generarEtiqueta();
+                                        generador.agregarEtiqueta(retornoexpresion.etiquetastrue);
+                                        generador.agregarExpresion(tmp_guardado, "1", "", "");
+                                        generador.agregarGoTo(etiqueta_salida);
+                                        generador.agregarEtiqueta(retornoexpresion.etiquetasfalse);
+                                        generador.agregarExpresion(tmp_guardado, "0", "", "");
+                                        generador.agregarEtiqueta(etiqueta_salida);
+                                        var tmp = generador.generarTemporal();
+                                        generador.sacarTemporal(tmp);
+                                        generador.agregarExpresion(tmp, "p", "+", nuevosim.direccionrelativa);
+                                        generador.stack(tmp, tmp_guardado);
+                                    }
                                 }
                                 else {
                                     var tmp = generador.generarTemporal();
@@ -72,9 +96,28 @@ var declaracion = /** @class */ (function () {
                                     generador.agregarExpresion(tmp, "p", "+", nuevosim.direccionrelativa);
                                     generador.stack(tmp, retornoexpresion.obtenerValor());
                                 }
+                                /*if(nuevosim.esGlobal){
+                                    let tmp= generador.generarTemporal();
+                                    generador.sacarTemporal(tmp);
+                                    generador.agregarExpresion(tmp,"p","+",nuevosim.direccionrelativa);
+                                    generador.stack(tmp,retornoexpresion.obtenerValor());
+                                  
+                                }else{
+                                  let tmp= generador.generarTemporal();
+                                  generador.sacarTemporal(tmp);
+                                  generador.agregarExpresion(tmp,"p","+",nuevosim.direccionrelativa);
+                                  generador.stack(tmp,retornoexpresion.obtenerValor());
+                                }*/
                             }
                             else {
                                 //ERROR - SEMANTICO - TIPO DATO VARIABLE NO COMPATIBLE CON TIPO DATO DE EXPRESION
+                                app_1.almacen.dispatch(ts_js_1.errores({
+                                    tipo: 'SEMANTICO',
+                                    descripcion: 'VARIABLE ' + this.variables[i].id + ' NO ES COMPATIBLE CON ' + retornoexpresion.tipodato,
+                                    ambito: ambito.nombre,
+                                    linea: this.variables[i].linea,
+                                    columna: this.variables[i].columna
+                                }));
                             }
                         }
                         else {

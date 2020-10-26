@@ -50,7 +50,7 @@ export class identificador implements expresion{
             linea:this.linea,
             columna: this.columna
         }));
-        console.log("ERROR- IDENTIFICADOR "+ this.id+" NO EXISTE");
+        //console.log("ERROR- IDENTIFICADOR "+ this.id+" NO EXISTE");
     }
 
 

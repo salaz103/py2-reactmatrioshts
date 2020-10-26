@@ -52,26 +52,26 @@
 "of"                  return 'ROF';  
 
 //OPERACIONES ARITMETICAS
-"+"                   return 'RMAS';
-"-"                   return 'RMENOS';
-"*"                   return 'RPOR';
-"/"                   return 'RDIVISION';
-"**"                  return 'REXPONENTE';
-"%"                   return 'RMODULO';
 "++"                  return 'RMASMAS';
 "--"                  return 'RMENOSMENOS';
+"*"                   return 'RPOR';
+"/"                   return 'RDIVISION';
+";"                   return 'RPUNTOCOMA';
+"+"                   return 'RMAS';
+"-"                   return 'RMENOS';
+"||"                  return 'ROR';
+"&&"                 return 'RAND';
+"**"                  return 'REXPONENTE';
+"%"                   return 'RMODULO';
 //OPERACIONES RELACIONALES
-">"                   return 'RMAYORQUE';
-"<"                   return 'RMENORQUE';
 ">="                  return 'RMAYORIGUALQUE';
 "<="                  return 'RMENORIGUALQUE';
+">"                   return 'RMAYORQUE';
+"<"                   return 'RMENORQUE';
 "=="                  return 'RIGUALQUE';
 "!="                  return 'RDIFERENTEQUE';
 //OPERACIONES LOGICAS
-"&&"                 return 'RAND';
-"||"                  return 'ROR';
 "!"                 return 'RNOT';
-
 //OPERADOR TERNARIO
 "?"                   return 'RINTERROGACION';
 ":"                   return 'RDOSPUNTOS';
@@ -79,7 +79,7 @@
 
 "."                   return 'RPUNTO';
 ","                   return 'RCOMA';
-";"                   return 'RPUNTOCOMA';
+
 "="                   return 'RIGUAL';
 
 "["                   return 'RCORCHETEA';
@@ -89,15 +89,13 @@
 "("                   return 'RPARA';
 ")"                   return 'RPARC';
 
-//\"[^\"]*\"            { yytext = yytext.substr(1,yyleng-2); return 'CADENACOMILLADOBLE'; }
 \"[^"]+\" { yytext = yytext.slice(1,-1).replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r").replace("\\\\", "\\").replace("\\\"", "\""); 
             return 'CADENACOMILLADOBLE'; 
-            }
+            }*/
 
 \'[^"]+\' { yytext = yytext.slice(1,-1).replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r").replace("\\\\", "\\").replace("\\\"", "\""); 
             return 'CADENACOMILLASIMPLE'; 
             }
-//\'[^\']*\'            { yytext = yytext.substr(1,yyleng-2); return 'CADENACOMILLASIMPLE'; }
 
 [0-9]+("."[0-9]+)?\b          return 'NUM';
 ([a-zA-Z])[a-zA-Z0-9_]*       return 'IDENTIFICADOR';
@@ -130,6 +128,7 @@
   const aritmetica= require('../ArchivosTS/expresiones/operaciones/aritmetica');
   const identificador= require('../ArchivosTS/expresiones/identificador');
   const unaria= require('../ArchivosTS/expresiones/operaciones/unaria');
+  const relacional= require('../ArchivosTS/expresiones/operaciones/relacional');
 
   //******************INTERMEDIOS************************************
   const variable= require('../ArchivosTS/expresiones/variable');
@@ -327,10 +326,14 @@ expresion:
           |IDENTIFICADOR RMENOSMENOS      
 
           /*EXPRESIONES RELACIONALES*/
-          |expresion RMAYORQUE expresion       
-          |expresion RMENORQUE expresion       
-          |expresion RMAYORIGUALQUE expresion  
-          |expresion RMENORIGUALQUE expresion  
+          |expresion RMAYORQUE expresion
+          {$$= new relacional.relacional($1,operador.MAYORQUE,$3,@1.first_line,@1.first_column);}       
+          |expresion RMENORQUE expresion
+          {$$= new relacional.relacional($1,operador.MENORQUE,$3,@1.first_line,@1.first_column);}      
+          |expresion RMAYORIGUALQUE expresion 
+          {$$= new relacional.relacional($1,operador.MAYORIGUALQUE,$3,@1.first_line,@1.first_column);} 
+          |expresion RMENORIGUALQUE expresion 
+          {$$= new relacional.relacional($1,operador.MENORIGUALQUE,$3,@1.first_line,@1.first_column);} 
           |expresion RIGUALQUE expresion       
           |expresion RDIFERENTEQUE expresion   
           /*EXPRESIONES LOGICAS*/

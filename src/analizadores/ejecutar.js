@@ -152,6 +152,18 @@ break;
 case 81:
 this.$= new aritmetica.aritmetica($$[$0-2],operador.MODULO,$$[$0],_$[$0-2].first_line,_$[$0-2].first_column);
 break;
+case 85:
+this.$= new relacional.relacional($$[$0-2],operador.MAYORQUE,$$[$0],_$[$0-2].first_line,_$[$0-2].first_column);
+break;
+case 86:
+this.$= new relacional.relacional($$[$0-2],operador.MENORQUE,$$[$0],_$[$0-2].first_line,_$[$0-2].first_column);
+break;
+case 87:
+this.$= new relacional.relacional($$[$0-2],operador.MAYORIGUALQUE,$$[$0],_$[$0-2].first_line,_$[$0-2].first_column);
+break;
+case 88:
+this.$= new relacional.relacional($$[$0-2],operador.MENORIGUALQUE,$$[$0],_$[$0-2].first_line,_$[$0-2].first_column);
+break;
 case 96:
 this.$=new numero.numero(Number($$[$0]),tipo_dato.NUMBER,_$[$0].first_line,_$[$0].first_column);
 break;
@@ -435,6 +447,7 @@ _handle_error:
   const aritmetica= require('../ArchivosTS/expresiones/operaciones/aritmetica');
   const identificador= require('../ArchivosTS/expresiones/identificador');
   const unaria= require('../ArchivosTS/expresiones/operaciones/unaria');
+  const relacional= require('../ArchivosTS/expresiones/operaciones/relacional');
 
   //******************INTERMEDIOS************************************
   const variable= require('../ArchivosTS/expresiones/variable');
@@ -846,49 +859,49 @@ case 34:return 62;
 break;
 case 35:return 61;  
 break;
-case 36:return 77;
+case 36:return 27;
 break;
-case 37:return 76;
+case 37:return 28;
 break;
 case 38:return 78;
 break;
 case 39:return 79;
 break;
-case 40:return 81;
+case 40:return 8;
 break;
-case 41:return 80;
+case 41:return 77;
 break;
-case 42:return 27;
+case 42:return 76;
 break;
-case 43:return 28;
+case 43:return 89;
 break;
-case 44:return 82;
+case 44:return 88;
 break;
-case 45:return 83;
+case 45:return 81;
 break;
-case 46:return 84;
+case 46:return 80;
 break;
-case 47:return 85;
+case 47:return 84;
 break;
-case 48:return 86;
+case 48:return 85;
 break;
-case 49:return 87;
+case 49:return 82;
 break;
-case 50:return 88;
+case 50:return 83;
 break;
-case 51:return 89;
+case 51:return 86;
 break;
-case 52:return 90;
+case 52:return 87;
 break;
-case 53:return 91;
+case 53:return 90;
 break;
-case 54:return 41;
+case 54:return 91;
 break;
-case 55:return 29;
+case 55:return 41;
 break;
-case 56:return 39;
+case 56:return 29;
 break;
-case 57:return 8;
+case 57:return 39;
 break;
 case 58:return 43;
 break;
@@ -926,7 +939,7 @@ case 70:
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:\/\/.*)/,/^(?:[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])/,/^(?:break\b)/,/^(?:continue\b)/,/^(?:return\b)/,/^(?:string\b)/,/^(?:number\b)/,/^(?:boolean\b)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:void\b)/,/^(?:Array\b)/,/^(?:graficar_ts\b)/,/^(?:function\b)/,/^(?:console\b)/,/^(?:log\b)/,/^(?:push\b)/,/^(?:pop\b)/,/^(?:length\b)/,/^(?:charAt\b)/,/^(?:toLowerCase\b)/,/^(?:toUpperCase\b)/,/^(?:concat\b)/,/^(?:let\b)/,/^(?:const\b)/,/^(?:if\b)/,/^(?:else\b)/,/^(?:while\b)/,/^(?:do\b)/,/^(?:switch\b)/,/^(?:case\b)/,/^(?:default\b)/,/^(?:for\b)/,/^(?:in\b)/,/^(?:of\b)/,/^(?:\+)/,/^(?:-)/,/^(?:\*)/,/^(?:\/)/,/^(?:\*\*)/,/^(?:%)/,/^(?:\+\+)/,/^(?:--)/,/^(?:>)/,/^(?:<)/,/^(?:>=)/,/^(?:<=)/,/^(?:==)/,/^(?:!=)/,/^(?:&&)/,/^(?:\|\|)/,/^(?:!)/,/^(?:\?)/,/^(?::)/,/^(?:\.)/,/^(?:,)/,/^(?:;)/,/^(?:=)/,/^(?:\[)/,/^(?:\])/,/^(?:\{)/,/^(?:\})/,/^(?:\()/,/^(?:\))/,/^(?:"[^"]+")/,/^(?:'[^"]+')/,/^(?:[0-9]+(\.[0-9]+)?\b)/,/^(?:([a-zA-Z])[a-zA-Z0-9_]*)/,/^(?:$)/,/^(?:.)/],
+rules: [/^(?:\s+)/,/^(?:\/\/.*)/,/^(?:[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])/,/^(?:break\b)/,/^(?:continue\b)/,/^(?:return\b)/,/^(?:string\b)/,/^(?:number\b)/,/^(?:boolean\b)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:void\b)/,/^(?:Array\b)/,/^(?:graficar_ts\b)/,/^(?:function\b)/,/^(?:console\b)/,/^(?:log\b)/,/^(?:push\b)/,/^(?:pop\b)/,/^(?:length\b)/,/^(?:charAt\b)/,/^(?:toLowerCase\b)/,/^(?:toUpperCase\b)/,/^(?:concat\b)/,/^(?:let\b)/,/^(?:const\b)/,/^(?:if\b)/,/^(?:else\b)/,/^(?:while\b)/,/^(?:do\b)/,/^(?:switch\b)/,/^(?:case\b)/,/^(?:default\b)/,/^(?:for\b)/,/^(?:in\b)/,/^(?:of\b)/,/^(?:\+\+)/,/^(?:--)/,/^(?:\*)/,/^(?:\/)/,/^(?:;)/,/^(?:\+)/,/^(?:-)/,/^(?:\|\|)/,/^(?:&&)/,/^(?:\*\*)/,/^(?:%)/,/^(?:>=)/,/^(?:<=)/,/^(?:>)/,/^(?:<)/,/^(?:==)/,/^(?:!=)/,/^(?:!)/,/^(?:\?)/,/^(?::)/,/^(?:\.)/,/^(?:,)/,/^(?:=)/,/^(?:\[)/,/^(?:\])/,/^(?:\{)/,/^(?:\})/,/^(?:\()/,/^(?:\))/,/^(?:"[^"]+")/,/^(?:'[^"]+')/,/^(?:[0-9]+(\.[0-9]+)?\b)/,/^(?:([a-zA-Z])[a-zA-Z0-9_]*)/,/^(?:$)/,/^(?:.)/],
 conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70],"inclusive":true}}
 });
 return lexer;

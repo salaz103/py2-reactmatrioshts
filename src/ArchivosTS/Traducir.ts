@@ -65,7 +65,9 @@ function traducir(ast:any,entorno:entorno){
         
         //PENDIENTE
         //IF(INSTRUCCION != TYPE ){ ENTONCES TRADUCIMOS}
+
         
+        //console.log(ins);
         ins.traducir(entorno);
     });
     //UNA VEZ YA TERMINAMOS DE TRADUCIR, TENEMOS QUE "CERRAR" EL AMBITO MAIN

@@ -57,8 +57,6 @@ var generacion = /** @class */ (function () {
             this.setTemporales["delete"](temporal);
         }
     };
-    generacion.prototype.agregarEtiqueta = function (etiqueta) {
-    };
     //*****************METODOS PARA AGREGAR CODIGO 3D*************************/
     generacion.prototype.agregarcodigo3d = function (codigo) {
         this.codigo.push(codigo);
@@ -77,6 +75,28 @@ var generacion = /** @class */ (function () {
     };
     generacion.prototype.printf = function (formato, casteo, valor) {
         this.codigo.push("printf(\"%" + formato + "\",(" + casteo + ")" + valor + ");");
+    };
+    generacion.prototype.agregarIf = function (valorizquierdo, operador, valorderecho, etiquetaVerdadera) {
+        this.codigo.push("if(" + valorizquierdo + operador + valorderecho + ") goto " + etiquetaVerdadera + ";");
+    };
+    generacion.prototype.agregarGoTo = function (etiqueta) {
+        this.codigo.push("goto " + etiqueta + ";");
+    };
+    generacion.prototype.agregarEtiqueta = function (etiqueta) {
+        this.codigo.push(etiqueta + ":");
+    };
+    generacion.prototype.imprimirTrue = function () {
+        this.codigo.push("printf(\"%c\",(char)" + "t".charCodeAt(0) + ");");
+        this.codigo.push("printf(\"%c\",(char)" + "r".charCodeAt(0) + ");");
+        this.codigo.push("printf(\"%c\",(char)" + "u".charCodeAt(0) + ");");
+        this.codigo.push("printf(\"%c\",(char)" + "e".charCodeAt(0) + ");");
+    };
+    generacion.prototype.imprimirFalse = function () {
+        this.codigo.push("printf(\"%c\",(char)" + "f".charCodeAt(0) + ");");
+        this.codigo.push("printf(\"%c\",(char)" + "a".charCodeAt(0) + ");");
+        this.codigo.push("printf(\"%c\",(char)" + "l".charCodeAt(0) + ");");
+        this.codigo.push("printf(\"%c\",(char)" + "s".charCodeAt(0) + ");");
+        this.codigo.push("printf(\"%c\",(char)" + "e".charCodeAt(0) + ");");
     };
     //*******************METODOS PARA EL MANEJO DEL HEAP Y STACK**************/
     generacion.prototype.siguienteHeap = function () {

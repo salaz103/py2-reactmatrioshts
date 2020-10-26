@@ -7,8 +7,8 @@ var traduccionexp = /** @class */ (function () {
         this.es_temporal = temp;
         this.tipodato = tipodato;
         this.tiene_etiquetas = etiquetas;
-        this.etiquetastrue = [];
-        this.etiquetasfalse = [];
+        this.etiquetastrue = '';
+        this.etiquetasfalse = '';
     }
     traduccionexp.prototype.obtenerValor = function () {
         generacion_1.generacion.getGenerador().sacarTemporal(this.valor);

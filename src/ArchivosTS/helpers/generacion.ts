@@ -1,7 +1,7 @@
 export class generacion{
     private static generador: generacion;
     private setTemporales : Set<string>;
-    private temporales:number;
+    private temporales: number;
     private etiquetas : number;
     private codigo : string[];
 
@@ -74,9 +74,7 @@ export class generacion{
         }
     }
 
-    public agregarEtiqueta(etiqueta:string){
-        
-    }
+   
 
     //*****************METODOS PARA AGREGAR CODIGO 3D*************************/
     public agregarcodigo3d(codigo:string){
@@ -103,6 +101,33 @@ export class generacion{
         this.codigo.push("printf(\"%"+formato+"\",("+casteo+")"+valor+");");
     }
 
+    public agregarIf(valorizquierdo:any,operador:string,valorderecho:any, etiquetaVerdadera:string){
+        this.codigo.push("if("+valorizquierdo+operador+valorderecho+") goto "+etiquetaVerdadera+";");
+    }
+
+    public agregarGoTo(etiqueta:string){
+        this.codigo.push("goto "+etiqueta+";");
+    }
+
+    public agregarEtiqueta(etiqueta:string){
+        this.codigo.push(etiqueta+":");
+
+    }
+
+    public imprimirTrue(){
+        this.codigo.push("printf(\"%c\",(char)"+"t".charCodeAt(0)+");");
+        this.codigo.push("printf(\"%c\",(char)"+"r".charCodeAt(0)+");");
+        this.codigo.push("printf(\"%c\",(char)"+"u".charCodeAt(0)+");");
+        this.codigo.push("printf(\"%c\",(char)"+"e".charCodeAt(0)+");");
+    }
+
+    public imprimirFalse(){
+        this.codigo.push("printf(\"%c\",(char)"+"f".charCodeAt(0)+");");
+        this.codigo.push("printf(\"%c\",(char)"+"a".charCodeAt(0)+");");
+        this.codigo.push("printf(\"%c\",(char)"+"l".charCodeAt(0)+");");
+        this.codigo.push("printf(\"%c\",(char)"+"s".charCodeAt(0)+");");
+        this.codigo.push("printf(\"%c\",(char)"+"e".charCodeAt(0)+");");
+    }
 
     //*******************METODOS PARA EL MANEJO DEL HEAP Y STACK**************/
     public siguienteHeap(){

@@ -37,7 +37,7 @@ var identificador = /** @class */ (function () {
                 linea: this.linea,
                 columna: this.columna
             }));
-            console.log("ERROR- IDENTIFICADOR " + this.id + " NO EXISTE");
+            //console.log("ERROR- IDENTIFICADOR "+ this.id+" NO EXISTE");
         }
         return new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.UNDEFINED, false);
     };

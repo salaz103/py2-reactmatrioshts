@@ -30,7 +30,25 @@ export class imprimir implements instruccion{
         }else if(retornoexpresion.tipodato==tipo_dato.DECIMAL){
             generador.printf("f","float",retornoexpresion.obtenerValor());
         }else if(retornoexpresion.tipodato==tipo_dato.BOOLEAN){
-            generador.printf("d","int",retornoexpresion.obtenerValor());
+            //CON EL BOOLEAN HAY QUE VER SI EL RETORNO VALOR
+            //SI TRAE VALOR ES POR QUE ES UN VALOR LOGICO PRIMITIVO 
+            //SI NO TRAE VALOR ES POR QUE ES RESULTADO DE UNA OPERACION RELACIONAL O LOGICA
+            if(retornoexpresion.valor==""){
+                let etiqueta_salida= generador.generarEtiqueta();
+                let tmp_valorboolean= generador.generarTemporal();
+                generador.sacarTemporal(tmp_valorboolean);
+                generador.agregarEtiqueta(retornoexpresion.etiquetastrue);
+                generador.agregarExpresion(tmp_valorboolean,"1","","");
+                generador.printf("d","int",tmp_valorboolean);
+                generador.agregarGoTo(etiqueta_salida);
+                generador.agregarEtiqueta(retornoexpresion.etiquetasfalse);
+                generador.agregarExpresion(tmp_valorboolean,"0","","");
+                generador.printf("d","int",tmp_valorboolean);
+                generador.agregarEtiqueta(etiqueta_salida);
+            }else{
+                generador.printf("d","int",retornoexpresion.obtenerValor());
+            }
+
         }else if(retornoexpresion.tipodato==tipo_dato.STRING){
 
         }else{
