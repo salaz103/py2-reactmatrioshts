@@ -62,13 +62,17 @@ function traducir(ast:any,entorno:entorno){
     ast.forEach((ins:instruccion) => {
         //AQUI TENDRIAMOS QUE LEER EL AST, TODAS LAS INSTRUCCIONES A EXCEPCION DE LOS TYPES, POR QUE ESOS
         //YA FUERON TRADUCIDOS ARRIBA
-        
+        if(typeof(ins)=="string"){
+
+        }else{
+            ins.traducir(entorno);
+        }
         //PENDIENTE
         //IF(INSTRUCCION != TYPE ){ ENTONCES TRADUCIMOS}
 
-        
+
         //console.log(ins);
-        ins.traducir(entorno);
+        //ins.traducir(entorno);
     });
     //UNA VEZ YA TERMINAMOS DE TRADUCIR, TENEMOS QUE "CERRAR" EL AMBITO MAIN
     generador.agregarcodigo3d("return;");

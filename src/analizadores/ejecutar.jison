@@ -102,9 +102,8 @@
 
 <<EOF>>               return 'EOF';
 .					{ 
-  const e= new error.error("Léxico","El caracter "+yytext+" no pertenece al lenguaje",yylloc.first_line,yylloc.first_column);
+  const e= new error.error("Léxico","Error lexico con caracter: "+yytext,yylloc.first_line,yylloc.first_column);
   lista.listaerrores.obtenerLista().guardar(e);
-  //console.log('Error Lexico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column);
           }
 
 
@@ -139,6 +138,10 @@
   const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;
   const tipo_instruccion= require('../ArchivosTS/entorno/tipo').tipo_instruccion;
   const operador= require('../ArchivosTS/entorno/tipo').operador;
+
+  parser.yy.parseError= function(error,hash){
+    console.log(error);
+  }
 
 %}
 
@@ -186,7 +189,15 @@ instruccion:  declaraciones RPUNTOCOMA{$$=$1;}
             | instruccionreturn {$$=$1;}
             | asignacion  RPUNTOCOMA {$$=$1;}
             | error RPUNTOCOMA
+            {  
+              const e= new error.error("SINTACTICO","Revisar error Sintactico: "+yytext,this._$.first_line,this._$.first_column);
+              lista.listaerrores.obtenerLista().guardar(e);
+            }
             | error RLLAVEC
+            {  
+              const e= new error.error("SINTACTICO","Revisar error Sintactico: "+yytext,this._$.first_line,this._$.first_column);
+              lista.listaerrores.obtenerLista().guardar(e);
+            }
             ;
 
 masmenos: IDENTIFICADOR RMASMAS  

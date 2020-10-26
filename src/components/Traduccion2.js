@@ -14,7 +14,7 @@ import {desanidar,AST_grafo} from '../ArchivosTS/Desanidar';
 import {entorno} from '../ArchivosTS/desanidamiento/entorno';
 import {listaerrores} from '../ArchivosTS/entorno/listaerrores';
 import inicioTraduccion from '../ArchivosTS/Traducir';
-import {codigo3dfinal,limpiarTodo} from '../ArchivosTS/helpers/helpers';
+import {codigo3dfinal,limpiarTodo,agregarErrores_L_S} from '../ArchivosTS/helpers/helpers';
 
 class Traduccion2 extends React.Component {
   state = {
@@ -75,7 +75,7 @@ class Traduccion2 extends React.Component {
 
   traducir=()=>{
 
-    //listaerrores.obtenerLista().limpiar();
+    listaerrores.obtenerLista().limpiar();
     let ast=null;
     ast= Ejecutar.parse(this.state.codigoDesanidado);
     //AQUI COMIENZA LA TRADUCCIÓN
@@ -90,8 +90,8 @@ class Traduccion2 extends React.Component {
 
     this.setearC3D(c3d);
 
-    /*let lista= listaerrores.obtenerLista();
-    console.log(lista);*/
+    //SETEAR ERRORES LEXICOS Y SINTACTICOS
+    agregarErrores_L_S();
   }
 
   optimizar=()=>{
