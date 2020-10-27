@@ -64,30 +64,29 @@
 "**"                  return 'REXPONENTE';
 "%"                   return 'RMODULO';
 //OPERACIONES RELACIONALES
-">="                  return 'RMAYORIGUALQUE';
 "<="                  return 'RMENORIGUALQUE';
-">"                   return 'RMAYORQUE';
+">="                  return 'RMAYORIGUALQUE';
 "<"                   return 'RMENORQUE';
+">"                   return 'RMAYORQUE';
 "=="                  return 'RIGUALQUE';
 "!="                  return 'RDIFERENTEQUE';
+"="                   return 'RIGUAL';
 //OPERACIONES LOGICAS
 "!"                 return 'RNOT';
 //OPERADOR TERNARIO
 "?"                   return 'RINTERROGACION';
 ":"                   return 'RDOSPUNTOS';
 
-
-"."                   return 'RPUNTO';
-","                   return 'RCOMA';
-
-"="                   return 'RIGUAL';
-
+"("                   return 'RPARA';
+")"                   return 'RPARC';
 "["                   return 'RCORCHETEA';
 "]"                   return 'RCORCHETEC';
 "{"                   return 'RLLAVEA';
 "}"                   return 'RLLAVEC';
-"("                   return 'RPARA';
-")"                   return 'RPARC';
+"."                   return 'RPUNTO';
+","                   return 'RCOMA';
+
+
 
 \"[^"]+\" { yytext = yytext.slice(1,-1).replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r").replace("\\\\", "\\").replace("\\\"", "\""); 
             return 'CADENACOMILLADOBLE'; 
@@ -128,6 +127,9 @@
   const identificador= require('../ArchivosTS/expresiones/identificador');
   const unaria= require('../ArchivosTS/expresiones/operaciones/unaria');
   const relacional= require('../ArchivosTS/expresiones/operaciones/relacional');
+  const igualdad= require('../ArchivosTS/expresiones/operaciones/igualdad');
+  const diferenteque= require('../ArchivosTS/expresiones/operaciones/diferenteque');
+  const logica= require('../ArchivosTS/expresiones/operaciones/logica');
 
   //******************INTERMEDIOS************************************
   const variable= require('../ArchivosTS/expresiones/variable');
@@ -151,7 +153,8 @@
 %left 'ROR'
 %left 'RAND'
 %right 'RNOT'
-%left  'RMENORQUE' 'RMAYORQUE' 'RMENORIGUALQUE' 'RMAYORIGUALQUE' 'RDIFERENTEQUE' 'RIGUALQUE'
+%left  'RDIFERENTEQUE' 'RIGUALQUE'
+%left  'RMENORQUE' 'RMAYORQUE' 'RMENORIGUALQUE' 'RMAYORIGUALQUE' 
 
 //OPERACIONES ARITMETICAS
 %left 'RMAS' 'RMENOS'
@@ -345,12 +348,15 @@ expresion:
           {$$= new relacional.relacional($1,operador.MAYORIGUALQUE,$3,@1.first_line,@1.first_column);} 
           |expresion RMENORIGUALQUE expresion 
           {$$= new relacional.relacional($1,operador.MENORIGUALQUE,$3,@1.first_line,@1.first_column);} 
-          |expresion RIGUALQUE expresion       
+          |expresion RIGUALQUE expresion 
+          {$$= new igualdad.igualdad($1,operador.IGUALQUE,$3,@1.first_line,@1.first_column);}      
           |expresion RDIFERENTEQUE expresion   
+          {$$= new diferenteque.diferenteque($1,operador.DIFERENTEQUE,$3,@1.first_line,@1.first_column);}
           /*EXPRESIONES LOGICAS*/
           |expresion RAND expresion       
           |expresion ROR expresion           
-          |RNOT expresion                      
+          |RNOT expresion
+          {$$= new unaria.unaria(operador.NOT,$2,@1.first_line,@1.first_column);}                      
           /*RESTANTES*/
           |RPARA expresion RPARC  {$$=$2;}
           |expresion RINTERROGACION expresion RDOSPUNTOS expresion

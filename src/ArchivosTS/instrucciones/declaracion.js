@@ -63,32 +63,20 @@ var declaracion = /** @class */ (function () {
                                 //SI SON IGUALES ENTONCES GUARDAMOS LA VARIABLE EN LA TS Y COMIENZA 
                                 //LA TRADUCCION
                                 var nuevosim = ambito.agregarSimbolo(this.variables[i].id, retornoexpresion.tipodato, ambito.nombre, this.variables[i].linea, this.variables[i].columna, true);
-                                //SIEMPRE QUE AGREGAMOS UN NUEVO SIMBOLO, DEVUELVE EL SIMBOLO CREADO
-                                //AQUI PREGUNTAMOS SI ES VARIABLE GLOBAL O LOCAL, ESTO PARA VER SI MOVEMOS O NO
-                                //EL APUNTADOR "P"
                                 if (nuevosim.tipodato == tipo_1.tipo_dato.BOOLEAN) {
-                                    //TOCA VERIFICAR SI TRAE O NO VALOR
-                                    if (retornoexpresion.valor != "" || !retornoexpresion.tiene_etiquetas) {
-                                        var tmp = generador.generarTemporal();
-                                        generador.sacarTemporal(tmp);
-                                        generador.agregarExpresion(tmp, "p", "+", nuevosim.direccionrelativa);
-                                        generador.stack(tmp, retornoexpresion.obtenerValor());
-                                    }
-                                    else {
-                                        var tmp_guardado = generador.generarTemporal();
-                                        generador.sacarTemporal(tmp_guardado);
-                                        var etiqueta_salida = generador.generarEtiqueta();
-                                        generador.agregarEtiqueta(retornoexpresion.etiquetastrue);
-                                        generador.agregarExpresion(tmp_guardado, "1", "", "");
-                                        generador.agregarGoTo(etiqueta_salida);
-                                        generador.agregarEtiqueta(retornoexpresion.etiquetasfalse);
-                                        generador.agregarExpresion(tmp_guardado, "0", "", "");
-                                        generador.agregarEtiqueta(etiqueta_salida);
-                                        var tmp = generador.generarTemporal();
-                                        generador.sacarTemporal(tmp);
-                                        generador.agregarExpresion(tmp, "p", "+", nuevosim.direccionrelativa);
-                                        generador.stack(tmp, tmp_guardado);
-                                    }
+                                    var tmp_guardado = generador.generarTemporal();
+                                    generador.sacarTemporal(tmp_guardado);
+                                    var etiqueta_salida = generador.generarEtiqueta();
+                                    generador.agregarEtiqueta(retornoexpresion.etiquetastrue);
+                                    generador.agregarExpresion(tmp_guardado, "1", "", "");
+                                    generador.agregarGoTo(etiqueta_salida);
+                                    generador.agregarEtiqueta(retornoexpresion.etiquetasfalse);
+                                    generador.agregarExpresion(tmp_guardado, "0", "", "");
+                                    generador.agregarEtiqueta(etiqueta_salida);
+                                    var tmp = generador.generarTemporal();
+                                    generador.sacarTemporal(tmp);
+                                    generador.agregarExpresion(tmp, "p", "+", nuevosim.direccionrelativa);
+                                    generador.stack(tmp, tmp_guardado);
                                 }
                                 else {
                                     var tmp = generador.generarTemporal();

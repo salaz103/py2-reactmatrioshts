@@ -1,0 +1,94 @@
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
+var tipo_1 = require("../../entorno/tipo");
+var generacion_1 = require("../../helpers/generacion");
+var traduccionexp_1 = require("../traduccionexp");
+var operacion_1 = require("./operacion");
+var diferenteque = /** @class */ (function (_super) {
+    __extends(diferenteque, _super);
+    function diferenteque(expiz, op, expder, linea, columna) {
+        var _this = _super.call(this, expiz, op, expder) || this;
+        _this.linea = linea;
+        _this.columna = columna;
+        return _this;
+    }
+    diferenteque.prototype.traducir = function (ambito) {
+        var generador = generacion_1.generacion.getGenerador();
+        var retornoizquierdo = this.expresionizquierda.traducir(ambito);
+        //NUMERO-NUMERO
+        if ((retornoizquierdo.tipodato == tipo_1.tipo_dato.ENTERO || retornoizquierdo.tipodato == tipo_1.tipo_dato.DECIMAL)) {
+            var retornoderecho = this.expresionderecha.traducir(ambito);
+            if (retornoderecho.tipodato == tipo_1.tipo_dato.DECIMAL || retornoderecho.tipodato == tipo_1.tipo_dato.ENTERO) {
+                var etiquetatrue = generador.generarEtiqueta();
+                var etiquetafalse = generador.generarEtiqueta();
+                generador.agregarIf(retornoizquierdo.obtenerValor(), "!=", retornoderecho.obtenerValor(), etiquetatrue);
+                generador.agregarGoTo(etiquetafalse);
+                var valorretorno = new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.BOOLEAN, true);
+                valorretorno.etiquetastrue = etiquetatrue;
+                valorretorno.etiquetasfalse = etiquetafalse;
+                return valorretorno;
+            }
+            else {
+                //ERROR , IGUALDAD SOLO SE PUEDE ENTRE NUMEROS
+                //COMO NO SE PUDO REALIZAR LA IGUALACION, HAY QUE SACAR EL TEMPORAL DEL LADO IZQUIERDO
+                retornoizquierdo.obtenerValor();
+                return new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.UNDEFINED, false);
+            }
+            //BOOLEAN-BOOLEAN
+        }
+        else if (retornoizquierdo.tipodato == tipo_1.tipo_dato.BOOLEAN) {
+            generador.agregarEtiqueta(retornoizquierdo.etiquetastrue);
+            var tmp_bool1 = generador.generarTemporal();
+            generador.sacarTemporal(tmp_bool1);
+            var etiqueta_salida1 = generador.generarEtiqueta();
+            generador.agregarExpresion(tmp_bool1, "1", "", "");
+            generador.agregarGoTo(etiqueta_salida1);
+            generador.agregarEtiqueta(retornoizquierdo.etiquetasfalse);
+            generador.agregarExpresion(tmp_bool1, "0", "", "");
+            generador.agregarEtiqueta(etiqueta_salida1);
+            var retornoderecho = this.expresionderecha.traducir(ambito);
+            console.log(retornoderecho);
+            if (retornoderecho.tipodato == tipo_1.tipo_dato.BOOLEAN) {
+                generador.agregarEtiqueta(retornoderecho.etiquetastrue);
+                var tmp_bool2 = generador.generarTemporal();
+                var etiqueta_salida2 = generador.generarEtiqueta();
+                generador.agregarExpresion(tmp_bool2, "1", "", "");
+                generador.agregarGoTo(etiqueta_salida2);
+                generador.agregarEtiqueta(retornoderecho.etiquetasfalse);
+                generador.agregarExpresion(tmp_bool2, "0", "", "");
+                generador.agregarEtiqueta(etiqueta_salida2);
+                //YA HACEMOS LA IGUALACION
+                var etiquetatrueigual = generador.generarEtiqueta();
+                var etiquetafalseigual = generador.generarEtiqueta();
+                generador.agregarIf(tmp_bool1, "!=", tmp_bool2, etiquetatrueigual);
+                generador.agregarGoTo(etiquetafalseigual);
+                generador.sacarTemporal(tmp_bool2);
+                var valorretorno = new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.BOOLEAN, true);
+                valorretorno.etiquetastrue = etiquetatrueigual;
+                valorretorno.etiquetasfalse = etiquetafalseigual;
+                return valorretorno;
+            }
+            else {
+                //ERROR - BOOLEAN SOLO SE PUEDE IGUALAR CON BOOLEAN
+                console.log("ERROR- BOOLEAN SOLO SE PUEDE IGUALAR CON BOOLEAN");
+                return new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.UNDEFINED, false);
+            }
+        }
+        return null;
+    };
+    return diferenteque;
+}(operacion_1["default"]));
+exports.diferenteque = diferenteque;

@@ -122,14 +122,8 @@ var relacional = /** @class */ (function (_super) {
                     columna: this.columna
                 }));
             }
-            //**********************************DIFERENTE QUE************************************************ */
         }
-        else if (this.tipooperador == tipo_1.operador.DIFERENTEQUE) {
-            //**********************************IGUAL QUE*************************************************** */
-        }
-        else if (this.tipooperador == tipo_1.operador.IGUALQUE) {
-        }
-        return null;
+        return new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.UNDEFINED, false);
     };
     return relacional;
 }(operacion_1["default"]));

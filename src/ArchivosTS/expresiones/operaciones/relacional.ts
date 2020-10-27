@@ -135,19 +135,9 @@ export class relacional extends operacion implements expresion{
             }
 
 
-
-//**********************************DIFERENTE QUE************************************************ */
-        }else if(this.tipooperador==operador.DIFERENTEQUE){
-
-
-
-
-//**********************************IGUAL QUE*************************************************** */
-        }else if(this.tipooperador==operador.IGUALQUE){
-
         }
 
-        return null;
+        return new traduccionexp("",false,tipo_dato.UNDEFINED,false);
     }
 
 }

@@ -29,6 +29,21 @@ var unaria = /** @class */ (function () {
             }
         }
         else if (this.tipooperador == tipo_1.operador.NOT) {
+            if (retornoexp.tipodato == tipo_1.tipo_dato.BOOLEAN) {
+                var retval = new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.BOOLEAN, true);
+                retval.etiquetastrue = retornoexp.etiquetasfalse;
+                retval.etiquetasfalse = retornoexp.etiquetastrue;
+                return retval;
+            }
+            else {
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'OPERADOR NOT SOLO ES APLICABLE A BOOLEAN',
+                    ambito: ambito.nombre,
+                    linea: this.linea,
+                    columna: this.columna
+                }));
+            }
         }
         return new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.UNDEFINED, false);
     };

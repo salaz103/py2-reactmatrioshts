@@ -74,7 +74,7 @@ var generacion = /** @class */ (function () {
         this.codigo.push(tmp_guardar + "=" + "stack[(int)" + pos_stack + "];");
     };
     generacion.prototype.printf = function (formato, casteo, valor) {
-        this.codigo.push("printf(\"%" + formato + "\",(" + casteo + ")" + valor + ");");
+        this.codigo.push("printf(\"%" + formato + "\\" + "n" + "\",(" + casteo + ")" + valor + ");");
     };
     generacion.prototype.agregarIf = function (valorizquierdo, operador, valorderecho, etiquetaVerdadera) {
         this.codigo.push("if(" + valorizquierdo + operador + valorderecho + ") goto " + etiquetaVerdadera + ";");

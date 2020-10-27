@@ -27,7 +27,20 @@ var identificador = /** @class */ (function () {
             var tmp_guardado = generador.generarTemporal();
             generador.agregarExpresion(tmp_acceso, "p", "+", sim.direccionrelativa);
             generador.getValorStack(tmp_guardado, tmp_acceso);
-            return new traduccionexp_1.traduccionexp(tmp_guardado, true, sim.getTipoDato(), false);
+            if (sim.getTipoDato() == tipo_1.tipo_dato.BOOLEAN) {
+                var etqtrue = generador.generarEtiqueta();
+                var etqfalse = generador.generarEtiqueta();
+                var retvalor = new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.BOOLEAN, true);
+                generador.sacarTemporal(tmp_guardado);
+                generador.agregarIf(tmp_guardado, "==", "1", etqtrue);
+                generador.agregarGoTo(etqfalse);
+                retvalor.etiquetastrue = etqtrue;
+                retvalor.etiquetasfalse = etqfalse;
+                return retvalor;
+            }
+            else {
+                return new traduccionexp_1.traduccionexp(tmp_guardado, true, sim.getTipoDato(), false);
+            }
         }
         else {
             app_1.almacen.dispatch(ts_js_1.errores({

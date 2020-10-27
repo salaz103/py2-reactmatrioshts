@@ -98,7 +98,7 @@ export class generacion{
     }
 
     public printf(formato:string,casteo:string, valor:any){
-        this.codigo.push("printf(\"%"+formato+"\",("+casteo+")"+valor+");");
+        this.codigo.push("printf(\"%"+formato+"\\"+"n"+"\",("+casteo+")"+valor+");");
     }
 
     public agregarIf(valorizquierdo:any,operador:string,valorderecho:any, etiquetaVerdadera:string){

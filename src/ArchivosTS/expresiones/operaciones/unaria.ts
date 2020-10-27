@@ -42,6 +42,21 @@ export class unaria implements expresion{
 
         }else if(this.tipooperador==operador.NOT){
 
+            if(retornoexp.tipodato==tipo_dato.BOOLEAN){
+                const retval= new traduccionexp("",false,tipo_dato.BOOLEAN,true);
+                retval.etiquetastrue=retornoexp.etiquetasfalse;
+                retval.etiquetasfalse= retornoexp.etiquetastrue;
+                return retval;
+
+            }else{
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion:'OPERADOR NOT SOLO ES APLICABLE A BOOLEAN',
+                    ambito:ambito.nombre,
+                    linea:this.linea,
+                    columna:this.columna
+                }));
+            }
 
         }
 

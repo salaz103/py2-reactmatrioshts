@@ -62,13 +62,18 @@ function traducir(ast:any,entorno:entorno){
     ast.forEach((ins:instruccion) => {
         //AQUI TENDRIAMOS QUE LEER EL AST, TODAS LAS INSTRUCCIONES A EXCEPCION DE LOS TYPES, POR QUE ESOS
         //YA FUERON TRADUCIDOS ARRIBA
-        if(typeof(ins)=="string"){
 
-        }else{
-            ins.traducir(entorno);
-        }
-        //PENDIENTE
+        if(!(typeof(ins)=="string")){
+
+            //PENDIENTE
         //IF(INSTRUCCION != TYPE ){ ENTONCES TRADUCIMOS}
+
+            ins.traducir(entorno);
+
+            
+        }
+
+        
 
 
         //console.log(ins);
