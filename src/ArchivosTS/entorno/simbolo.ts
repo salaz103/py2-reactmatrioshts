@@ -38,7 +38,13 @@ export class simbolo{
         this.tipodato= tipo_d;
     }
 
+    getReasignable(){
+        return this.reasignable;
+    }
 
+    getTipo(){
+        return this.tipodato;
+    }
     
 
 }

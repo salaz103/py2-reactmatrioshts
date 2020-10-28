@@ -117,7 +117,7 @@
   //******************INSTRUCCIONES***********************************
   const imprimir= require('../ArchivosTS/instrucciones/imprimir');
   const declaracion= require('../ArchivosTS/instrucciones/declaracion'); 
-
+  const incremento_decremento= require('../ArchivosTS/instrucciones/incremento_decremento');
 
   //******************EXPRESIONES*************************************
   const numero= require('../ArchivosTS/expresiones/numero');
@@ -203,8 +203,10 @@ instruccion:  declaraciones RPUNTOCOMA{$$=$1;}
             }
             ;
 
-masmenos: IDENTIFICADOR RMASMAS  
+masmenos: IDENTIFICADOR RMASMAS
+          {$$= new incremento_decremento.incremento_decremento($1,operador.INCREMENTO,@1.first_line,@1.first_column);}  
          |IDENTIFICADOR RMENOSMENOS
+         {$$= new incremento_decremento.incremento_decremento($1,operador.DECREMENTO,@1.first_line,@1.first_column);}
          ;
 
 nativa: IDENTIFICADOR RPUNTO RLENGTH
@@ -287,7 +289,7 @@ declararfuncion: RFUNCTION IDENTIFICADOR RPARA RPARC RLLAVEA lista RLLAVEC
                | RFUNCTION IDENTIFICADOR RPARA RPARC RDOSPUNTOS tipodato RLLAVEA lista RLLAVEC
                  ;
 
-llamarfuncion: IDENTIFICADOR RPARA RPARC 
+llamarfuncion:  IDENTIFICADOR RPARA RPARC 
                |IDENTIFICADOR RPARA listaexpresiones RPARC
                ;
 
@@ -336,8 +338,10 @@ expresion:
           |expresion RMODULO expresion 
           {$$= new aritmetica.aritmetica($1,operador.MODULO,$3,@1.first_line,@1.first_column);}   
           |expresion REXPONENTE expresion 
-          |IDENTIFICADOR RMASMAS          
-          |IDENTIFICADOR RMENOSMENOS      
+          |IDENTIFICADOR RMASMAS
+          {$$= new incremento_decremento.incremento_decremento($1,operador.INCREMENTO,@1.first_line,@1.first_column);}          
+          |IDENTIFICADOR RMENOSMENOS
+          {$$= new incremento_decremento.incremento_decremento($1,operador.DECREMENTO,@1.first_line,@1.first_column);}      
 
           /*EXPRESIONES RELACIONALES*/
           |expresion RMAYORQUE expresion
@@ -353,8 +357,10 @@ expresion:
           |expresion RDIFERENTEQUE expresion   
           {$$= new diferenteque.diferenteque($1,operador.DIFERENTEQUE,$3,@1.first_line,@1.first_column);}
           /*EXPRESIONES LOGICAS*/
-          |expresion RAND expresion       
-          |expresion ROR expresion           
+          |expresion RAND expresion
+          {$$= new logica.logica($1,operador.AND,$3,@1.first_line,@1.first_column);}       
+          |expresion ROR expresion
+           {$$= new logica.logica($1,operador.OR,$3,@1.first_line,@1.first_column);}            
           |RNOT expresion
           {$$= new unaria.unaria(operador.NOT,$2,@1.first_line,@1.first_column);}                      
           /*RESTANTES*/

@@ -104,6 +104,12 @@ case 19: case 20:
               lista.listaerrores.obtenerLista().guardar(e);
             
 break;
+case 21: case 83:
+this.$= new incremento_decremento.incremento_decremento($$[$0-1],operador.INCREMENTO,_$[$0-1].first_line,_$[$0-1].first_column);
+break;
+case 22: case 84:
+this.$= new incremento_decremento.incremento_decremento($$[$0-1],operador.DECREMENTO,_$[$0-1].first_line,_$[$0-1].first_column);
+break;
 case 28:
 this.$=new declaracion.declaracion($$[$0-1],$$[$0]);
 break;
@@ -175,6 +181,12 @@ this.$= new igualdad.igualdad($$[$0-2],operador.IGUALQUE,$$[$0],_$[$0-2].first_l
 break;
 case 90:
 this.$= new diferenteque.diferenteque($$[$0-2],operador.DIFERENTEQUE,$$[$0],_$[$0-2].first_line,_$[$0-2].first_column);
+break;
+case 91:
+this.$= new logica.logica($$[$0-2],operador.AND,$$[$0],_$[$0-2].first_line,_$[$0-2].first_column);
+break;
+case 92:
+this.$= new logica.logica($$[$0-2],operador.OR,$$[$0],_$[$0-2].first_line,_$[$0-2].first_column);
 break;
 case 93:
 this.$= new unaria.unaria(operador.NOT,$$[$0],_$[$0-1].first_line,_$[$0-1].first_column);
@@ -453,7 +465,7 @@ _handle_error:
   //******************INSTRUCCIONES***********************************
   const imprimir= require('../ArchivosTS/instrucciones/imprimir');
   const declaracion= require('../ArchivosTS/instrucciones/declaracion'); 
-
+  const incremento_decremento= require('../ArchivosTS/instrucciones/incremento_decremento');
 
   //******************EXPRESIONES*************************************
   const numero= require('../ArchivosTS/expresiones/numero');

@@ -20,6 +20,12 @@ var simbolo = /** @class */ (function () {
     simbolo.prototype.setTipoDato = function (tipo_d) {
         this.tipodato = tipo_d;
     };
+    simbolo.prototype.getReasignable = function () {
+        return this.reasignable;
+    };
+    simbolo.prototype.getTipo = function () {
+        return this.tipodato;
+    };
     return simbolo;
 }());
 exports.simbolo = simbolo;
