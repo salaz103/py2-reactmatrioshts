@@ -82,7 +82,7 @@ var logica = /** @class */ (function (_super) {
                 else {
                     app_1.almacen.dispatch(ts_js_1.errores({
                         tipo: 'SEMANTICO',
-                        descripcion: '2DO OPERADOR EN && NO ES BOOLEAN, SE RECIBIO: ' + retornoderecho.tipodato,
+                        descripcion: '2DO OPERADOR EN || NO ES BOOLEAN, SE RECIBIO: ' + retornoderecho.tipodato,
                         ambito: ambito.nombre,
                         linea: this.linea,
                         columna: this.columna
