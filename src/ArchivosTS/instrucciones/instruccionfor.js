@@ -36,6 +36,7 @@ var instruccionfor = /** @class */ (function () {
         generador.agregarGoTo(etiquetaInicio);
         //AQUI PONEMOS LA ETIQUETA FALSA, CUANDO LA SEGUNDA CONDICION YA NO SE CUMPLA
         generador.agregarEtiqueta(retorno_2.etiquetasfalse);
+        generador.agregarComentarios("FIN- FOR");
     };
     return instruccionfor;
 }());

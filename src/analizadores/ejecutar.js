@@ -140,6 +140,9 @@ break;
 case 48: case 49:
 this.$= new instruccionfor.instruccionfor($$[$0-8],$$[$0-6],$$[$0-4],$$[$0-1],_$[$0-10].first_line,_$[$0-10].first_column);
 break;
+case 52:
+this.$= new instruccionwhile.instruccionwhile($$[$0-4],$$[$0-1],_$[$0-6].first_line,_$[$0-6].first_column);
+break;
 case 63:
 this.$=tipo_dato.STRING;
 break;
@@ -480,6 +483,7 @@ _handle_error:
   const incremento_decremento= require('../ArchivosTS/instrucciones/incremento_decremento');
   const instruccionif= require('../ArchivosTS/instrucciones/instruccionif');
   const instruccionfor= require('../ArchivosTS/instrucciones/instruccionfor');
+  const instruccionwhile= require('../ArchivosTS/instrucciones/instruccionwhile');
 
   //******************EXPRESIONES*************************************
   const numero= require('../ArchivosTS/expresiones/numero');
