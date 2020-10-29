@@ -143,6 +143,9 @@ break;
 case 52:
 this.$= new instruccionwhile.instruccionwhile($$[$0-4],$$[$0-1],_$[$0-6].first_line,_$[$0-6].first_column);
 break;
+case 53:
+this.$= new instrucciondowhile.instrucciondowhile($$[$0-5],$$[$0-1],_$[$0-7].first_line,_$[$0-7].first_column);
+break;
 case 63:
 this.$=tipo_dato.STRING;
 break;
@@ -484,6 +487,8 @@ _handle_error:
   const instruccionif= require('../ArchivosTS/instrucciones/instruccionif');
   const instruccionfor= require('../ArchivosTS/instrucciones/instruccionfor');
   const instruccionwhile= require('../ArchivosTS/instrucciones/instruccionwhile');
+  const instrucciondowhile= require('../ArchivosTS/instrucciones/instrucciondowhile');
+  
 
   //******************EXPRESIONES*************************************
   const numero= require('../ArchivosTS/expresiones/numero');

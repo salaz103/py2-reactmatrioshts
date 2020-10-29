@@ -121,6 +121,8 @@
   const instruccionif= require('../ArchivosTS/instrucciones/instruccionif');
   const instruccionfor= require('../ArchivosTS/instrucciones/instruccionfor');
   const instruccionwhile= require('../ArchivosTS/instrucciones/instruccionwhile');
+  const instrucciondowhile= require('../ArchivosTS/instrucciones/instrucciondowhile');
+  
 
   //******************EXPRESIONES*************************************
   const numero= require('../ArchivosTS/expresiones/numero');
@@ -281,7 +283,7 @@ instruccionfor: RFOR RPARA declaraciones RPUNTOCOMA expresion RPUNTOCOMA masmeno
 instruccionwhile:  RWHILE RPARA expresion RPARC RLLAVEA lista RLLAVEC
                    {$$= new instruccionwhile.instruccionwhile($3,$6,@1.first_line,@1.first_column);}
                  | RDO RLLAVEA lista RLLAVEC RWHILE RPARA expresion RPARC
-                   
+                   {$$= new instrucciondowhile.instrucciondowhile($3,$7,@1.first_line,@1.first_column);} 
                   ;
 
                 //FUNCION SIN TIPO DATO Y SIN PARAMETROS
