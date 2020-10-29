@@ -114,20 +114,12 @@ export class generacion{
 
     }
 
-    public imprimirTrue(){
-        this.codigo.push("printf(\"%c\",(char)"+"t".charCodeAt(0)+");");
-        this.codigo.push("printf(\"%c\",(char)"+"r".charCodeAt(0)+");");
-        this.codigo.push("printf(\"%c\",(char)"+"u".charCodeAt(0)+");");
-        this.codigo.push("printf(\"%c\",(char)"+"e".charCodeAt(0)+");");
+  
+    public agregarComentarios(comentario:string){
+        this.codigo.push("/*"+comentario+"*/");
     }
 
-    public imprimirFalse(){
-        this.codigo.push("printf(\"%c\",(char)"+"f".charCodeAt(0)+");");
-        this.codigo.push("printf(\"%c\",(char)"+"a".charCodeAt(0)+");");
-        this.codigo.push("printf(\"%c\",(char)"+"l".charCodeAt(0)+");");
-        this.codigo.push("printf(\"%c\",(char)"+"s".charCodeAt(0)+");");
-        this.codigo.push("printf(\"%c\",(char)"+"e".charCodeAt(0)+");");
-    }
+    
 
     //*******************METODOS PARA EL MANEJO DEL HEAP Y STACK**************/
     public siguienteHeap(){

@@ -85,18 +85,8 @@ var generacion = /** @class */ (function () {
     generacion.prototype.agregarEtiqueta = function (etiqueta) {
         this.codigo.push(etiqueta + ":");
     };
-    generacion.prototype.imprimirTrue = function () {
-        this.codigo.push("printf(\"%c\",(char)" + "t".charCodeAt(0) + ");");
-        this.codigo.push("printf(\"%c\",(char)" + "r".charCodeAt(0) + ");");
-        this.codigo.push("printf(\"%c\",(char)" + "u".charCodeAt(0) + ");");
-        this.codigo.push("printf(\"%c\",(char)" + "e".charCodeAt(0) + ");");
-    };
-    generacion.prototype.imprimirFalse = function () {
-        this.codigo.push("printf(\"%c\",(char)" + "f".charCodeAt(0) + ");");
-        this.codigo.push("printf(\"%c\",(char)" + "a".charCodeAt(0) + ");");
-        this.codigo.push("printf(\"%c\",(char)" + "l".charCodeAt(0) + ");");
-        this.codigo.push("printf(\"%c\",(char)" + "s".charCodeAt(0) + ");");
-        this.codigo.push("printf(\"%c\",(char)" + "e".charCodeAt(0) + ");");
+    generacion.prototype.agregarComentarios = function (comentario) {
+        this.codigo.push("/*" + comentario + "*/");
     };
     //*******************METODOS PARA EL MANEJO DEL HEAP Y STACK**************/
     generacion.prototype.siguienteHeap = function () {

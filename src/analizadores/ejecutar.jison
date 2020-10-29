@@ -118,6 +118,8 @@
   const imprimir= require('../ArchivosTS/instrucciones/imprimir');
   const declaracion= require('../ArchivosTS/instrucciones/declaracion'); 
   const incremento_decremento= require('../ArchivosTS/instrucciones/incremento_decremento');
+  const instruccionif= require('../ArchivosTS/instrucciones/instruccionif');
+  const instruccionfor= require('../ArchivosTS/instrucciones/instruccionfor');
 
   //******************EXPRESIONES*************************************
   const numero= require('../ArchivosTS/expresiones/numero');
@@ -244,16 +246,16 @@ tipovariable: RLET  {$$=tipo_variable.LET;}
 asignacion: IDENTIFICADOR RIGUAL expresion;
 
 
+
 instruccionif: RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC
-             | RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC instruccionelseif
-               ;
+               {$$= new instruccionif.instruccionif($3,$6,null,@1.first_line,@1.first_column);} 
+             | RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC RELSE RLLAVEA lista RLLAVEC
+               {$$= new instruccionif.instruccionif($3,$6,$10,@1.first_line,@1.first_column);}
+             | RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC RELSE instruccionif
+               {$$= new instruccionif.instruccionif($3,$6,$9,@1.first_line,@1.first_column);} 
+             ;
 
-instruccionelseif:  RELSE RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC
-                  | RELSE RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC instruccionelseif
-                  | instruccionelse
-                  ;
 
-instruccionelse: RELSE RLLAVEA lista RLLAVEC;
 
 instruccionswitch: RSWITCH RPARA expresion RPARC RLLAVEA casos RLLAVEC
                    ;
@@ -267,9 +269,9 @@ caso:   RCASE expresion RDOSPUNTOS lista
         ;
 
 instruccionfor: RFOR RPARA declaraciones RPUNTOCOMA expresion RPUNTOCOMA masmenos RPARC RLLAVEA lista RLLAVEC
-              
+                 {$$= new instruccionfor.instruccionfor($3,$5,$7,$10,@1.first_line,@1.first_column);}
               | RFOR RPARA asignacion RPUNTOCOMA expresion RPUNTOCOMA masmenos RPARC RLLAVEA lista RLLAVEC
-                 
+                 {$$= new instruccionfor.instruccionfor($3,$5,$7,$10,@1.first_line,@1.first_column);}
               | RFOR RPARA tipovariable IDENTIFICADOR ROF IDENTIFICADOR RPARC RLLAVEA lista RLLAVEC
 
               | RFOR RPARA tipovariable IDENTIFICADOR RIN IDENTIFICADOR RPARC RLLAVEC lista RLLAVEC

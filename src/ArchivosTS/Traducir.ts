@@ -73,9 +73,6 @@ function traducir(ast:any,entorno:entorno){
             
         }
 
-        
-
-
         //console.log(ins);
         //ins.traducir(entorno);
     });
