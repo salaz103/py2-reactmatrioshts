@@ -43,15 +43,15 @@ function traducir(ast, entorno) {
     var generador = generacion_1.generacion.getGenerador();
     generador.agregarcodigo3d("void main(){");
     ast.forEach(function (ins) {
-        //AQUI TENDRIAMOS QUE LEER EL AST, TODAS LAS INSTRUCCIONES A EXCEPCION DE LOS TYPES, POR QUE ESOS
-        //YA FUERON TRADUCIDOS ARRIBA
         if (!(typeof (ins) == "string")) {
             //PENDIENTE
             //IF(INSTRUCCION != TYPE ){ ENTONCES TRADUCIMOS}
-            ins.traducir(entorno);
+            if (ins instanceof declaracionfuncion_1.declaracionfuncion) {
+            }
+            else {
+                ins.traducir(entorno);
+            }
         }
-        //console.log(ins);
-        //ins.traducir(entorno);
     });
     //UNA VEZ YA TERMINAMOS DE TRADUCIR, TENEMOS QUE "CERRAR" EL AMBITO MAIN
     generador.agregarcodigo3d("return;");

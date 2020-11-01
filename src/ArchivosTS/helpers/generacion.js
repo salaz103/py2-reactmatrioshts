@@ -57,6 +57,15 @@ var generacion = /** @class */ (function () {
             this.setTemporales["delete"](temporal);
         }
     };
+    generacion.prototype.getStoreTemporales = function () {
+        return this.setTemporales;
+    };
+    generacion.prototype.limpiarStoreTemporales = function () {
+        this.setTemporales.clear();
+    };
+    generacion.prototype.restaurarTemporales = function (storeTemporales) {
+        this.setTemporales = storeTemporales;
+    };
     //*****************METODOS PARA AGREGAR CODIGO 3D*************************/
     generacion.prototype.agregarcodigo3d = function (codigo) {
         this.codigo.push(codigo);

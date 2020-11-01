@@ -1,6 +1,6 @@
 /* lexical grammar */
 %lex
-%options case-sensitive
+%options case-insensitive
 %locations
 
 %%
@@ -122,7 +122,9 @@
   const instruccionfor= require('../ArchivosTS/instrucciones/instruccionfor');
   const instruccionwhile= require('../ArchivosTS/instrucciones/instruccionwhile');
   const instrucciondowhile= require('../ArchivosTS/instrucciones/instrucciondowhile');
-  
+  const declaracionfuncion= require('../ArchivosTS/instrucciones/declaracionfuncion');
+  const instruccionreturn= require('../ArchivosTS/instrucciones/instruccionreturn');
+
 
   //******************EXPRESIONES*************************************
   const numero= require('../ArchivosTS/expresiones/numero');
@@ -138,6 +140,8 @@
 
   //******************INTERMEDIOS************************************
   const variable= require('../ArchivosTS/expresiones/variable');
+  const parametro= require('../ArchivosTS/instrucciones/parametro');
+
 
 
   //****************OTROS***********************************
@@ -286,26 +290,30 @@ instruccionwhile:  RWHILE RPARA expresion RPARC RLLAVEA lista RLLAVEC
                    {$$= new instrucciondowhile.instrucciondowhile($3,$7,@1.first_line,@1.first_column);} 
                   ;
 
-                //FUNCION SIN TIPO DATO Y SIN PARAMETROS
-declararfuncion: RFUNCTION IDENTIFICADOR RPARA RPARC RLLAVEA lista RLLAVEC
-               //FUNCION CON TIPO DE DATO Y PARAMETROS
-               | RFUNCTION IDENTIFICADOR RPARA parametros RPARC RDOSPUNTOS tipodato RLLAVEA lista RLLAVEC
-               //FUNCION SIN TIPO DE DATO Y CON PARAMETROS
-               | RFUNCTION IDENTIFICADOR RPARA parametros RPARC  RLLAVEA lista RLLAVEC
+
+                //FUNCION CON TIPO DE DATO Y PARAMETROS
+declararfuncion: RFUNCTION IDENTIFICADOR RPARA parametros RPARC RDOSPUNTOS tipodato RLLAVEA lista RLLAVEC
+                 {$$= new declaracionfuncion.declaracionfuncion($2,$4,$7,$9,@1.first_line,@1.first_column);}
                //FUNCION CON TIPO DE DATO Y SIN PARAMETROS
                | RFUNCTION IDENTIFICADOR RPARA RPARC RDOSPUNTOS tipodato RLLAVEA lista RLLAVEC
+               {$$= new declaracionfuncion.declaracionfuncion($2,null,$6,$8,@1.first_line,@1.first_column);}
+               //PENDIENTE, FALTA AGREGAR FUNCIONES CON TIPO DE DATO [][], ES DECIR, FUNCIONES QUE REGRESAN
+               //ARREGLOS
                  ;
 
 llamarfuncion:  IDENTIFICADOR RPARA RPARC 
                |IDENTIFICADOR RPARA listaexpresiones RPARC
                ;
 
-parametros: parametros RCOMA parametro 
-          | parametro 
+parametros: parametros RCOMA parametro {$1.push($3); $$=$1;}
+          | parametro {$$=[$1];}  
           ;
 
 
-parametro: IDENTIFICADOR RDOSPUNTOS tipodato 
+parametro: IDENTIFICADOR RDOSPUNTOS tipodato
+            {$$= new parametro.parametro($1,$3,false,@1.first_line,@1.first_column);}
+          |IDENTIFICADOR RDOSPUNTOS tipodato dimensiones
+            {$$= new parametro.parametro($1,$3,true,@1.first_line,@1.first_column);}
            ;
 
 
@@ -323,7 +331,9 @@ imprimir  : RCONSOLE RPUNTO RLOG RPARA expresion RPARC RPUNTOCOMA
             ;  
 
 instruccionreturn: RRETURN RPUNTOCOMA
+                   {$$= new instruccionreturn.instruccionreturn(null,@1.first_line,@1.first_column);}     
                   |RRETURN expresion RPUNTOCOMA
+                   {$$= new instruccionreturn.instruccionreturn($2,@1.first_line,@1.first_column);}
                   ; 
 
 listaexpresiones: listaexpresiones RCOMA expresion 

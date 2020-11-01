@@ -108,19 +108,6 @@ export class declaracion implements instruccion{
                                 generador.stack(tmp,retornoexpresion.obtenerValor());
                               }
 
-                              /*if(nuevosim.esGlobal){
-                                  let tmp= generador.generarTemporal();
-                                  generador.sacarTemporal(tmp);
-                                  generador.agregarExpresion(tmp,"p","+",nuevosim.direccionrelativa);
-                                  generador.stack(tmp,retornoexpresion.obtenerValor());
-                                
-                              }else{
-                                let tmp= generador.generarTemporal();
-                                generador.sacarTemporal(tmp);
-                                generador.agregarExpresion(tmp,"p","+",nuevosim.direccionrelativa);
-                                generador.stack(tmp,retornoexpresion.obtenerValor());
-                              }*/
-
 
                           }else{
                               //ERROR - SEMANTICO - TIPO DATO VARIABLE NO COMPATIBLE CON TIPO DATO DE EXPRESION

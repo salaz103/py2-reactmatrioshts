@@ -74,7 +74,17 @@ export class generacion{
         }
     }
 
-   
+   public getStoreTemporales(){
+       return this.setTemporales;
+   }
+
+   public limpiarStoreTemporales(){
+       this.setTemporales.clear();
+   }
+
+   public restaurarTemporales(storeTemporales: Set<string>){
+       this.setTemporales= storeTemporales;
+   }
 
     //*****************METODOS PARA AGREGAR CODIGO 3D*************************/
     public agregarcodigo3d(codigo:string){

@@ -38,6 +38,9 @@ var imprimir = /** @class */ (function () {
         }
         else if (retornoexpresion.tipodato == tipo_1.tipo_dato.STRING) {
         }
+        else if (retornoexpresion.tipodato == tipo_1.tipo_dato.NUMBER) {
+            generador.printf("d", "int", retornoexpresion.obtenerValor());
+        }
         else {
             app_1.almacen.dispatch(ts_js_1.errores({
                 tipo: 'SEMANTICO',

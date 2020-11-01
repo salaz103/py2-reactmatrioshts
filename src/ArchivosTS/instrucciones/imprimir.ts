@@ -45,6 +45,8 @@ export class imprimir implements instruccion{
 
         }else if(retornoexpresion.tipodato==tipo_dato.STRING){
 
+        }else if(retornoexpresion.tipodato==tipo_dato.NUMBER){
+            generador.printf("d","int",retornoexpresion.obtenerValor());
         }else{
             almacen.dispatch(errores({
                 tipo:'SEMANTICO',
