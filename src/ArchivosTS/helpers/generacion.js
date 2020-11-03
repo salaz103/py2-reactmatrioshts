@@ -28,7 +28,7 @@ var generacion = /** @class */ (function () {
             return ;
             }
          */
-        var encabezado = "#include <stdio.h> \n#include <math.h> \ndouble heap[16384]; \ndouble stack[16394]; \ndouble p; \ndouble h;\n";
+        var encabezado = "#include <stdio.h> \n#include <math.h> \ndouble heap[132000]; \ndouble stack[132000]; \ndouble p; \ndouble h;\n";
         var listatemporales = "double ";
         for (var i = 0; i <= this.temporales; i++) {
             if (i == this.temporales) {
@@ -72,21 +72,57 @@ var generacion = /** @class */ (function () {
         this.setTemporales = storeTemporales;
     };
     generacion.prototype.guardarTemporales = function (ambito) {
+        var _this = this;
         if (this.setTemporales.size > 0) {
+            //INICIA EL GUARDADO DE TEMPORALES
             //SI EL STORE DE TEMPORALES ES MAYOR A 0, ENTONCES VAMOS A GUARDAR ESOS TEMPORALES
-            console.log("ENTRE AL GUARDADO DE TEMPORALES: ");
+            /*console.log("ENTRE AL GUARDADO DE TEMPORALES: ")
             console.log("TEMPORALES EN LA STORE");
-            console.log(this.setTemporales);
+            console.log(this.setTemporales);*/
+            var temp_guardado_1 = this.generarTemporal();
+            this.sacarTemporal(temp_guardado_1);
+            var contador_1 = 0;
+            this.agregarComentarios("INICIO- GUARDADO DE TEMPORALES");
+            this.agregarExpresion(temp_guardado_1, "p", "+", ambito.tamaño);
+            this.setTemporales.forEach(function (temporal) {
+                contador_1++;
+                _this.stack(temp_guardado_1, temporal);
+                if (contador_1 != _this.setTemporales.size) {
+                    _this.agregarExpresion(temp_guardado_1, temp_guardado_1, "+", "1");
+                }
+            });
+            this.agregarComentarios("FIN- GUARDADO DE TEMPORALES");
+            //AHORA HAY QUE CAMBIARLE EL TAMAÑO AL AMBITO ACTUAL 
+            var tamaño_anterior = ambito.tamaño;
+            ambito.tamaño = tamaño_anterior + this.setTemporales.size;
+            return tamaño_anterior;
         }
         var tam_temporal = ambito.tamaño;
         ambito.tamaño = tam_temporal + this.setTemporales.size;
         return tam_temporal;
     };
     generacion.prototype.recuperarTemporales = function (ambito, posinicio) {
+        var _this = this;
         if (this.setTemporales.size > 0) {
-            console.log("ENTRE AL RECUPERADO DE TEMPORALES: ");
+            //INICIA EL RECUPERADO DE TEMPORALES
+            /*console.log("ENTRE AL RECUPERADO DE TEMPORALES: ")
             console.log("TEMPORALES EN LA STORE");
-            console.log(this.setTemporales);
+            console.log(this.setTemporales);*/
+            var tmp_1 = this.generarTemporal();
+            this.sacarTemporal(tmp_1);
+            var contador_2 = 0;
+            this.agregarComentarios("INICIO - RECUPERACION TEMPORALES");
+            this.agregarExpresion(tmp_1, "p", "+", posinicio);
+            this.setTemporales.forEach(function (temporal) {
+                contador_2++;
+                _this.getValorStack(temporal, tmp_1);
+                if (contador_2 != _this.setTemporales.size) {
+                    _this.agregarExpresion(tmp_1, tmp_1, "+", "1");
+                }
+            });
+            this.agregarComentarios("FIN - RECUPERACION TEMPORALES");
+            //AQUI ES NECESARIO VOLVER A CAMBIAR EL SIZE DEL AMBIENTE POR QUE YA SE ASIGNARON LOS VALORES GUARDADOS
+            ambito.tamaño = posinicio;
         }
     };
     //*****************METODOS PARA AGREGAR CODIGO 3D*************************/

@@ -42,7 +42,7 @@ export class generacion{
             }
          */
 
-        let encabezado= "#include <stdio.h> \n#include <math.h> \ndouble heap[16384]; \ndouble stack[16394]; \ndouble p; \ndouble h;\n";
+        let encabezado= "#include <stdio.h> \n#include <math.h> \ndouble heap[132000]; \ndouble stack[132000]; \ndouble p; \ndouble h;\n";
         let listatemporales= "double ";
         for (let i = 0; i <=this.temporales; i++) {
             if(i==this.temporales){
@@ -96,10 +96,29 @@ export class generacion{
 
    public guardarTemporales(ambito:entorno):number{
        if(this.setTemporales.size>0){
+        //INICIA EL GUARDADO DE TEMPORALES
         //SI EL STORE DE TEMPORALES ES MAYOR A 0, ENTONCES VAMOS A GUARDAR ESOS TEMPORALES
-        console.log("ENTRE AL GUARDADO DE TEMPORALES: ")
+        /*console.log("ENTRE AL GUARDADO DE TEMPORALES: ")
         console.log("TEMPORALES EN LA STORE");
-        console.log(this.setTemporales);
+        console.log(this.setTemporales);*/
+        const temp_guardado= this.generarTemporal();
+        this.sacarTemporal(temp_guardado);
+        let contador=0;
+
+        this.agregarComentarios("INICIO- GUARDADO DE TEMPORALES");
+        this.agregarExpresion(temp_guardado,"p","+",ambito.tamaño);
+        this.setTemporales.forEach((temporal) => {
+            contador++;
+            this.stack(temp_guardado,temporal);
+            if(contador!=this.setTemporales.size){
+                this.agregarExpresion(temp_guardado,temp_guardado,"+","1");
+            }
+        });
+        this.agregarComentarios("FIN- GUARDADO DE TEMPORALES");
+        //AHORA HAY QUE CAMBIARLE EL TAMAÑO AL AMBITO ACTUAL 
+        let tamaño_anterior= ambito.tamaño;
+        ambito.tamaño= tamaño_anterior+this.setTemporales.size;
+        return tamaño_anterior;
 
        }
 
@@ -111,9 +130,27 @@ export class generacion{
 
    public recuperarTemporales(ambito:entorno,posinicio:number){
         if(this.setTemporales.size>0){
-        console.log("ENTRE AL RECUPERADO DE TEMPORALES: ")
+            //INICIA EL RECUPERADO DE TEMPORALES
+        /*console.log("ENTRE AL RECUPERADO DE TEMPORALES: ")
         console.log("TEMPORALES EN LA STORE");
-        console.log(this.setTemporales);
+        console.log(this.setTemporales);*/
+        
+        const tmp= this.generarTemporal();
+        this.sacarTemporal(tmp);
+        let contador=0;
+
+        this.agregarComentarios("INICIO - RECUPERACION TEMPORALES");
+        this.agregarExpresion(tmp,"p","+",posinicio);
+        this.setTemporales.forEach((temporal) => {
+            contador++;
+            this.getValorStack(temporal,tmp);
+            if(contador!= this.setTemporales.size){
+                this.agregarExpresion(tmp,tmp,"+","1");
+            }
+        });
+        this.agregarComentarios("FIN - RECUPERACION TEMPORALES");
+        //AQUI ES NECESARIO VOLVER A CAMBIAR EL SIZE DEL AMBIENTE POR QUE YA SE ASIGNARON LOS VALORES GUARDADOS
+        ambito.tamaño=posinicio;
         }
    }
 

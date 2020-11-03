@@ -28,7 +28,7 @@ var llamarfuncion = /** @class */ (function () {
             //COMENZAMOS A GUARDAR LOS PARAMETROS PARA QUE YA SOLO LOS LEAMOS CUANDO ESTEMOS EN LA FUNCION
             //COMIENZA EL PASO DE PARAMETROS A LA FUNCION
             if (parametros_1.length > 0) {
-                generador.agregarComentarios("Paso de parametros");
+                generador.agregarComentarios("INICIO- Paso de parametros");
                 generador.agregarExpresion(temp_parametro_1, "p", "+", ambito.tamaño + 1);
                 parametros_1.forEach(function (parametro, indice) {
                     generador.stack(temp_parametro_1, parametro.obtenerValor());
@@ -37,6 +37,7 @@ var llamarfuncion = /** @class */ (function () {
                         generador.agregarExpresion(temp_parametro_1, temp_parametro_1, "+", "1");
                     }
                 });
+                generador.agregarComentarios("FIN- Paso de parametros");
             }
             //AHORA MOVEMOS EL PUNTERO DEL STACK "P" AL INICIO DEL NUEVO AMBITO
             generador.moverAmbito(ambito.tamaño);
@@ -49,7 +50,7 @@ var llamarfuncion = /** @class */ (function () {
             //RECUPERAMOS LOS TEMPORALES SI FUERA NECESARIO
             generador.recuperarTemporales(ambito, tamaño_ambito_temporal);
             //VOLVEMOS A AGREGAR AL TEMP_PARAMETRO AL STORE DE TEMPORALES POR QUE ESE TIENE EL VALOR DEL RETURN
-            //generador.agregarTemporal(temp_parametro);
+            generador.agregarTemporal(temp_parametro_1);
             if (funcion.tipodato == tipo_1.tipo_dato.BOOLEAN) {
             }
             else {

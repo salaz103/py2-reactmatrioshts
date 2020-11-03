@@ -43,7 +43,7 @@ export class llamarfuncion implements instruccion{
             //COMENZAMOS A GUARDAR LOS PARAMETROS PARA QUE YA SOLO LOS LEAMOS CUANDO ESTEMOS EN LA FUNCION
             //COMIENZA EL PASO DE PARAMETROS A LA FUNCION
             if(parametros.length>0){
-                generador.agregarComentarios("Paso de parametros");
+                generador.agregarComentarios("INICIO- Paso de parametros");
                 generador.agregarExpresion(temp_parametro,"p","+",ambito.tamaño+1);
                 parametros.forEach((parametro,indice) => {
                     generador.stack(temp_parametro,parametro.obtenerValor());
@@ -52,6 +52,7 @@ export class llamarfuncion implements instruccion{
                         generador.agregarExpresion(temp_parametro,temp_parametro,"+","1");
                     }
                 });
+                generador.agregarComentarios("FIN- Paso de parametros");
             }
 
             //AHORA MOVEMOS EL PUNTERO DEL STACK "P" AL INICIO DEL NUEVO AMBITO
@@ -65,7 +66,7 @@ export class llamarfuncion implements instruccion{
             //RECUPERAMOS LOS TEMPORALES SI FUERA NECESARIO
             generador.recuperarTemporales(ambito,tamaño_ambito_temporal);
             //VOLVEMOS A AGREGAR AL TEMP_PARAMETRO AL STORE DE TEMPORALES POR QUE ESE TIENE EL VALOR DEL RETURN
-            //generador.agregarTemporal(temp_parametro);
+            generador.agregarTemporal(temp_parametro);
 
             if(funcion.tipodato==tipo_dato.BOOLEAN){
 
