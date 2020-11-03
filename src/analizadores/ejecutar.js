@@ -92,11 +92,14 @@ break;
 case 3: case 30: case 59:
 this.$=[$$[$0]];
 break;
-case 4: case 11: case 12: case 13: case 18: case 90:
+case 4: case 12: case 13: case 18: case 90:
 this.$=$$[$0-1];
 break;
 case 5: case 6: case 7: case 8: case 9: case 10: case 17: case 98: case 99:
 this.$=$$[$0];
+break;
+case 11:
+this.$= new instruccionllamarfuncion.instruccionllamarfuncion($$[$0-1],_$[$0-1].first_line,_$[$0-1].first_column);
 break;
 case 19: case 20:
   
@@ -518,6 +521,7 @@ _handle_error:
   const declaracionfuncion= require('../ArchivosTS/instrucciones/declaracionfuncion');
   const instruccionreturn= require('../ArchivosTS/instrucciones/instruccionreturn');
   const llamarfuncion= require('../ArchivosTS/instrucciones/llamarfuncion');
+  const instruccionllamarfuncion= require('../ArchivosTS/instrucciones/instruccionllamarfuncion');
 
 
   //******************EXPRESIONES*************************************

@@ -125,6 +125,7 @@
   const declaracionfuncion= require('../ArchivosTS/instrucciones/declaracionfuncion');
   const instruccionreturn= require('../ArchivosTS/instrucciones/instruccionreturn');
   const llamarfuncion= require('../ArchivosTS/instrucciones/llamarfuncion');
+  const instruccionllamarfuncion= require('../ArchivosTS/instrucciones/instruccionllamarfuncion');
 
 
   //******************EXPRESIONES*************************************
@@ -193,7 +194,8 @@ instruccion:  declaraciones RPUNTOCOMA{$$=$1;}
             | instruccionwhile {$$=$1;}
             | imprimir         {$$=$1;}
             | declararfuncion  {$$=$1;}
-            | llamarfuncion RPUNTOCOMA {$$=$1;}
+            | llamarfuncion RPUNTOCOMA 
+              {$$= new instruccionllamarfuncion.instruccionllamarfuncion($1,@1.first_line,@1.first_column);}
             | nativa RPUNTOCOMA {$$=$1;}
             | masmenos RPUNTOCOMA {$$=$1;}
             | RGRAFICAR RPARA RPARC RPUNTOCOMA
