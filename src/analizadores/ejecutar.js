@@ -113,7 +113,7 @@ break;
 case 28:
 this.$=new declaracion.declaracion($$[$0-1],$$[$0]);
 break;
-case 29: case 58:
+case 29: case 58: case 70:
 $$[$0-2].push($$[$0]); this.$=$$[$0-2];
 break;
 case 31:
@@ -152,6 +152,12 @@ break;
 case 55:
 this.$= new declaracionfuncion.declaracionfuncion($$[$0-7],null,$$[$0-3],$$[$0-1],_$[$0-8].first_line,_$[$0-8].first_column);
 break;
+case 56:
+this.$= new llamarfuncion.llamarfuncion($$[$0-2],undefined,_$[$0-2].first_line,_$[$0-2].first_column);
+break;
+case 57:
+this.$= new llamarfuncion.llamarfuncion($$[$0-3],$$[$0-1],_$[$0-3].first_line,_$[$0-3].first_column);
+break;
 case 60:
 this.$= new parametro.parametro($$[$0-2],$$[$0],false,_$[$0-2].first_line,_$[$0-2].first_column);
 break;
@@ -181,6 +187,9 @@ this.$= new instruccionreturn.instruccionreturn(null,_$[$0-1].first_line,_$[$0-1
 break;
 case 69:
 this.$= new instruccionreturn.instruccionreturn($$[$0-1],_$[$0-2].first_line,_$[$0-2].first_column);
+break;
+case 71:
+this.$=[$$[$0]]
 break;
 case 72:
 this.$= new unaria.unaria(operador.MENOS,$$[$0],_$[$0-1].first_line,_$[$0-1].first_column);
@@ -508,6 +517,7 @@ _handle_error:
   const instrucciondowhile= require('../ArchivosTS/instrucciones/instrucciondowhile');
   const declaracionfuncion= require('../ArchivosTS/instrucciones/declaracionfuncion');
   const instruccionreturn= require('../ArchivosTS/instrucciones/instruccionreturn');
+  const llamarfuncion= require('../ArchivosTS/instrucciones/llamarfuncion');
 
 
   //******************EXPRESIONES*************************************

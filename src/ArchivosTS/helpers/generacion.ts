@@ -1,3 +1,5 @@
+import entorno from "../entorno/entorno";
+
 export class generacion{
     private static generador: generacion;
     private setTemporales : Set<string>;
@@ -63,6 +65,12 @@ export class generacion{
         return temporal;
     }
 
+    public agregarTemporal(temporal:string){
+        if(!this.setTemporales.has(temporal)){
+            this.setTemporales.add(temporal);
+        }
+    }
+
     public generarEtiqueta() : string{
         return 'L' + this.etiquetas++;
     }
@@ -85,6 +93,31 @@ export class generacion{
    public restaurarTemporales(storeTemporales: Set<string>){
        this.setTemporales= storeTemporales;
    }
+
+   public guardarTemporales(ambito:entorno):number{
+       if(this.setTemporales.size>0){
+        //SI EL STORE DE TEMPORALES ES MAYOR A 0, ENTONCES VAMOS A GUARDAR ESOS TEMPORALES
+        console.log("ENTRE AL GUARDADO DE TEMPORALES: ")
+        console.log("TEMPORALES EN LA STORE");
+        console.log(this.setTemporales);
+
+       }
+
+
+       let tam_temporal= ambito.tamaño;
+       ambito.tamaño= tam_temporal+this.setTemporales.size;
+       return tam_temporal;
+   }
+
+   public recuperarTemporales(ambito:entorno,posinicio:number){
+        if(this.setTemporales.size>0){
+        console.log("ENTRE AL RECUPERADO DE TEMPORALES: ")
+        console.log("TEMPORALES EN LA STORE");
+        console.log(this.setTemporales);
+        }
+   }
+
+   
 
     //*****************METODOS PARA AGREGAR CODIGO 3D*************************/
     public agregarcodigo3d(codigo:string){
@@ -134,6 +167,14 @@ export class generacion{
     //*******************METODOS PARA EL MANEJO DEL HEAP Y STACK**************/
     public siguienteHeap(){
         this.codigo.push('h=h+1;');
+    }
+
+    public moverAmbito(espacios:number){
+        this.codigo.push("p = p + "+espacios+";");
+    }
+
+    public regresarAmbito(espacios:number){
+        this.codigo.push("p = p - "+espacios+";");
     }
 
 

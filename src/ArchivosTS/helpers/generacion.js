@@ -48,6 +48,11 @@ var generacion = /** @class */ (function () {
         this.setTemporales.add(temporal);
         return temporal;
     };
+    generacion.prototype.agregarTemporal = function (temporal) {
+        if (!this.setTemporales.has(temporal)) {
+            this.setTemporales.add(temporal);
+        }
+    };
     generacion.prototype.generarEtiqueta = function () {
         return 'L' + this.etiquetas++;
     };
@@ -65,6 +70,24 @@ var generacion = /** @class */ (function () {
     };
     generacion.prototype.restaurarTemporales = function (storeTemporales) {
         this.setTemporales = storeTemporales;
+    };
+    generacion.prototype.guardarTemporales = function (ambito) {
+        if (this.setTemporales.size > 0) {
+            //SI EL STORE DE TEMPORALES ES MAYOR A 0, ENTONCES VAMOS A GUARDAR ESOS TEMPORALES
+            console.log("ENTRE AL GUARDADO DE TEMPORALES: ");
+            console.log("TEMPORALES EN LA STORE");
+            console.log(this.setTemporales);
+        }
+        var tam_temporal = ambito.tamaño;
+        ambito.tamaño = tam_temporal + this.setTemporales.size;
+        return tam_temporal;
+    };
+    generacion.prototype.recuperarTemporales = function (ambito, posinicio) {
+        if (this.setTemporales.size > 0) {
+            console.log("ENTRE AL RECUPERADO DE TEMPORALES: ");
+            console.log("TEMPORALES EN LA STORE");
+            console.log(this.setTemporales);
+        }
     };
     //*****************METODOS PARA AGREGAR CODIGO 3D*************************/
     generacion.prototype.agregarcodigo3d = function (codigo) {
@@ -100,6 +123,12 @@ var generacion = /** @class */ (function () {
     //*******************METODOS PARA EL MANEJO DEL HEAP Y STACK**************/
     generacion.prototype.siguienteHeap = function () {
         this.codigo.push('h=h+1;');
+    };
+    generacion.prototype.moverAmbito = function (espacios) {
+        this.codigo.push("p = p + " + espacios + ";");
+    };
+    generacion.prototype.regresarAmbito = function (espacios) {
+        this.codigo.push("p = p - " + espacios + ";");
     };
     return generacion;
 }());

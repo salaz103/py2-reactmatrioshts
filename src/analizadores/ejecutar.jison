@@ -124,6 +124,7 @@
   const instrucciondowhile= require('../ArchivosTS/instrucciones/instrucciondowhile');
   const declaracionfuncion= require('../ArchivosTS/instrucciones/declaracionfuncion');
   const instruccionreturn= require('../ArchivosTS/instrucciones/instruccionreturn');
+  const llamarfuncion= require('../ArchivosTS/instrucciones/llamarfuncion');
 
 
   //******************EXPRESIONES*************************************
@@ -301,8 +302,10 @@ declararfuncion: RFUNCTION IDENTIFICADOR RPARA parametros RPARC RDOSPUNTOS tipod
                //ARREGLOS
                  ;
 
-llamarfuncion:  IDENTIFICADOR RPARA RPARC 
+llamarfuncion:  IDENTIFICADOR RPARA RPARC
+                {$$= new llamarfuncion.llamarfuncion($1,undefined,@1.first_line,@1.first_column);}
                |IDENTIFICADOR RPARA listaexpresiones RPARC
+                {$$= new llamarfuncion.llamarfuncion($1,$3,@1.first_line,@1.first_column);}
                ;
 
 parametros: parametros RCOMA parametro {$1.push($3); $$=$1;}
@@ -336,8 +339,8 @@ instruccionreturn: RRETURN RPUNTOCOMA
                    {$$= new instruccionreturn.instruccionreturn($2,@1.first_line,@1.first_column);}
                   ; 
 
-listaexpresiones: listaexpresiones RCOMA expresion 
-                | expresion 
+listaexpresiones: listaexpresiones RCOMA expresion {$1.push($3); $$=$1;}
+                | expresion {$$=[$1]}
                 ;
 
 expresion: 
