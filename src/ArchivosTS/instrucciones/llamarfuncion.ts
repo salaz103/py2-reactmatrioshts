@@ -65,7 +65,7 @@ export class llamarfuncion implements instruccion{
             generador.regresarAmbito(ambito.tamaño);
             //RECUPERAMOS LOS TEMPORALES SI FUERA NECESARIO
             generador.recuperarTemporales(ambito,tamaño_ambito_temporal);
-            //VOLVEMOS A AGREGAR AL TEMP_PARAMETRO AL STORE DE TEMPORALES POR QUE ESE TIENE EL VALOR DEL RETURN
+            //VOLVEMOS A AGREGAR EL TEMP_PARAMETRO AL STORE DE TEMPORALES POR QUE ESE TIENE EL VALOR DEL RETURN
             generador.agregarTemporal(temp_parametro);
 
             if(funcion.tipodato==tipo_dato.BOOLEAN){

@@ -239,6 +239,9 @@ break;
 case 89:
 this.$= new unaria.unaria(operador.NOT,$$[$0],_$[$0-1].first_line,_$[$0-1].first_column);
 break;
+case 91:
+this.$= new operadorternario.operadorternario($$[$0-4],$$[$0-2],$$[$0],_$[$0-4].first_line,_$[$0-4].first_column);
+break;
 case 92:
 this.$=new numero.numero(Number($$[$0]),tipo_dato.NUMBER,_$[$0].first_line,_$[$0].first_column);
 break;
@@ -535,6 +538,7 @@ _handle_error:
   const igualdad= require('../ArchivosTS/expresiones/operaciones/igualdad');
   const diferenteque= require('../ArchivosTS/expresiones/operaciones/diferenteque');
   const logica= require('../ArchivosTS/expresiones/operaciones/logica');
+  const operadorternario= require('../ArchivosTS/expresiones/operadorternario');
 
   //******************INTERMEDIOS************************************
   const variable= require('../ArchivosTS/expresiones/variable');

@@ -139,6 +139,7 @@
   const igualdad= require('../ArchivosTS/expresiones/operaciones/igualdad');
   const diferenteque= require('../ArchivosTS/expresiones/operaciones/diferenteque');
   const logica= require('../ArchivosTS/expresiones/operaciones/logica');
+  const operadorternario= require('../ArchivosTS/expresiones/operadorternario');
 
   //******************INTERMEDIOS************************************
   const variable= require('../ArchivosTS/expresiones/variable');
@@ -388,6 +389,7 @@ expresion:
           /*RESTANTES*/
           |RPARA expresion RPARC  {$$=$2;}
           |expresion RINTERROGACION expresion RDOSPUNTOS expresion
+           {$$= new operadorternario.operadorternario($1,$3,$5,@1.first_line,@1.first_column);}
           |NUM              {$$=new numero.numero(Number($1),tipo_dato.NUMBER,@1.first_line,@1.first_column);}      
           |RTRUE            {$$=new valorLogico.valorLogico("TRUE",tipo_dato.BOOLEAN,@1.first_line,@1.first_column);}     
           |RFALSE           {$$=new valorLogico.valorLogico("FALSE",tipo_dato.BOOLEAN,@1.first_line,@1.first_column);}      

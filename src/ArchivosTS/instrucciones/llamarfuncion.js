@@ -49,7 +49,7 @@ var llamarfuncion = /** @class */ (function () {
             generador.regresarAmbito(ambito.tamaño);
             //RECUPERAMOS LOS TEMPORALES SI FUERA NECESARIO
             generador.recuperarTemporales(ambito, tamaño_ambito_temporal);
-            //VOLVEMOS A AGREGAR AL TEMP_PARAMETRO AL STORE DE TEMPORALES POR QUE ESE TIENE EL VALOR DEL RETURN
+            //VOLVEMOS A AGREGAR EL TEMP_PARAMETRO AL STORE DE TEMPORALES POR QUE ESE TIENE EL VALOR DEL RETURN
             generador.agregarTemporal(temp_parametro_1);
             if (funcion.tipodato == tipo_1.tipo_dato.BOOLEAN) {
             }
