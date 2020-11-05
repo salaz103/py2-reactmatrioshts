@@ -274,14 +274,17 @@ instruccionif: RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC
 
 
 instruccionswitch: RSWITCH RPARA expresion RPARC RLLAVEA casos RLLAVEC
+                    {$$= new instruccionswitch.instruccionswitch($3,$6,@1.first_line,@1.first_column);}
                    ;
 
-casos: casos caso 
-      | caso 
+casos: casos caso {$1.push($2); $$=$1;}
+      | caso {$$=[$1];}
       ; 
 
 caso:   RCASE expresion RDOSPUNTOS lista
-      | RDEFAULT RDOSPUNTOS lista 
+        {$$= new caso.caso($2,$4,@1.first_line,@1.first_column);}
+      | RDEFAULT RDOSPUNTOS lista
+        {$$= new caso.caso(null,$3,@1.first_line,@1.first_column);} 
         ;
 
 instruccionfor: RFOR RPARA declaraciones RPUNTOCOMA expresion RPUNTOCOMA masmenos RPARC RLLAVEA lista RLLAVEC

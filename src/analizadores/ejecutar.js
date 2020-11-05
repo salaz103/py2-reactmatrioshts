@@ -86,10 +86,10 @@ switch (yystate) {
 case 1:
  return $$[$0-1]; 
 break;
-case 2:
+case 2: case 44:
 $$[$0-1].push($$[$0]); this.$=$$[$0-1];
 break;
-case 3: case 30: case 59:
+case 3: case 30: case 45: case 59:
 this.$=[$$[$0]];
 break;
 case 4: case 12: case 13: case 18: case 90:
@@ -145,6 +145,15 @@ this.$= new instruccionif.instruccionif($$[$0-8],$$[$0-5],$$[$0-1],_$[$0-10].fir
 break;
 case 42:
 this.$= new instruccionif.instruccionif($$[$0-6],$$[$0-3],$$[$0],_$[$0-8].first_line,_$[$0-8].first_column);
+break;
+case 43:
+this.$= new instruccionswitch.instruccionswitch($$[$0-4],$$[$0-1],_$[$0-6].first_line,_$[$0-6].first_column);
+break;
+case 46:
+this.$= new caso.caso($$[$0-2],$$[$0],_$[$0-3].first_line,_$[$0-3].first_column);
+break;
+case 47:
+this.$= new caso.caso(null,$$[$0],_$[$0-2].first_line,_$[$0-2].first_column);
 break;
 case 48: case 49:
 this.$= new instruccionfor.instruccionfor($$[$0-8],$$[$0-6],$$[$0-4],$$[$0-1],_$[$0-10].first_line,_$[$0-10].first_column);
