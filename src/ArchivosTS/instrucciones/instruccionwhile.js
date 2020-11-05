@@ -23,8 +23,8 @@ var instruccionwhile = /** @class */ (function () {
         generador.agregarEtiqueta(etiqueta_inicio);
         var retorno_condicion = this.expresioncondicion.traducir(ambito);
         if (retorno_condicion.tipodato == tipo_1.tipo_dato.BOOLEAN) {
-            //PENDIENTE
-            /*VER LO DEL BREAK Y CONTINUE */
+            ambito_While.etq_break = retorno_condicion.etiquetasfalse;
+            ambito_While.etq_continue = etiqueta_inicio;
             //SI LA CONDICION ES BOOLEAN, PODEMOS SEGUIR TRADUCIENDO
             generador.agregarEtiqueta(retorno_condicion.etiquetastrue);
             //AHORA SE COMIENZA A TRADUCIR EL CUERPO DE LA FUNCION

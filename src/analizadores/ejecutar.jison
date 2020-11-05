@@ -126,7 +126,9 @@
   const instruccionreturn= require('../ArchivosTS/instrucciones/instruccionreturn');
   const llamarfuncion= require('../ArchivosTS/instrucciones/llamarfuncion');
   const instruccionllamarfuncion= require('../ArchivosTS/instrucciones/instruccionllamarfuncion');
-
+  const instruccionswitch= require('../ArchivosTS/instrucciones/instruccionswitch');
+  const instruccionbreak= require('../ArchivosTS/instrucciones/instruccionBreak');
+  const instruccioncontinue= require('../ArchivosTS/instrucciones/instruccioncontinue');
 
   //******************EXPRESIONES*************************************
   const numero= require('../ArchivosTS/expresiones/numero');
@@ -144,7 +146,7 @@
   //******************INTERMEDIOS************************************
   const variable= require('../ArchivosTS/expresiones/variable');
   const parametro= require('../ArchivosTS/instrucciones/parametro');
-
+  const caso= require('../ArchivosTS/instrucciones/caso');
 
 
   //****************OTROS***********************************
@@ -152,6 +154,7 @@
   const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;
   const tipo_instruccion= require('../ArchivosTS/entorno/tipo').tipo_instruccion;
   const operador= require('../ArchivosTS/entorno/tipo').operador;
+
 
   parser.yy.parseError= function(error,hash){
     console.log(error);
@@ -200,8 +203,10 @@ instruccion:  declaraciones RPUNTOCOMA{$$=$1;}
             | nativa RPUNTOCOMA {$$=$1;}
             | masmenos RPUNTOCOMA {$$=$1;}
             | RGRAFICAR RPARA RPARC RPUNTOCOMA
-            | RBREAK RPUNTOCOMA 
-            | RCONTINUE RPUNTOCOMA 
+            | RBREAK RPUNTOCOMA
+             {$$= new instruccionbreak.instruccionbreak(@1.first_line,@1.first_column);} 
+            | RCONTINUE RPUNTOCOMA
+             {$$= new instruccioncontinue.instruccioncontinue(@1.first_line,@1.first_column);} 
             | instruccionreturn {$$=$1;}
             | asignacion  RPUNTOCOMA {$$=$1;}
             | error RPUNTOCOMA

@@ -101,6 +101,12 @@ break;
 case 11:
 this.$= new instruccionllamarfuncion.instruccionllamarfuncion($$[$0-1],_$[$0-1].first_line,_$[$0-1].first_column);
 break;
+case 15:
+this.$= new instruccionbreak.instruccionbreak(_$[$0-1].first_line,_$[$0-1].first_column);
+break;
+case 16:
+this.$= new instruccioncontinue.instruccioncontinue(_$[$0-1].first_line,_$[$0-1].first_column);
+break;
 case 19: case 20:
   
               const e= new error.error("SINTACTICO","Revisar error Sintactico: "+yytext,this._$.first_line,this._$.first_column);
@@ -525,7 +531,9 @@ _handle_error:
   const instruccionreturn= require('../ArchivosTS/instrucciones/instruccionreturn');
   const llamarfuncion= require('../ArchivosTS/instrucciones/llamarfuncion');
   const instruccionllamarfuncion= require('../ArchivosTS/instrucciones/instruccionllamarfuncion');
-
+  const instruccionswitch= require('../ArchivosTS/instrucciones/instruccionswitch');
+  const instruccionbreak= require('../ArchivosTS/instrucciones/instruccionBreak');
+  const instruccioncontinue= require('../ArchivosTS/instrucciones/instruccioncontinue');
 
   //******************EXPRESIONES*************************************
   const numero= require('../ArchivosTS/expresiones/numero');
@@ -543,7 +551,7 @@ _handle_error:
   //******************INTERMEDIOS************************************
   const variable= require('../ArchivosTS/expresiones/variable');
   const parametro= require('../ArchivosTS/instrucciones/parametro');
-
+  const caso= require('../ArchivosTS/instrucciones/caso');
 
 
   //****************OTROS***********************************
@@ -551,6 +559,7 @@ _handle_error:
   const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;
   const tipo_instruccion= require('../ArchivosTS/entorno/tipo').tipo_instruccion;
   const operador= require('../ArchivosTS/entorno/tipo').operador;
+
 
   parser.yy.parseError= function(error,hash){
     console.log(error);

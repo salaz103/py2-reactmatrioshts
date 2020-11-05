@@ -12,6 +12,8 @@ class entorno{
     tamaño:number;
     funcionActual: declaracionfuncion;
     etq_retorno:string;
+    etq_break:string;
+    etq_continue:string;
 
     constructor(nombre:string,tipoambito:tipo_ambito,ambitoPadre?:entorno){
         this.nombre= nombre;
@@ -22,6 +24,8 @@ class entorno{
         this.tamaño= ambitoPadre!=null? ambitoPadre.tamaño:0;
         this.funcionActual= ambitoPadre!=null? ambitoPadre.funcionActual: null;
         this.etq_retorno= ambitoPadre!=null? ambitoPadre.etq_retorno:null;
+        this.etq_break= ambitoPadre!=null? ambitoPadre.etq_break:null;
+        this.etq_continue= ambitoPadre!=null? ambitoPadre.etq_continue:null;
     }
 
     agregarSimbolo(id:string,tipodato:tipo_dato,nombreambito:string,fila:number,columna:number,reasignable:boolean){

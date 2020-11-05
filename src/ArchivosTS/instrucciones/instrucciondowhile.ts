@@ -26,6 +26,8 @@ export class instrucciondowhile implements instruccion{
         const ambito_dowhile= new entorno("DO-WHILE",tipo_ambito.LOCAL,ambito);
         //PENDIENTE
         /**REVISAR LO DEL BREAK O CONTINUE */
+        //ambito_dowhile.etq_continue= this.condicion.etq_true= generador.generarEtiqueta();
+        //ambito_dowhile.etq_break= this.condicion.etq_false= generador.generarEtiqueta();
 
         generador.agregarComentarios("INICIO- DO_WHILE");
         let etiqueta_inicio= generador.generarEtiqueta();

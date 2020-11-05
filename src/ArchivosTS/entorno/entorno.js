@@ -11,6 +11,8 @@ var entorno = /** @class */ (function () {
         this.tamaño = ambitoPadre != null ? ambitoPadre.tamaño : 0;
         this.funcionActual = ambitoPadre != null ? ambitoPadre.funcionActual : null;
         this.etq_retorno = ambitoPadre != null ? ambitoPadre.etq_retorno : null;
+        this.etq_break = ambitoPadre != null ? ambitoPadre.etq_break : null;
+        this.etq_continue = ambitoPadre != null ? ambitoPadre.etq_continue : null;
     }
     entorno.prototype.agregarSimbolo = function (id, tipodato, nombreambito, fila, columna, reasignable) {
         var nuevosim = new simbolo_1["default"](id, tipodato, nombreambito, fila, columna, this.apuntadorPadre == null, reasignable, this.tamaño++);

@@ -17,6 +17,8 @@ var instrucciondowhile = /** @class */ (function () {
         var ambito_dowhile = new entorno_1["default"]("DO-WHILE", tipo_1.tipo_ambito.LOCAL, ambito);
         //PENDIENTE
         /**REVISAR LO DEL BREAK O CONTINUE */
+        //ambito_dowhile.etq_continue= this.condicion.etq_true= generador.generarEtiqueta();
+        //ambito_dowhile.etq_break= this.condicion.etq_false= generador.generarEtiqueta();
         generador.agregarComentarios("INICIO- DO_WHILE");
         var etiqueta_inicio = generador.generarEtiqueta();
         generador.agregarEtiqueta(etiqueta_inicio);
