@@ -19,10 +19,13 @@ var instruccionfor = /** @class */ (function () {
         generador.agregarComentarios("INICIO - FOR");
         var retorno_1 = this.primerainstruccion.traducir(ambitofor);
         var etiquetaInicio = generador.generarEtiqueta();
+        var etiqueta_inicio_tercera_condicion = generador.generarEtiqueta();
         generador.agregarEtiqueta(etiquetaInicio);
         //LA EXPRESION 2 ES UNA CONDICIONAL
         var retorno_2 = this.expresion.traducir(ambitofor);
         generador.agregarEtiqueta(retorno_2.etiquetastrue);
+        ambitofor.etq_break = retorno_2.etiquetasfalse;
+        ambitofor.etq_continue = etiqueta_inicio_tercera_condicion;
         for (var i = 0; i < this.listainstrucciones.length; i++) {
             ///AQUI HAY QUE "CACHAR LOS ERRORES"
             if (!(typeof (this.listainstrucciones[i]) == "string")) {
@@ -31,6 +34,7 @@ var instruccionfor = /** @class */ (function () {
         }
         //EN ESTE PUNTO YA SE TRADUJERON LAS INSTRUCCIONES
         //TOCA TRADUCIR LA 3ERA EXPRESION
+        generador.agregarEtiqueta(etiqueta_inicio_tercera_condicion);
         var retorno_3 = this.tercerainstruccion.traducir(ambitofor);
         //AHORA PONEMOS EL GOTO AL INICIO
         generador.agregarGoTo(etiquetaInicio);

@@ -32,10 +32,13 @@ export class instruccionfor implements instruccion{
         generador.agregarComentarios("INICIO - FOR");
         let retorno_1= this.primerainstruccion.traducir(ambitofor);
         let etiquetaInicio= generador.generarEtiqueta();
+        let etiqueta_inicio_tercera_condicion= generador.generarEtiqueta();
         generador.agregarEtiqueta(etiquetaInicio);
         //LA EXPRESION 2 ES UNA CONDICIONAL
         let retorno_2= this.expresion.traducir(ambitofor);
         generador.agregarEtiqueta(retorno_2.etiquetastrue);
+        ambitofor.etq_break=retorno_2.etiquetasfalse;
+        ambitofor.etq_continue= etiqueta_inicio_tercera_condicion;
         for (let i = 0; i < this.listainstrucciones.length; i++) {
             ///AQUI HAY QUE "CACHAR LOS ERRORES"
 
@@ -45,6 +48,7 @@ export class instruccionfor implements instruccion{
         }
         //EN ESTE PUNTO YA SE TRADUJERON LAS INSTRUCCIONES
         //TOCA TRADUCIR LA 3ERA EXPRESION
+        generador.agregarEtiqueta(etiqueta_inicio_tercera_condicion);
         let retorno_3= this.tercerainstruccion.traducir(ambitofor);
         //AHORA PONEMOS EL GOTO AL INICIO
         generador.agregarGoTo(etiquetaInicio);
