@@ -70,6 +70,8 @@ export class llamarfuncion implements instruccion{
 
             if(funcion.tipodato==tipo_dato.BOOLEAN){
 
+                //PENDIENTE -- REVISAR
+
             }else{
                 let ret= new traduccionexp(temp_parametro,true,tipo_dato.UNDEFINED,false);
                 if(funcion.tipodato==tipo_dato.NUMBER){

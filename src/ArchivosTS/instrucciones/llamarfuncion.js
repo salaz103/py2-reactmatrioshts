@@ -52,6 +52,7 @@ var llamarfuncion = /** @class */ (function () {
             //VOLVEMOS A AGREGAR EL TEMP_PARAMETRO AL STORE DE TEMPORALES POR QUE ESE TIENE EL VALOR DEL RETURN
             generador.agregarTemporal(temp_parametro_1);
             if (funcion.tipodato == tipo_1.tipo_dato.BOOLEAN) {
+                //PENDIENTE -- REVISAR
             }
             else {
                 var ret = new traduccionexp_1.traduccionexp(temp_parametro_1, true, tipo_1.tipo_dato.UNDEFINED, false);

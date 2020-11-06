@@ -259,6 +259,31 @@ var aritmetica = /** @class */ (function (_super) {
             //***************************************************POTENCIA-EXPONENTE************************************* */
         }
         else if (this.tipooperador == tipo_1.operador.EXPONENTE) {
+            if (valorizquierdo.tipodato == tipo_1.tipo_dato.ENTERO && valorderecha.tipodato == tipo_1.tipo_dato.ENTERO) {
+                //COMENZAMOS A PASAR LOS PARAMETROS, LA BASE Y EL EXPONENTE
+                generador.agregarExpresion(temporalresultado, "p", "+", ambito.tamaño + 1);
+                //PASAMOS LA BASE
+                generador.stack(temporalresultado, valorizquierdo.obtenerValor());
+                generador.agregarExpresion(temporalresultado, temporalresultado, "+", "1");
+                //PASAMOS EL EXPONENTE
+                generador.stack(temporalresultado, valorderecha.obtenerValor());
+                //CAMBIAR DE AMBITO
+                generador.moverAmbito(ambito.tamaño);
+                generador.agregarcodigo3d("potencia();");
+                generador.getValorStack(temporalresultado, "p");
+                //REGRESAMOS AL AMBITO DE DONDE HICIMOS LA LLAMADA
+                generador.regresarAmbito(ambito.tamaño);
+                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.ENTERO, false);
+            }
+            else {
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: valorizquierdo.tipodato + ' NO SE PUEDE REALIZAR POTENCIA CON ' + valorderecha.tipodato,
+                    ambito: ambito.nombre,
+                    linea: this.linea,
+                    columna: this.columna
+                }));
+            }
         }
         return new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.UNDEFINED, false);
     };

@@ -6,6 +6,7 @@ var ts_js_1 = require("../actions/ts.js");
 var declaracionfuncion_1 = require("./instrucciones/declaracionfuncion");
 var tipo_1 = require("./entorno/tipo");
 var generacion_1 = require("./helpers/generacion");
+var nativas_1 = require("./helpers/nativas");
 function inicioTraduccion(ast) {
     //LIMPIAR LA CONSOLA
     app_1.almacen.dispatch(ts_js_1.limpiarconsola());
@@ -38,6 +39,7 @@ function traducir(ast, entorno) {
         }
     });
     //AQUI IRIA EL ESPACIO DONDE TENDRIAMOS QUE INGRESAR LA FUNCIONES NATIVAS
+    nativas_1.generarFuncionesNativas();
     //AQUI COMIENZA LA SEGUNDA PASADA DONDE TRADUCIREMOS TODO A EXCEPCION DE LAS FUNCIONES Y TYPES
     //PERO AQUI YA ESTAMOS EN EL AMBITO GLOBAL ENTONCES TENEMOS QUE PONER EN EL CODIGO el main()
     var generador = generacion_1.generacion.getGenerador();

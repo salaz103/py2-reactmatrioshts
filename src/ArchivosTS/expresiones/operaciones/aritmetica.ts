@@ -248,6 +248,31 @@ export class aritmetica extends operacion implements expresion {
             }
             //***************************************************POTENCIA-EXPONENTE************************************* */
         } else if (this.tipooperador == operador.EXPONENTE) {
+                if(valorizquierdo.tipodato == tipo_dato.ENTERO && valorderecha.tipodato == tipo_dato.ENTERO){
+                    //COMENZAMOS A PASAR LOS PARAMETROS, LA BASE Y EL EXPONENTE
+                    generador.agregarExpresion(temporalresultado,"p","+",ambito.tamaño+1);
+                    //PASAMOS LA BASE
+                    generador.stack(temporalresultado,valorizquierdo.obtenerValor());
+                    generador.agregarExpresion(temporalresultado,temporalresultado,"+","1");
+                    //PASAMOS EL EXPONENTE
+                    generador.stack(temporalresultado,valorderecha.obtenerValor());
+                    //CAMBIAR DE AMBITO
+                    generador.moverAmbito(ambito.tamaño);
+                    generador.agregarcodigo3d("potencia();")
+                    generador.getValorStack(temporalresultado,"p");
+                    //REGRESAMOS AL AMBITO DE DONDE HICIMOS LA LLAMADA
+                    generador.regresarAmbito(ambito.tamaño);
+                    return new traduccionexp(temporalresultado,true,tipo_dato.ENTERO,false);
+
+                }else{
+                    almacen.dispatch(errores({
+                        tipo: 'SEMANTICO',
+                        descripcion: valorizquierdo.tipodato + ' NO SE PUEDE REALIZAR POTENCIA CON ' + valorderecha.tipodato,
+                        ambito: ambito.nombre,
+                        linea: this.linea,
+                        columna: this.columna
+                    }));
+                }
 
         }
 

@@ -5,6 +5,7 @@ import { declaracionfuncion } from './instrucciones/declaracionfuncion';
 import { tipo_ambito } from './entorno/tipo';
 import instruccion from './instrucciones/instruccion';
 import { generacion } from './helpers/generacion';
+import { generarFuncionesNativas } from './helpers/nativas';
 
 
 
@@ -53,7 +54,7 @@ function traducir(ast:any,entorno:entorno){
    });
     
    //AQUI IRIA EL ESPACIO DONDE TENDRIAMOS QUE INGRESAR LA FUNCIONES NATIVAS
-
+   generarFuncionesNativas();
 
     //AQUI COMIENZA LA SEGUNDA PASADA DONDE TRADUCIREMOS TODO A EXCEPCION DE LAS FUNCIONES Y TYPES
     //PERO AQUI YA ESTAMOS EN EL AMBITO GLOBAL ENTONCES TENEMOS QUE PONER EN EL CODIGO el main()

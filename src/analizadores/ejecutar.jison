@@ -52,16 +52,16 @@
 "of"                  return 'ROF';  
 
 //OPERACIONES ARITMETICAS
+";"                   return 'RPUNTOCOMA';
 "++"                  return 'RMASMAS';
+"+"                   return 'RMAS';
 "--"                  return 'RMENOSMENOS';
+"-"                   return 'RMENOS';
+"**"                  return 'REXPONENTE';
 "*"                   return 'RPOR';
 "/"                   return 'RDIVISION';
-";"                   return 'RPUNTOCOMA';
-"+"                   return 'RMAS';
-"-"                   return 'RMENOS';
 "||"                  return 'ROR';
-"&&"                 return 'RAND';
-"**"                  return 'REXPONENTE';
+"&&"                  return 'RAND';
 "%"                   return 'RMODULO';
 //OPERACIONES RELACIONALES
 "<="                  return 'RMENORIGUALQUE';
@@ -368,7 +368,8 @@ expresion:
           {$$= new aritmetica.aritmetica($1,operador.DIVISION,$3,@1.first_line,@1.first_column);}
           |expresion RMODULO expresion 
           {$$= new aritmetica.aritmetica($1,operador.MODULO,$3,@1.first_line,@1.first_column);}   
-          |expresion REXPONENTE expresion 
+          |expresion REXPONENTE expresion
+          {$$= new aritmetica.aritmetica($1,operador.EXPONENTE,$3,@1.first_line,@1.first_column);} 
           |IDENTIFICADOR RMASMAS
           {$$= new incremento_decremento.incremento_decremento($1,operador.INCREMENTO,@1.first_line,@1.first_column);}          
           |IDENTIFICADOR RMENOSMENOS
