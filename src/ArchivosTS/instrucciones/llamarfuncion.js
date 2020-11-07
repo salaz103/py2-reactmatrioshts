@@ -57,7 +57,7 @@ var llamarfuncion = /** @class */ (function () {
             else {
                 var ret = new traduccionexp_1.traduccionexp(temp_parametro_1, true, tipo_1.tipo_dato.UNDEFINED, false);
                 if (funcion.tipodato == tipo_1.tipo_dato.NUMBER) {
-                    ret.tipodato = tipo_1.tipo_dato.DECIMAL;
+                    ret.tipodato = tipo_1.tipo_dato.ENTERO;
                     return ret;
                 }
                 else {
@@ -75,8 +75,7 @@ var llamarfuncion = /** @class */ (function () {
                 linea: this.linea,
                 columna: this.columna
             }));
-            //PENDIENTE RETURN
-            //RETURN NEW TRADUCCIONEXP(UNDEFINED)
+            return new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.UNDEFINED, false);
         }
     };
     return llamarfuncion;

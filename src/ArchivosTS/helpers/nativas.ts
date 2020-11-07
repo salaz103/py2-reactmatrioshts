@@ -266,6 +266,34 @@ export function generarFuncionesNativas() {
     generador.agregarcodigo3d("}");
 
 
+/////////////////////////////////////////////////////////LENGTH_CADENA////////////////////////////////////////////////
+
+    let t_p= generador.generarTemporal();
+    let t_s= generador.generarTemporal();
+    let t_h= generador.generarTemporal();
+    generador.sacarTemporal(t_p);
+    generador.sacarTemporal(t_s);
+    generador.sacarTemporal(t_h);
+    generador.agregarcodigo3d("largo_cadena(){");
+    generador.agregarExpresion(t_p,"p","+","1");
+    generador.getValorStack(t_s,t_p);
+    generador.agregarExpresion(t_p,"0","","");
+    let etq_inicio_largo= generador.generarEtiqueta();
+    generador.agregarEtiqueta(etq_inicio_largo);
+    generador.getValorHeap(t_h,t_s);
+    let etq_salida_largo= generador.generarEtiqueta();
+    generador.agregarIf(t_h,"==","-1",etq_salida_largo);
+    generador.agregarExpresion(t_p,t_p,"+","1");
+    generador.agregarExpresion(t_s,t_s,"+","1");
+    generador.agregarGoTo(etq_inicio_largo);
+    generador.agregarEtiqueta(etq_salida_largo);
+    generador.stack("p",t_p);
+    generador.agregarcodigo3d("return ;");
+    generador.agregarcodigo3d("}");
+
+////////////////////////////////////////////////////////////CARACTER_CADENA///////////////////////////////////////////////////////
+
+
 
     generador.agregarComentarios("FIN FUNCIONES NATIVAS");
 

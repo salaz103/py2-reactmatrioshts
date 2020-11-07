@@ -75,13 +75,12 @@ export class llamarfuncion implements instruccion{
             }else{
                 let ret= new traduccionexp(temp_parametro,true,tipo_dato.UNDEFINED,false);
                 if(funcion.tipodato==tipo_dato.NUMBER){
-                    ret.tipodato=tipo_dato.DECIMAL;
+                    ret.tipodato=tipo_dato.ENTERO;
                     return ret
                 }else{
                     ret.tipodato=funcion.tipodato;
                     return ret;
                 }
-
             }
 
 
@@ -94,10 +93,7 @@ export class llamarfuncion implements instruccion{
                 linea:this.linea,
                 columna:this.columna
             }));
-
-            //PENDIENTE RETURN
-            //RETURN NEW TRADUCCIONEXP(UNDEFINED)
-
+            return new traduccionexp("",false,tipo_dato.UNDEFINED,false);
         }
 
     }
