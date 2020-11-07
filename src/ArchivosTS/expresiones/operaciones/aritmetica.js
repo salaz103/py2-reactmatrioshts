@@ -56,8 +56,18 @@ var aritmetica = /** @class */ (function (_super) {
                             generador.agregarEtiqueta(etiqueta_salida);
                             generador.agregarExpresion(temporalresultado, valorizquierdo.obtenerValor(), "+", tmp_guardado);
                             return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.ENTERO, false);
-                        //FALTA
-                        //ENTERO -STRING
+                        case tipo_1.tipo_dato.STRING:
+                            var tmp_p_1 = generador.generarTemporal();
+                            generador.sacarTemporal(tmp_p_1);
+                            generador.agregarExpresion(tmp_p_1, "p", "+", ambito.tamaño + 1);
+                            generador.stack(tmp_p_1, valorizquierdo.obtenerValor());
+                            generador.agregarExpresion(tmp_p_1, tmp_p_1, "+", "1");
+                            generador.stack(tmp_p_1, valorderecha.obtenerValor());
+                            generador.moverAmbito(ambito.tamaño);
+                            generador.agregarcodigo3d("union_entero_string();");
+                            generador.getValorStack(temporalresultado, "p");
+                            generador.regresarAmbito(ambito.tamaño);
+                            return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.STRING, false);
                         default:
                             app_1.almacen.dispatch(ts_js_1.errores({
                                 tipo: 'SEMANTICO',
@@ -139,6 +149,16 @@ var aritmetica = /** @class */ (function (_super) {
                             generador.stack(tmp_p, valorderecha.obtenerValor());
                             generador.moverAmbito(ambito.tamaño);
                             generador.agregarcodigo3d("union_string_entero();");
+                            generador.getValorStack(temporalresultado, "p");
+                            generador.regresarAmbito(ambito.tamaño);
+                            return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.STRING, false);
+                        case tipo_1.tipo_dato.STRING:
+                            generador.agregarExpresion(tmp_p, "p", "+", ambito.tamaño + 1);
+                            generador.stack(tmp_p, valorizquierdo.obtenerValor());
+                            generador.agregarExpresion(tmp_p, tmp_p, "+", "1");
+                            generador.stack(tmp_p, valorderecha.obtenerValor());
+                            generador.moverAmbito(ambito.tamaño);
+                            generador.agregarcodigo3d("union_string_string();");
                             generador.getValorStack(temporalresultado, "p");
                             generador.regresarAmbito(ambito.tamaño);
                             return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.STRING, false);

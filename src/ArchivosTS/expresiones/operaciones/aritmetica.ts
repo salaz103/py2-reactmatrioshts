@@ -53,8 +53,18 @@ export class aritmetica extends operacion implements expresion {
                             generador.agregarEtiqueta(etiqueta_salida);
                             generador.agregarExpresion(temporalresultado, valorizquierdo.obtenerValor(), "+", tmp_guardado);
                             return new traduccionexp(temporalresultado, true, tipo_dato.ENTERO, false);
-                        //FALTA
-                        //ENTERO -STRING
+                        case tipo_dato.STRING:
+                            const tmp_p= generador.generarTemporal();
+                            generador.sacarTemporal(tmp_p);
+                            generador.agregarExpresion(tmp_p,"p","+",ambito.tamaño+1);
+                            generador.stack(tmp_p,valorizquierdo.obtenerValor());
+                            generador.agregarExpresion(tmp_p,tmp_p,"+","1");
+                            generador.stack(tmp_p,valorderecha.obtenerValor());
+                            generador.moverAmbito(ambito.tamaño);
+                            generador.agregarcodigo3d("union_entero_string();");
+                            generador.getValorStack(temporalresultado,"p");
+                            generador.regresarAmbito(ambito.tamaño);
+                            return new traduccionexp(temporalresultado,true,tipo_dato.STRING,false);
                         default:
                             almacen.dispatch(errores({
                                 tipo: 'SEMANTICO',
@@ -141,6 +151,17 @@ export class aritmetica extends operacion implements expresion {
                             generador.regresarAmbito(ambito.tamaño);
                             return new traduccionexp(temporalresultado,true,tipo_dato.STRING,false);
                         
+                        case tipo_dato.STRING:
+                            generador.agregarExpresion(tmp_p,"p","+",ambito.tamaño+1);
+                            generador.stack(tmp_p,valorizquierdo.obtenerValor());
+                            generador.agregarExpresion(tmp_p,tmp_p,"+","1");
+                            generador.stack(tmp_p,valorderecha.obtenerValor());
+                            generador.moverAmbito(ambito.tamaño);
+                            generador.agregarcodigo3d("union_string_string();");
+                            generador.getValorStack(temporalresultado,"p");
+                            generador.regresarAmbito(ambito.tamaño);
+                            return new traduccionexp(temporalresultado,true,tipo_dato.STRING,false);
+
                             default:
                                 break
 

@@ -63,7 +63,7 @@ export class declaracionfuncion implements instruccion{
             this.parametros.forEach(parametro => {
 
                 if(parametro.tipodato==tipo_dato.NUMBER){
-                    ambito_funcion.agregarSimbolo(parametro.id,tipo_dato.DECIMAL,ambito_funcion.nombre,parametro.linea,parametro.columna,false);
+                    ambito_funcion.agregarSimbolo(parametro.id,tipo_dato.ENTERO,ambito_funcion.nombre,parametro.linea,parametro.columna,false);
                 }else{
                     ambito_funcion.agregarSimbolo(parametro.id,parametro.tipodato,ambito_funcion.nombre,parametro.linea,parametro.columna,false);
                 }

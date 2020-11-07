@@ -46,7 +46,7 @@ var declaracionfuncion = /** @class */ (function () {
             //AHORA TOCA RECORRER LOS PARAMETROS Y AGREGARLOS AL AMBITO
             this.parametros.forEach(function (parametro) {
                 if (parametro.tipodato == tipo_1.tipo_dato.NUMBER) {
-                    ambito_funcion_1.agregarSimbolo(parametro.id, tipo_1.tipo_dato.DECIMAL, ambito_funcion_1.nombre, parametro.linea, parametro.columna, false);
+                    ambito_funcion_1.agregarSimbolo(parametro.id, tipo_1.tipo_dato.ENTERO, ambito_funcion_1.nombre, parametro.linea, parametro.columna, false);
                 }
                 else {
                     ambito_funcion_1.agregarSimbolo(parametro.id, parametro.tipodato, ambito_funcion_1.nombre, parametro.linea, parametro.columna, false);
