@@ -177,8 +177,17 @@ export class generacion{
         this.codigo.push(tmp_guardar+"="+"stack[(int)"+pos_stack+"];");
     }
 
+    public getValorHeap(tmp_guardar:string,pos_stack:string){
+        this.codigo.push(tmp_guardar+"="+"heap[(int)"+pos_stack+"];");
+    }
+
+
     public printf(formato:string,casteo:string, valor:any){
         this.codigo.push("printf(\"%"+formato+"\\"+"n"+"\",("+casteo+")"+valor+");");
+    }
+
+    public printchar(valor:any){
+        this.codigo.push("printf(\"%c\",(char)"+valor+");");
     }
 
     public agregarIf(valorizquierdo:any,operador:string,valorderecho:any, etiquetaVerdadera:string){

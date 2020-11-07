@@ -141,8 +141,14 @@ var generacion = /** @class */ (function () {
     generacion.prototype.getValorStack = function (tmp_guardar, pos_stack) {
         this.codigo.push(tmp_guardar + "=" + "stack[(int)" + pos_stack + "];");
     };
+    generacion.prototype.getValorHeap = function (tmp_guardar, pos_stack) {
+        this.codigo.push(tmp_guardar + "=" + "heap[(int)" + pos_stack + "];");
+    };
     generacion.prototype.printf = function (formato, casteo, valor) {
         this.codigo.push("printf(\"%" + formato + "\\" + "n" + "\",(" + casteo + ")" + valor + ");");
+    };
+    generacion.prototype.printchar = function (valor) {
+        this.codigo.push("printf(\"%c\",(char)" + valor + ");");
     };
     generacion.prototype.agregarIf = function (valorizquierdo, operador, valorderecho, etiquetaVerdadera) {
         this.codigo.push("if(" + valorizquierdo + operador + valorderecho + ") goto " + etiquetaVerdadera + ";");

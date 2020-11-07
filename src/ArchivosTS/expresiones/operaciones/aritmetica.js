@@ -129,6 +129,22 @@ var aritmetica = /** @class */ (function (_super) {
                     }
                     break;
                 case tipo_1.tipo_dato.STRING:
+                    var tmp_p = generador.generarTemporal();
+                    generador.sacarTemporal(tmp_p);
+                    switch (valorderecha.tipodato) {
+                        case tipo_1.tipo_dato.ENTERO:
+                            generador.agregarExpresion(tmp_p, "p", "+", ambito.tamaño + 1);
+                            generador.stack(tmp_p, valorizquierdo.obtenerValor());
+                            generador.agregarExpresion(tmp_p, tmp_p, "+", "1");
+                            generador.stack(tmp_p, valorderecha.obtenerValor());
+                            generador.moverAmbito(ambito.tamaño);
+                            generador.agregarcodigo3d("union_string_entero();");
+                            generador.getValorStack(temporalresultado, "p");
+                            generador.regresarAmbito(ambito.tamaño);
+                            return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.STRING, false);
+                        default:
+                            break;
+                    }
                     break;
                 default:
                     break;

@@ -44,7 +44,13 @@ export class imprimir implements instruccion{
                 generador.agregarEtiqueta(etiqueta_salida);
 
         }else if(retornoexpresion.tipodato==tipo_dato.STRING){
-
+               //PRIMERO NOS MOVEMOS AL AMBITO DE LA FUNCION NATIVA
+               generador.moverAmbito(ambito.tamaño);
+               //GUARDO EN EL AMBITO LA POSICION DEL INICIO DE LA CADENA EN EL HEAP
+               generador.stack("p",retornoexpresion.obtenerValor());
+               generador.agregarcodigo3d("console();")
+               //REGRESO AL AMBITO PRINCIPAL
+               generador.regresarAmbito(ambito.tamaño);
         }else if(retornoexpresion.tipodato==tipo_dato.NUMBER){
             generador.printf("d","int",retornoexpresion.obtenerValor());
         }else{
