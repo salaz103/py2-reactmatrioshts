@@ -61,8 +61,22 @@ var nativastring = /** @class */ (function () {
                     retorno_final.valor = tmp_resultado;
                     return retorno_final;
                 case tipo_1.tipo_metodo.TOLOWERCASE:
+                    generador.agregarExpresion(tmp, "p", "+", ambito.tamaño + 1);
+                    generador.stack(tmp, retorno_id.obtenerValor());
+                    generador.moverAmbito(ambito.tamaño);
+                    generador.agregarcodigo3d("minusculas();");
+                    generador.getValorStack(tmp_resultado, "p");
+                    generador.regresarAmbito(ambito.tamaño);
+                    retorno_final.valor = tmp_resultado;
                     break;
                 case tipo_1.tipo_metodo.TOUPPERCASE:
+                    generador.agregarExpresion(tmp, "p", "+", ambito.tamaño + 1);
+                    generador.stack(tmp, retorno_id.obtenerValor());
+                    generador.moverAmbito(ambito.tamaño);
+                    generador.agregarcodigo3d("mayusculas();");
+                    generador.getValorStack(tmp_resultado, "p");
+                    generador.regresarAmbito(ambito.tamaño);
+                    retorno_final.valor = tmp_resultado;
                     break;
                 default:
                     break;
@@ -106,6 +120,24 @@ var nativastring = /** @class */ (function () {
                     retorno_final.valor = tmp_resultado;
                     return retorno_final;
                 }
+                else if (this.metodos[i].metodo == tipo_1.tipo_metodo.TOLOWERCASE) {
+                    generador.agregarExpresion(tmp, "p", "+", ambito.tamaño + 1);
+                    generador.stack(tmp, retorno_final.obtenerValor());
+                    generador.moverAmbito(ambito.tamaño);
+                    generador.agregarcodigo3d("minusculas();");
+                    generador.getValorStack(tmp_resultado, "p");
+                    generador.regresarAmbito(ambito.tamaño);
+                    retorno_final.valor = tmp_resultado;
+                }
+                else if (this.metodos[i].metodo == tipo_1.tipo_metodo.TOUPPERCASE) {
+                    generador.agregarExpresion(tmp, "p", "+", ambito.tamaño + 1);
+                    generador.stack(tmp, retorno_final.obtenerValor());
+                    generador.moverAmbito(ambito.tamaño);
+                    generador.agregarcodigo3d("mayusculas();");
+                    generador.getValorStack(tmp_resultado, "p");
+                    generador.regresarAmbito(ambito.tamaño);
+                    retorno_final.valor = tmp_resultado;
+                }
             }
             return retorno_final;
         }
@@ -114,7 +146,7 @@ var nativastring = /** @class */ (function () {
         else {
             app_1.almacen.dispatch(ts_js_1.errores({
                 tipo: 'SEMANTICO',
-                descripcion: "METODOS DE STRING, NO SON APLICABLES A :" + retorno_id.tipodato,
+                descripcion: "NATIVAS, NO SON APLICABLES A :" + retorno_id.tipodato,
                 ambito: ambito.nombre,
                 linea: this.linea,
                 columna: this.columna

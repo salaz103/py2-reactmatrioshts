@@ -44,8 +44,6 @@ export class nativastring implements expresion {
             //REVISAMOS SOLO LA PRIMERA POSICION, YA QUE COMO MINIMO DEBE VENIR UNO
 
             switch (this.metodos[0].metodo) {
-
-
                 case tipo_metodo.CHARAT:
                     generador.agregarExpresion(tmp, "p", "+", ambito.tamaño + 1);
                     generador.stack(tmp, retorno_id.obtenerValor());
@@ -85,12 +83,24 @@ export class nativastring implements expresion {
                     return retorno_final;
 
                 case tipo_metodo.TOLOWERCASE:
-
+                    generador.agregarExpresion(tmp, "p", "+", ambito.tamaño + 1);
+                    generador.stack(tmp, retorno_id.obtenerValor());
+                    generador.moverAmbito(ambito.tamaño);
+                    generador.agregarcodigo3d("minusculas();")
+                    generador.getValorStack(tmp_resultado, "p");
+                    generador.regresarAmbito(ambito.tamaño);
+                    retorno_final.valor = tmp_resultado;
                     break;
 
                 case tipo_metodo.TOUPPERCASE:
+                    generador.agregarExpresion(tmp, "p", "+", ambito.tamaño + 1);
+                    generador.stack(tmp, retorno_id.obtenerValor());
+                    generador.moverAmbito(ambito.tamaño);
+                    generador.agregarcodigo3d("mayusculas();")
+                    generador.getValorStack(tmp_resultado, "p");
+                    generador.regresarAmbito(ambito.tamaño);
+                    retorno_final.valor = tmp_resultado;
                     break;
-
                 default:
                     break;
             }
@@ -137,6 +147,22 @@ export class nativastring implements expresion {
                     retorno_final.tipodato = tipo_dato.ENTERO;
                     retorno_final.valor = tmp_resultado;
                     return retorno_final;
+                }else if(this.metodos[i].metodo==tipo_metodo.TOLOWERCASE){
+                    generador.agregarExpresion(tmp, "p", "+", ambito.tamaño + 1);
+                    generador.stack(tmp, retorno_final.obtenerValor());
+                    generador.moverAmbito(ambito.tamaño);
+                    generador.agregarcodigo3d("minusculas();")
+                    generador.getValorStack(tmp_resultado, "p");
+                    generador.regresarAmbito(ambito.tamaño);
+                    retorno_final.valor = tmp_resultado;
+                }else if(this.metodos[i].metodo==tipo_metodo.TOUPPERCASE){
+                    generador.agregarExpresion(tmp, "p", "+", ambito.tamaño + 1);
+                    generador.stack(tmp, retorno_final.obtenerValor());
+                    generador.moverAmbito(ambito.tamaño);
+                    generador.agregarcodigo3d("mayusculas();")
+                    generador.getValorStack(tmp_resultado, "p");
+                    generador.regresarAmbito(ambito.tamaño);
+                    retorno_final.valor = tmp_resultado;
                 }
 
 
@@ -152,7 +178,7 @@ export class nativastring implements expresion {
 
             almacen.dispatch(errores({
                 tipo: 'SEMANTICO',
-                descripcion: "METODOS DE STRING, NO SON APLICABLES A :" + retorno_id.tipodato,
+                descripcion: "NATIVAS, NO SON APLICABLES A :" + retorno_id.tipodato,
                 ambito: ambito.nombre,
                 linea: this.linea,
                 columna: this.columna
