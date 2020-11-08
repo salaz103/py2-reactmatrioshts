@@ -92,7 +92,7 @@
             return 'CADENACOMILLADOBLE'; 
             }*/
 
-\'[^"]+\' { yytext = yytext.slice(1,-1).replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r").replace("\\\\", "\\").replace("\\\"", "\""); 
+\'[^'']+\' { yytext = yytext.slice(1,-1).replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r").replace("\\\\", "\\").replace("\\\"", "\""); 
             return 'CADENACOMILLASIMPLE'; 
             }
 
@@ -166,6 +166,7 @@
 
 
 /* operator associations and precedence */
+%left 'RPUNTO'
 %left 'RINTERROGACION'
 %left 'ROR'
 %left 'RAND'
@@ -202,7 +203,7 @@ instruccion:  declaraciones RPUNTOCOMA{$$=$1;}
             | declararfuncion  {$$=$1;}
             | llamarfuncion RPUNTOCOMA 
               {$$= new instruccionllamarfuncion.instruccionllamarfuncion($1,@1.first_line,@1.first_column);}
-            | nativa RPUNTOCOMA {$$=$1;}
+            //| nativa RPUNTOCOMA {$$=$1;}
             | masmenos RPUNTOCOMA {$$=$1;}
             | RGRAFICAR RPARA RPARC RPUNTOCOMA
             | RBREAK RPUNTOCOMA
@@ -229,7 +230,7 @@ masmenos: IDENTIFICADOR RMASMAS
          {$$= new incremento_decremento.incremento_decremento($1,operador.DECREMENTO,@1.first_line,@1.first_column);}
          ;
 
-nativa: IDENTIFICADOR RPUNTO RLENGTH ;
+//nativa: IDENTIFICADOR RPUNTO RLENGTH ;
 
 declaraciones: tipovariable listavariables {$$=new declaracion.declaracion($1,$2);};
 
@@ -407,20 +408,18 @@ expresion:
           |RCORCHETEA RCORCHETEC */         
           //LLAMADA A FUNCIONES 
           | llamarfuncion       {$$=$1;}
-          | nativa              {$$=$1;}
-          | nativa_string       {$$=$1;}
+          //| nativa              {$$=$1;}
+          | expresion RPUNTO listametodos
+          {$$= new nativastring.nativastring($1,$3,@1.first_line,@1.first_column);}
           ;
 
 
-nativa_string:  CADENACOMILLADOBLE listametodos
-                {$$= new nativastring.nativastring(new cadena.cadena($1,tipo_dato.STRING,@1.first_line,@1.first_column),$2,@1.first_line,@1.first_column);}
-               |CADENACOMILLASIMPLE listametodos
-               |identificador listametodos;
+
 
 listametodos:   listametodos RPUNTO metodos {$1.push($3); $$=$1;}
-              | RPUNTO metodos {$$=[$2]};
+              |  metodos {$$=[$1]};
 
-metodos: RCHARAT RPARA expresion RPARC
+metodos:  RCHARAT RPARA expresion RPARC
          {$$= new stringmetodos.stringmetodos(tipo_metodo.CHARAT,$3,@1.first_line,@1.first_column);}
         |RTOUPPERCASE RPARA RPARC
         {$$= new stringmetodos.stringmetodos(tipo_metodo.TOUPPERCASE,null,@1.first_line,@1.first_column);}

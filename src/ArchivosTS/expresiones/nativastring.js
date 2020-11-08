@@ -14,14 +14,14 @@ var nativastring = /** @class */ (function () {
     }
     nativastring.prototype.traducir = function (ambito) {
         var generador = generacion_1.generacion.getGenerador();
-        var retorno_final = new traduccionexp_1.traduccionexp("", true, tipo_1.tipo_dato.STRING, false);
         //PRIMERO TRADUCIR LA CADENA O IDENTIFICADOR
         var retorno_id = this.id_string.traducir(ambito);
         var tmp = generador.generarTemporal();
         generador.sacarTemporal(tmp);
-        var tmp_resultado = generador.generarTemporal();
-        generador.sacarTemporal(tmp_resultado);
         if (retorno_id.tipodato == tipo_1.tipo_dato.STRING) {
+            var retorno_final = new traduccionexp_1.traduccionexp("", true, tipo_1.tipo_dato.STRING, false);
+            var tmp_resultado = generador.generarTemporal();
+            generador.sacarTemporal(tmp_resultado);
             //INICIA LA MAGIA
             //REVISAMOS SOLO LA PRIMERA POSICION, YA QUE COMO MINIMO DEBE VENIR UNO
             switch (this.metodos[0].metodo) {
@@ -107,6 +107,9 @@ var nativastring = /** @class */ (function () {
                     return retorno_final;
                 }
             }
+            return retorno_final;
+        }
+        else if (retorno_id.tipodato == tipo_1.tipo_dato.ARRAY) {
         }
         else {
             app_1.almacen.dispatch(ts_js_1.errores({
@@ -118,7 +121,6 @@ var nativastring = /** @class */ (function () {
             }));
             return new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.UNDEFINED, false);
         }
-        return retorno_final;
     };
     return nativastring;
 }());

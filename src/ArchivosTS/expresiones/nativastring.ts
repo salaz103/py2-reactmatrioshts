@@ -25,7 +25,7 @@ export class nativastring implements expresion {
 
     traducir(ambito: entorno): traduccionexp {
         const generador = generacion.getGenerador();
-        let retorno_final = new traduccionexp("", true, tipo_dato.STRING, false);
+        
 
         //PRIMERO TRADUCIR LA CADENA O IDENTIFICADOR
         let retorno_id = this.id_string.traducir(ambito);
@@ -33,9 +33,13 @@ export class nativastring implements expresion {
         const tmp = generador.generarTemporal();
         generador.sacarTemporal(tmp);
 
-        const tmp_resultado = generador.generarTemporal();
-        generador.sacarTemporal(tmp_resultado);
+        
         if (retorno_id.tipodato == tipo_dato.STRING) {
+            let retorno_final = new traduccionexp("", true, tipo_dato.STRING, false);
+            const tmp_resultado = generador.generarTemporal();
+            generador.sacarTemporal(tmp_resultado);
+
+
             //INICIA LA MAGIA
             //REVISAMOS SOLO LA PRIMERA POSICION, YA QUE COMO MINIMO DEBE VENIR UNO
 
@@ -138,8 +142,13 @@ export class nativastring implements expresion {
 
             }
 
+            return retorno_final;
 
-        } else {
+        } else if(retorno_id.tipodato==tipo_dato.ARRAY) {
+
+            
+
+        }else{
 
             almacen.dispatch(errores({
                 tipo: 'SEMANTICO',
@@ -154,7 +163,7 @@ export class nativastring implements expresion {
 
 
 
-        return retorno_final;
+        
     }
 
 }

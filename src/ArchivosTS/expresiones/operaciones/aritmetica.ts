@@ -302,7 +302,7 @@ export class aritmetica extends operacion implements expresion {
                     generador.getValorStack(temporalresultado,"p");
                     //REGRESAMOS AL AMBITO DE DONDE HICIMOS LA LLAMADA
                     generador.regresarAmbito(ambito.tamaño);
-                    return new traduccionexp(temporalresultado,true,tipo_dato.ENTERO,false);
+                    return new traduccionexp(temporalresultado,true,tipo_dato.DECIMAL,false);
 
                 }else{
                     almacen.dispatch(errores({
