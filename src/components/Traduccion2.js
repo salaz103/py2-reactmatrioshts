@@ -58,23 +58,31 @@ class Traduccion2 extends React.Component {
 
 
   desanidar=()=>{
-      let ast;
+      /*let ast;
       let graphviz;
-      ast = Traducir.parse(this.state.valorEditor1);
-      let valor= this.state.valorEditor1;
-      console.log(ast);
+      ast = Traducir.parse(this.state.codigoDesanidado);
+      //let valor= this.state.valorEditor1;
+      //console.log(ast);
       
       
-      let ambito= new entorno();
-      let codigofinal=desanidar(ast,ambito);
+      //let ambito= new entorno();
+      //let codigofinal=desanidar(ast,ambito);
       graphviz= AST_grafo(ast);
-      console.log(codigofinal);
-      this.onChange2(codigofinal);
-      this.props.agregarCodigo(graphviz);
+      //console.log(codigofinal);
+      //this.onChange2(codigofinal);
+      this.props.agregarCodigo(graphviz);*/
   }
 
   traducir=()=>{
 
+    //PRIMERO EL AST
+      let ast1;
+      let graphviz;
+      ast1 = Traducir.parse(this.state.codigoDesanidado);
+      graphviz= AST_grafo(ast1);
+      this.props.agregarCodigo(graphviz);
+
+    //CODIGO 3D
     listaerrores.obtenerLista().limpiar();
     let ast=null;
     ast= Ejecutar.parse(this.state.codigoDesanidado);
@@ -106,27 +114,10 @@ class Traduccion2 extends React.Component {
       <div>
         <div className='container'>
 
-        <div className='container-inline2'>
-          <h1>Entrada C-Alto nivel</h1>
-        </div>
-
-        <div className='container-inline'>
-        <AceEditor
-            onChange={this.onChange}
-            width='1900px'
-            height='400px'
-            mode="typescript"
-            theme="tomorrow_night_blue"
-            name="editor1"
-            //value= {this.state.textot}
-            fontSize='20px'
-        />
-
-      
-        </div>
+       
 
         <div className='container-inline2'>
-          <h1>Salida Desanidada</h1>
+          <h1>Entrada- Alto Nivel</h1>
           <h1>Salida C3D</h1>
         </div>
 
@@ -159,10 +150,6 @@ class Traduccion2 extends React.Component {
         </div>
 
         <div className='inline-buttons'>
-        <Action
-            action={this.desanidar}
-            nombre='Desanidar'
-        />
         <Action
             action={this.traducir}
             nombre= 'TraducirC3D'

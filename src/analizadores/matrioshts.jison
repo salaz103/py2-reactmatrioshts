@@ -32,6 +32,10 @@
 "push"                return 'RPUSH';
 "pop"                 return 'RPOP';
 "length"              return 'RLENGTH';
+"charAt"              return 'RCHARAT';
+"toLowerCase"         return 'RTOLOWERCASE';
+"toUpperCase"         return 'RTOUPPERCASE';
+"concat"              return 'RCONCAT';
 //DECLARACION DE VARIABLES
 "let"                 return 'RLET';
 "const"               return 'RCONST';
@@ -104,6 +108,7 @@ const nodobase= require('../arbolBase/nodobase').nodobase;
 
 
 /* operator associations and precedence */
+%left 'RPUNTO'
 %left 'RINTERROGACION'
 %left 'ROR'
 %left 'RAND'
@@ -141,8 +146,8 @@ instruccion: declaraciones RPUNTOCOMA
             | instruccionwhile {$$=$1;} //LISTO
             | imprimir {$$=$1;}  //LISTO
             | declararfuncion {$$=$1} //LISTO
-            | nativa RPUNTOCOMA //LISTO
-             {$$=nodobase.nuevonodo('NATIVA',[$1,$2],yylineno);}
+            //| nativa RPUNTOCOMA //LISTO
+            // {$$=nodobase.nuevonodo('NATIVA',[$1,$2],yylineno);}
             | llamarfuncion RPUNTOCOMA
              {$$=nodobase.nuevonodo('LFUNCION',[$1,$2],yylineno);}
             | masmenos RPUNTOCOMA 
@@ -162,13 +167,13 @@ masmenos: IDENTIFICADOR RMASMAS
          {$$=nodobase.nuevonodo('MENOS_MENOS',[$1,$2],yylineno);}
          ;
 
-nativa: IDENTIFICADOR RPUNTO RPUSH RPARA listaexpresiones RPARC
+/*nativa: IDENTIFICADOR RPUNTO RPUSH RPARA listaexpresiones RPARC
         {$$=nodobase.nuevonodo('PUSH',[$1,$2,$3,$4,$5,$6],yylineno);}
        |IDENTIFICADOR RPUNTO RPOP RPARA RPARC
         {$$=nodobase.nuevonodo('POP',[$1,$2,$3,$4,$5],yylineno);}
        |IDENTIFICADOR RPUNTO RLENGTH
         {$$=nodobase.nuevonodo('LENGTH',[$1,$2,$3],yylineno);}
-       ;
+       ;*/
 
 //LISTO
 declaraciones: tipovariable listavariables {$$=nodobase.nuevonodo('DECLARACION_VARIABLE',[$1,$2],yylineno);};
@@ -313,8 +318,10 @@ expresion:
           |expresion RDIVISION expresion {$$= nodobase.nuevonodo('DIVISION',[$1,$2,$3],yylineno);} //LISTO
           |expresion RMODULO expresion   {$$= nodobase.nuevonodo('MODULO',[$1,$2,$3],yylineno);}  //LISTO
           |expresion REXPONENTE expresion {$$= nodobase.nuevonodo('EXPONENTE',[$1,$2,$3],yylineno);} //LISTO
-          /*|IDENTIFICADOR RMASMAS
-          |IDENTIFICADOR RMENOSMENOS*/
+          |IDENTIFICADOR RMASMAS
+           {$$=nodobase.nuevonodo('MAS_MAS',[$1,$2],yylineno);}
+          |IDENTIFICADOR RMENOSMENOS
+           {$$=nodobase.nuevonodo('MENOS_MENOS',[$1,$2],yylineno);}
 
           /*EXPRESIONES RELACIONALES*/
           |expresion RMAYORQUE expresion  {$$= nodobase.nuevonodo('MAYORQUE',[$1,$2,$3],yylineno);}  //LISTO
@@ -340,5 +347,22 @@ expresion:
           //LLAMADA A FUNCIONES 
           //LISTO
           | llamarfuncion {$$=$1;}
-          | nativa        {$$=$1;}
+          //| nativa        {$$=$1;}
+          | expresion RPUNTO listametodos
+           {$$= nodobase.nuevonodo('NATIVA',[$1,$2,$3],yylineno);}
           ;
+
+listametodos: listametodos RPUNTO metodos {$1.hijos.push($3); $$=$1;}
+              | metodos {$$=nodobase.nuevonodo('LISTA_METODOS',[$1],yylineno);};
+
+metodos: RCHARAT RPARA expresion RPARC
+         {$$= nodobase.nuevonodo('CHAR_AT',[$1,$2,$3,$4],yylineno);}
+        |RTOUPPERCASE RPARA RPARC
+        {$$= nodobase.nuevonodo('TO_UPPER',[$1,$2,$3],yylineno);}
+        |RTOLOWERCASE RPARA RPARC
+        {$$= nodobase.nuevonodo('TO_LOWER',[$1,$2,$3],yylineno);}
+        |RCONCAT RPARA expresion RPARC
+        {$$= nodobase.nuevonodo('CONCAT',[$1,$2,$3,$4],yylineno);}
+        |RLENGTH
+        {$$= nodobase.nuevonodo('LENGTH',[$1],yylineno);}
+        ;

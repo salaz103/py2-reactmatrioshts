@@ -90,7 +90,7 @@
 
 \"[^"]+\" { yytext = yytext.slice(1,-1).replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r").replace("\\\\", "\\").replace("\\\"", "\""); 
             return 'CADENACOMILLADOBLE'; 
-            }*/
+            }
 
 \'[^'']+\' { yytext = yytext.slice(1,-1).replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r").replace("\\\\", "\\").replace("\\\"", "\""); 
             return 'CADENACOMILLASIMPLE'; 
