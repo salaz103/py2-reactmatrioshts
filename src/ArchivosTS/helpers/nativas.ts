@@ -293,6 +293,33 @@ export function generarFuncionesNativas() {
 
 ////////////////////////////////////////////////////////////CARACTER_CADENA///////////////////////////////////////////////////////
 
+    let tp1= generador.generarTemporal();
+    let tp2= generador.generarTemporal();
+    let tp3= generador.generarTemporal();
+    let tp4= generador.generarTemporal();
+    generador.sacarTemporal(tp1);
+    generador.sacarTemporal(tp2);
+    generador.sacarTemporal(tp3);
+    generador.sacarTemporal(tp4);
+    generador.agregarcodigo3d("caracter_cadena(){");
+    generador.agregarExpresion(tp1,"p","+","1");
+    generador.getValorStack(tp2,tp1); //PARAMETRO 1 - CADENA
+    generador.agregarExpresion(tp3,"h","","");
+    generador.agregarExpresion(tp1,tp1,"+","1");
+    generador.getValorStack(tp4,tp1); //PARAMETRO 2 - INDICE
+    generador.agregarExpresion(tp1,tp2,"+",tp4);
+
+    generador.getValorHeap(tp4,tp1);
+    generador.heap("h",tp4);
+    generador.siguienteHeap();
+    generador.heap("h","-1");
+    generador.siguienteHeap();
+    generador.stack("p",tp3);
+    generador.agregarcodigo3d("return ;");
+    generador.agregarcodigo3d("}");
+
+
+
 
 
     generador.agregarComentarios("FIN FUNCIONES NATIVAS");

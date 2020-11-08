@@ -67,3 +67,12 @@ var operador;
     operador["OR"] = "OR";
 })(operador || (operador = {}));
 exports.operador = operador;
+var tipo_metodo;
+(function (tipo_metodo) {
+    tipo_metodo["TOUPPERCASE"] = "TOUPPERCASE";
+    tipo_metodo["TOLOWERCASE"] = "TOLOWERCASE";
+    tipo_metodo["CHARAT"] = "CHARAT";
+    tipo_metodo["CONCAT"] = "CONCAT";
+    tipo_metodo["LENGTH"] = "LENGTH";
+})(tipo_metodo || (tipo_metodo = {}));
+exports.tipo_metodo = tipo_metodo;

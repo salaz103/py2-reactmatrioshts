@@ -142,6 +142,8 @@
   const diferenteque= require('../ArchivosTS/expresiones/operaciones/diferenteque');
   const logica= require('../ArchivosTS/expresiones/operaciones/logica');
   const operadorternario= require('../ArchivosTS/expresiones/operadorternario');
+  const nativastring= require('../ArchivosTS/expresiones/nativastring');
+  const stringmetodos= require('../ArchivosTS/expresiones/stringmetodos');
 
   //******************INTERMEDIOS************************************
   const variable= require('../ArchivosTS/expresiones/variable');
@@ -154,7 +156,7 @@
   const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;
   const tipo_instruccion= require('../ArchivosTS/entorno/tipo').tipo_instruccion;
   const operador= require('../ArchivosTS/entorno/tipo').operador;
-
+  const tipo_metodo= require('../ArchivosTS/entorno/tipo').tipo_metodo;
 
   parser.yy.parseError= function(error,hash){
     console.log(error);
@@ -227,12 +229,7 @@ masmenos: IDENTIFICADOR RMASMAS
          {$$= new incremento_decremento.incremento_decremento($1,operador.DECREMENTO,@1.first_line,@1.first_column);}
          ;
 
-nativa: IDENTIFICADOR RPUNTO RLENGTH
-       |IDENTIFICADOR RPUNTO RCHARAT RPARA NUM RPARC 
-       |IDENTIFICADOR RPUNTO RTOLOWERCASE RPARA RPARC
-       |IDENTIFICADOR RPUNTO RTOUPPERCASE RPARA RPARC
-       |IDENTIFICADOR RPUNTO RCONCAT RPARA listaexpresiones RPARC
-       ;
+nativa: IDENTIFICADOR RPUNTO RLENGTH ;
 
 declaraciones: tipovariable listavariables {$$=new declaracion.declaracion($1,$2);};
 
@@ -411,4 +408,26 @@ expresion:
           //LLAMADA A FUNCIONES 
           | llamarfuncion       {$$=$1;}
           | nativa              {$$=$1;}
+          | nativa_string       {$$=$1;}
           ;
+
+
+nativa_string:  CADENACOMILLADOBLE listametodos
+                {$$= new nativastring.nativastring(new cadena.cadena($1,tipo_dato.STRING,@1.first_line,@1.first_column),$2,@1.first_line,@1.first_column);}
+               |CADENACOMILLASIMPLE listametodos
+               |identificador listametodos;
+
+listametodos:   listametodos RPUNTO metodos {$1.push($3); $$=$1;}
+              | RPUNTO metodos {$$=[$2]};
+
+metodos: RCHARAT RPARA expresion RPARC
+         {$$= new stringmetodos.stringmetodos(tipo_metodo.CHARAT,$3,@1.first_line,@1.first_column);}
+        |RTOUPPERCASE RPARA RPARC
+        {$$= new stringmetodos.stringmetodos(tipo_metodo.TOUPPERCASE,null,@1.first_line,@1.first_column);}
+        |RTOLOWERCASE RPARA RPARC
+        {$$= new stringmetodos.stringmetodos(tipo_metodo.TOLOWERCASE,null,@1.first_line,@1.first_column);}
+        |RCONCAT RPARA expresion RPARC
+         {$$= new stringmetodos.stringmetodos(tipo_metodo.CONCAT,$3,@1.first_line,@1.first_column);}
+        |RLENGTH
+         {$$= new stringmetodos.stringmetodos(tipo_metodo.LENGTH,null,@1.first_line,@1.first_column);}
+        ;

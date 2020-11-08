@@ -59,6 +59,13 @@ enum operador{
     OR="OR"
 }
 
+enum tipo_metodo{
+    TOUPPERCASE= "TOUPPERCASE",
+    TOLOWERCASE="TOLOWERCASE",
+    CHARAT="CHARAT",
+    CONCAT= "CONCAT",
+    LENGTH="LENGTH"
+}
 
 
-export {tipo_dato,operador,tipo_variable,tipo_instruccion,tipo_rol,tipo_ambito};
+export {tipo_dato,operador,tipo_variable,tipo_instruccion,tipo_rol,tipo_ambito,tipo_metodo};
