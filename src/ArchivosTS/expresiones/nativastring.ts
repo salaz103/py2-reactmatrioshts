@@ -29,7 +29,6 @@ export class nativastring implements expresion {
 
         //PRIMERO TRADUCIR LA CADENA O IDENTIFICADOR
         let retorno_id = this.id_string.traducir(ambito);
-        //PENDIENTE - VALIDAR SI ES UN STRING O NO
 
         const tmp = generador.generarTemporal();
         generador.sacarTemporal(tmp);
@@ -58,7 +57,16 @@ export class nativastring implements expresion {
                     break;
 
                 case tipo_metodo.CONCAT:
-
+                    generador.agregarExpresion(tmp, "p", "+", ambito.tamaño + 1);
+                    generador.stack(tmp, retorno_id.obtenerValor());
+                    let retorno_expresion= this.metodos[0].exp.traducir(ambito);
+                    generador.agregarExpresion(tmp, tmp, "+", "1");
+                    generador.stack(tmp, retorno_expresion.obtenerValor());
+                    generador.moverAmbito(ambito.tamaño);
+                    generador.agregarcodigo3d("concatenacion();")
+                    generador.getValorStack(tmp_resultado, "p");
+                    generador.regresarAmbito(ambito.tamaño);
+                    retorno_final.valor = tmp_resultado;
                     break;
 
                 case tipo_metodo.LENGTH:
@@ -103,6 +111,17 @@ export class nativastring implements expresion {
                     generador.regresarAmbito(ambito.tamaño);
                     retorno_final.valor = tmp_resultado;
                 } else if (this.metodos[i].metodo == tipo_metodo.CONCAT) {
+
+                    generador.agregarExpresion(tmp, "p", "+", ambito.tamaño + 1);
+                    generador.stack(tmp, retorno_final.obtenerValor());
+                    let retorno_ex = this.metodos[i].exp.traducir(ambito);
+                    generador.agregarExpresion(tmp, tmp, "+", "1");
+                    generador.stack(tmp, retorno_ex.obtenerValor());
+                    generador.moverAmbito(ambito.tamaño);
+                    generador.agregarcodigo3d("concatenacion();")
+                    generador.getValorStack(tmp_resultado, "p");
+                    generador.regresarAmbito(ambito.tamaño);
+                    retorno_final.valor = tmp_resultado;
 
                 } else if (this.metodos[i].metodo == tipo_metodo.LENGTH) {
                     generador.agregarExpresion(tmp, "p", "+", ambito.tamaño + 1);

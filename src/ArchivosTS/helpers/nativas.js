@@ -293,6 +293,48 @@ function generarFuncionesNativas() {
     generador.stack("p", tp3);
     generador.agregarcodigo3d("return ;");
     generador.agregarcodigo3d("}");
+    /////////////////////////////////////////////CONCAT_STRING//////////////////////////////////////////////////////////////////
+    var tregreso = generador.generarTemporal();
+    var tparametro = generador.generarTemporal();
+    var tstack = generador.generarTemporal();
+    var tlector = generador.generarTemporal();
+    generador.sacarTemporal(tregreso);
+    generador.sacarTemporal(tparametro);
+    generador.sacarTemporal(tstack);
+    generador.sacarTemporal(tlector);
+    generador.agregarcodigo3d("concatenacion(){");
+    generador.agregarExpresion(tregreso, "h", "", "");
+    generador.agregarExpresion(tparametro, "p", "+", "1");
+    generador.getValorStack(tstack, tparametro);
+    var label_inicio = generador.generarEtiqueta();
+    generador.agregarEtiqueta(label_inicio);
+    generador.getValorHeap(tlector, tstack);
+    var label_salida1 = generador.generarEtiqueta();
+    generador.agregarIf(tlector, "==", "-1", label_salida1);
+    generador.heap("h", tlector);
+    generador.siguienteHeap();
+    generador.agregarExpresion(tstack, tstack, "+", "1");
+    generador.agregarGoTo(label_inicio);
+    generador.agregarEtiqueta(label_salida1);
+    //COMENZAMOS A AGREGAR LA SEGUNDA CADENA
+    generador.agregarExpresion(tparametro, tparametro, "+", "1");
+    generador.getValorStack(tstack, tparametro);
+    var label_inicio2 = generador.generarEtiqueta();
+    generador.agregarEtiqueta(label_inicio2);
+    generador.getValorHeap(tlector, tstack);
+    var label_salida2 = generador.generarEtiqueta();
+    generador.agregarIf(tlector, "==", "-1", label_salida2);
+    generador.heap("h", tlector);
+    generador.siguienteHeap();
+    generador.agregarExpresion(tstack, tstack, "+", "1");
+    generador.agregarGoTo(label_inicio2);
+    generador.agregarEtiqueta(label_salida2);
+    //YA TERMINAMOS DE AGREGAR LAS 2 CADENAS, SOLO FALTA EL FIN DE CADENA
+    generador.heap("h", "-1");
+    generador.siguienteHeap();
+    generador.stack("p", tregreso);
+    generador.agregarcodigo3d("return ;");
+    generador.agregarcodigo3d("}");
     generador.agregarComentarios("FIN FUNCIONES NATIVAS");
 }
 exports.generarFuncionesNativas = generarFuncionesNativas;

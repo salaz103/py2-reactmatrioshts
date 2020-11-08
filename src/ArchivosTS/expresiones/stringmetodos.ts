@@ -1,7 +1,6 @@
 import entorno from "../entorno/entorno";
 import { tipo_metodo } from "../entorno/tipo";
 import expresion from "./expresion";
-import { traduccionexp } from "./traduccionexp";
 
 export class stringmetodos{
 

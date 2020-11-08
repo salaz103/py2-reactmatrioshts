@@ -281,6 +281,15 @@ break;
 case 102:
 this.$= new stringmetodos.stringmetodos(tipo_metodo.CHARAT,$$[$0-1],_$[$0-3].first_line,_$[$0-3].first_column);
 break;
+case 103:
+this.$= new stringmetodos.stringmetodos(tipo_metodo.TOUPPERCASE,null,_$[$0-2].first_line,_$[$0-2].first_column);
+break;
+case 104:
+this.$= new stringmetodos.stringmetodos(tipo_metodo.TOLOWERCASE,null,_$[$0-2].first_line,_$[$0-2].first_column);
+break;
+case 105:
+this.$= new stringmetodos.stringmetodos(tipo_metodo.CONCAT,$$[$0-1],_$[$0-3].first_line,_$[$0-3].first_column);
+break;
 case 106:
 this.$= new stringmetodos.stringmetodos(tipo_metodo.LENGTH,null,_$[$0].first_line,_$[$0].first_column);
 break;

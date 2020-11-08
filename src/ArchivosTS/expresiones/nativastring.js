@@ -17,7 +17,6 @@ var nativastring = /** @class */ (function () {
         var retorno_final = new traduccionexp_1.traduccionexp("", true, tipo_1.tipo_dato.STRING, false);
         //PRIMERO TRADUCIR LA CADENA O IDENTIFICADOR
         var retorno_id = this.id_string.traducir(ambito);
-        //PENDIENTE - VALIDAR SI ES UN STRING O NO
         var tmp = generador.generarTemporal();
         generador.sacarTemporal(tmp);
         var tmp_resultado = generador.generarTemporal();
@@ -40,6 +39,16 @@ var nativastring = /** @class */ (function () {
                     retorno_final.valor = tmp_resultado;
                     break;
                 case tipo_1.tipo_metodo.CONCAT:
+                    generador.agregarExpresion(tmp, "p", "+", ambito.tamaño + 1);
+                    generador.stack(tmp, retorno_id.obtenerValor());
+                    var retorno_expresion = this.metodos[0].exp.traducir(ambito);
+                    generador.agregarExpresion(tmp, tmp, "+", "1");
+                    generador.stack(tmp, retorno_expresion.obtenerValor());
+                    generador.moverAmbito(ambito.tamaño);
+                    generador.agregarcodigo3d("concatenacion();");
+                    generador.getValorStack(tmp_resultado, "p");
+                    generador.regresarAmbito(ambito.tamaño);
+                    retorno_final.valor = tmp_resultado;
                     break;
                 case tipo_1.tipo_metodo.LENGTH:
                     generador.agregarExpresion(tmp, "p", "+", ambito.tamaño + 1);
@@ -75,6 +84,16 @@ var nativastring = /** @class */ (function () {
                     retorno_final.valor = tmp_resultado;
                 }
                 else if (this.metodos[i].metodo == tipo_1.tipo_metodo.CONCAT) {
+                    generador.agregarExpresion(tmp, "p", "+", ambito.tamaño + 1);
+                    generador.stack(tmp, retorno_final.obtenerValor());
+                    var retorno_ex = this.metodos[i].exp.traducir(ambito);
+                    generador.agregarExpresion(tmp, tmp, "+", "1");
+                    generador.stack(tmp, retorno_ex.obtenerValor());
+                    generador.moverAmbito(ambito.tamaño);
+                    generador.agregarcodigo3d("concatenacion();");
+                    generador.getValorStack(tmp_resultado, "p");
+                    generador.regresarAmbito(ambito.tamaño);
+                    retorno_final.valor = tmp_resultado;
                 }
                 else if (this.metodos[i].metodo == tipo_1.tipo_metodo.LENGTH) {
                     generador.agregarExpresion(tmp, "p", "+", ambito.tamaño + 1);
