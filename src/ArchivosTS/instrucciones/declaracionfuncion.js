@@ -44,14 +44,16 @@ var declaracionfuncion = /** @class */ (function () {
             //VAMOS A SETEAR AL ENTORNO LA FUNCION
             ambito_funcion_1.setearFuncion(this, etiqueta_return);
             //AHORA TOCA RECORRER LOS PARAMETROS Y AGREGARLOS AL AMBITO
-            this.parametros.forEach(function (parametro) {
-                if (parametro.tipodato == tipo_1.tipo_dato.NUMBER) {
-                    ambito_funcion_1.agregarSimbolo(parametro.id, tipo_1.tipo_dato.ENTERO, ambito_funcion_1.nombre, parametro.linea, parametro.columna, false);
-                }
-                else {
-                    ambito_funcion_1.agregarSimbolo(parametro.id, parametro.tipodato, ambito_funcion_1.nombre, parametro.linea, parametro.columna, false);
-                }
-            });
+            if (this.parametros != null) {
+                this.parametros.forEach(function (parametro) {
+                    if (parametro.tipodato == tipo_1.tipo_dato.NUMBER) {
+                        ambito_funcion_1.agregarSimbolo(parametro.id, tipo_1.tipo_dato.ENTERO, ambito_funcion_1.nombre, parametro.linea, parametro.columna, false);
+                    }
+                    else {
+                        ambito_funcion_1.agregarSimbolo(parametro.id, parametro.tipodato, ambito_funcion_1.nombre, parametro.linea, parametro.columna, false);
+                    }
+                });
+            }
             //AHORA LIMPIAMOS EL STORE DE LOS TEMPORALES
             generador.limpiarStoreTemporales();
             generador.agregarcodigo3d(this.nombre + "(){");

@@ -32,10 +32,16 @@ export class llamarfuncion implements instruccion{
         if(funcion){
             const parametros= new Array<traduccionexp>();
             const tamaño_ambito_temporal= generador.guardarTemporales(ambito);
-            this.parametros.forEach(parametro => {
-                 let retorno_parametro:traduccionexp= parametro.traducir(ambito);
-                 parametros.push(retorno_parametro);
-            });
+
+            //VERIFICAR SI TRAE PARAMETROS PARA GUARDARLOS
+            if(this.parametros!=null){
+                this.parametros.forEach(parametro => {
+                    let retorno_parametro:traduccionexp= parametro.traducir(ambito);
+                    parametros.push(retorno_parametro);
+               });
+            }
+
+            
 
             const temp_parametro= generador.generarTemporal();
             generador.sacarTemporal(temp_parametro);

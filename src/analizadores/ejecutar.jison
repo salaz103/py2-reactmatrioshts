@@ -86,15 +86,13 @@
 "."                   return 'RPUNTO';
 ","                   return 'RCOMA';
 
+\'[^\']*\'            { yytext = yytext.substr(1,yyleng-2).replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r").replace("\\\\", "\\").replace("\\\"", "\""); 
+                        return 'CADENACOMILLASIMPLE'; }
+
+\"[^\"]*\"            { yytext = yytext.substr(1,yyleng-2).replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r").replace("\\\\", "\\").replace("\\\"", "\""); 
+                        return 'CADENACOMILLADOBLE'; }
 
 
-\"[^"]+\" { yytext = yytext.slice(1,-1).replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r").replace("\\\\", "\\").replace("\\\"", "\""); 
-            return 'CADENACOMILLADOBLE'; 
-            }
-
-\'[^'']+\' { yytext = yytext.slice(1,-1).replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r").replace("\\\\", "\\").replace("\\\"", "\""); 
-            return 'CADENACOMILLASIMPLE'; 
-            }
 
 [0-9]+("."[0-9]+)?\b          return 'NUM';
 ([a-zA-Z])[a-zA-Z0-9_]*       return 'IDENTIFICADOR';

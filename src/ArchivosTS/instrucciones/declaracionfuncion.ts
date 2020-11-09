@@ -60,15 +60,21 @@ export class declaracionfuncion implements instruccion{
             //VAMOS A SETEAR AL ENTORNO LA FUNCION
             ambito_funcion.setearFuncion(this,etiqueta_return);
             //AHORA TOCA RECORRER LOS PARAMETROS Y AGREGARLOS AL AMBITO
-            this.parametros.forEach(parametro => {
+            if(this.parametros!=null){
 
-                if(parametro.tipodato==tipo_dato.NUMBER){
-                    ambito_funcion.agregarSimbolo(parametro.id,tipo_dato.ENTERO,ambito_funcion.nombre,parametro.linea,parametro.columna,false);
-                }else{
-                    ambito_funcion.agregarSimbolo(parametro.id,parametro.tipodato,ambito_funcion.nombre,parametro.linea,parametro.columna,false);
-                }
+                this.parametros.forEach(parametro => {
 
-            });
+                    if(parametro.tipodato==tipo_dato.NUMBER){
+                        ambito_funcion.agregarSimbolo(parametro.id,tipo_dato.ENTERO,ambito_funcion.nombre,parametro.linea,parametro.columna,false);
+                    }else{
+                        ambito_funcion.agregarSimbolo(parametro.id,parametro.tipodato,ambito_funcion.nombre,parametro.linea,parametro.columna,false);
+                    }
+    
+                });
+
+            }
+
+            
             //AHORA LIMPIAMOS EL STORE DE LOS TEMPORALES
             generador.limpiarStoreTemporales();
             generador.agregarcodigo3d(this.nombre+"(){");

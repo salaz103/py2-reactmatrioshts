@@ -19,10 +19,13 @@ var llamarfuncion = /** @class */ (function () {
         if (funcion) {
             var parametros_1 = new Array();
             var tamaño_ambito_temporal = generador.guardarTemporales(ambito);
-            this.parametros.forEach(function (parametro) {
-                var retorno_parametro = parametro.traducir(ambito);
-                parametros_1.push(retorno_parametro);
-            });
+            //VERIFICAR SI TRAE PARAMETROS PARA GUARDARLOS
+            if (this.parametros != null) {
+                this.parametros.forEach(function (parametro) {
+                    var retorno_parametro = parametro.traducir(ambito);
+                    parametros_1.push(retorno_parametro);
+                });
+            }
             var temp_parametro_1 = generador.generarTemporal();
             generador.sacarTemporal(temp_parametro_1);
             //COMENZAMOS A GUARDAR LOS PARAMETROS PARA QUE YA SOLO LOS LEAMOS CUANDO ESTEMOS EN LA FUNCION
