@@ -60,25 +60,38 @@ var operadorternario = /** @class */ (function () {
                 generador.agregarGoTo(etiqueta_salida_ternario);
             }
             generador.agregarEtiqueta(etiqueta_salida_ternario);
-            if (retorno_true.tipodato == tipo_1.tipo_dato.BOOLEAN || retorno_false.tipodato == tipo_1.tipo_dato.BOOLEAN) {
-                var etqtrue = generador.generarEtiqueta();
-                var etqfalse = generador.generarEtiqueta();
-                var retvalor = new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.BOOLEAN, true);
-                generador.sacarTemporal(tmp_retorno);
-                generador.agregarIf(tmp_retorno, "==", "1", etqtrue);
-                generador.agregarGoTo(etqfalse);
-                retvalor.etiquetastrue = etqtrue;
-                retvalor.etiquetasfalse = etqfalse;
-                return retvalor;
+            if (retorno_true.tipodato == retorno_false.tipodato) {
+                //SI SON IGUALES ENTONCES LO DEVOLVEMOS
+                if (retorno_true.tipodato == tipo_1.tipo_dato.BOOLEAN || retorno_false.tipodato == tipo_1.tipo_dato.BOOLEAN) {
+                    var etqtrue = generador.generarEtiqueta();
+                    var etqfalse = generador.generarEtiqueta();
+                    var retvalor = new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.BOOLEAN, true);
+                    generador.sacarTemporal(tmp_retorno);
+                    generador.agregarIf(tmp_retorno, "==", "1", etqtrue);
+                    generador.agregarGoTo(etqfalse);
+                    retvalor.etiquetastrue = etqtrue;
+                    retvalor.etiquetasfalse = etqfalse;
+                    return retvalor;
+                }
+                else {
+                    return new traduccionexp_1.traduccionexp(tmp_retorno, true, retorno_true.tipodato, false);
+                }
             }
             else {
-                return new traduccionexp_1.traduccionexp(tmp_retorno, true, retorno_true.tipodato, false);
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'TIPOS EN TERNARIO NO SON DEL MISMO TIPO, SE RECIBIO: ' + retorno_true.tipodato + " Y " + retorno_false.tipodato,
+                    ambito: ambito.nombre,
+                    linea: this.linea,
+                    columna: this.columna
+                }));
+                return new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.UNDEFINED, false);
             }
         }
         else {
             app_1.almacen.dispatch(ts_js_1.errores({
                 tipo: 'SEMANTICO',
-                descripcion: 'CONDICION EN IF, NO ES DE TIPO BOOLEAN',
+                descripcion: 'CONDICION EN TERNARIO, NO ES DE TIPO BOOLEAN',
                 ambito: ambito.nombre,
                 linea: this.linea,
                 columna: this.columna

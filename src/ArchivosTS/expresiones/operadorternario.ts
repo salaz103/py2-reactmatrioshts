@@ -70,24 +70,41 @@ export class operadorternario implements expresion {
                 generador.agregarGoTo(etiqueta_salida_ternario);
             }
             generador.agregarEtiqueta(etiqueta_salida_ternario);
-            if (retorno_true.tipodato == tipo_dato.BOOLEAN || retorno_false.tipodato == tipo_dato.BOOLEAN) {
-                let etqtrue = generador.generarEtiqueta();
-                let etqfalse = generador.generarEtiqueta();
-                const retvalor = new traduccionexp("", false, tipo_dato.BOOLEAN, true);
-                generador.sacarTemporal(tmp_retorno);
-                generador.agregarIf(tmp_retorno, "==", "1", etqtrue);
-                generador.agregarGoTo(etqfalse);
-                retvalor.etiquetastrue = etqtrue;
-                retvalor.etiquetasfalse = etqfalse;
-                return retvalor;
-            } else {
-                return new traduccionexp(tmp_retorno, true, retorno_true.tipodato, false);
+
+
+            if(retorno_true.tipodato== retorno_false.tipodato){
+                //SI SON IGUALES ENTONCES LO DEVOLVEMOS
+                if (retorno_true.tipodato == tipo_dato.BOOLEAN || retorno_false.tipodato == tipo_dato.BOOLEAN) {
+                    let etqtrue = generador.generarEtiqueta();
+                    let etqfalse = generador.generarEtiqueta();
+                    const retvalor = new traduccionexp("", false, tipo_dato.BOOLEAN, true);
+                    generador.sacarTemporal(tmp_retorno);
+                    generador.agregarIf(tmp_retorno, "==", "1", etqtrue);
+                    generador.agregarGoTo(etqfalse);
+                    retvalor.etiquetastrue = etqtrue;
+                    retvalor.etiquetasfalse = etqfalse;
+                    return retvalor;
+                } else {
+                    return new traduccionexp(tmp_retorno, true, retorno_true.tipodato, false);
+                }
+
+            }else{
+                almacen.dispatch(errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'TIPOS EN TERNARIO NO SON DEL MISMO TIPO, SE RECIBIO: '+retorno_true.tipodato+" Y "+retorno_false.tipodato,
+                    ambito: ambito.nombre,
+                    linea: this.linea,
+                    columna: this.columna
+                }));
+                return new traduccionexp("", false, tipo_dato.UNDEFINED, false);
             }
+
+            
 
         } else {
             almacen.dispatch(errores({
                 tipo: 'SEMANTICO',
-                descripcion: 'CONDICION EN IF, NO ES DE TIPO BOOLEAN',
+                descripcion: 'CONDICION EN TERNARIO, NO ES DE TIPO BOOLEAN',
                 ambito: ambito.nombre,
                 linea: this.linea,
                 columna: this.columna
