@@ -173,6 +173,27 @@ var aritmetica = /** @class */ (function (_super) {
                             generador.getValorStack(temporalresultado, "p");
                             generador.regresarAmbito(ambito.tamaño);
                             return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.STRING, false);
+                        case tipo_1.tipo_dato.BOOLEAN:
+                            var tmp_valor_boolean = generador.generarTemporal();
+                            var etiqueta_salida_boolean = generador.generarEtiqueta();
+                            generador.sacarTemporal(tmp_valor_boolean);
+                            generador.agregarEtiqueta(valorderecha4.etiquetastrue);
+                            generador.agregarExpresion(tmp_valor_boolean, "1", "", "");
+                            generador.agregarGoTo(etiqueta_salida_boolean);
+                            generador.agregarEtiqueta(valorderecha4.etiquetasfalse);
+                            generador.agregarExpresion(tmp_valor_boolean, "0", "", "");
+                            generador.agregarEtiqueta(etiqueta_salida_boolean);
+                            var temporal_paso_parametro = generador.generarTemporal();
+                            generador.sacarTemporal(temporal_paso_parametro);
+                            generador.agregarExpresion(temporal_paso_parametro, "p", "+", ambito.tamaño + 1);
+                            generador.stack(temporal_paso_parametro, valorizquierdo.obtenerValor());
+                            generador.agregarExpresion(temporal_paso_parametro, temporal_paso_parametro, "+", "1");
+                            generador.stack(temporal_paso_parametro, tmp_valor_boolean);
+                            generador.moverAmbito(ambito.tamaño);
+                            generador.agregarcodigo3d("concat_string_boolean();");
+                            generador.getValorStack(temporalresultado, "p");
+                            generador.regresarAmbito(ambito.tamaño);
+                            return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.STRING, false);
                         default:
                             break;
                     }

@@ -439,6 +439,112 @@ export function generarFuncionesNativas() {
     generador.agregarcodigo3d("}");
 
 
+    ////////////////////////////////////CONCATENACION BOOLEAN_STRING////////////////////////////////////////////
+    let tmp_cero= generador.generarTemporal();
+    let tmp_uno= generador.generarTemporal();
+    let tmp_dos= generador.generarTemporal();
+    generador.sacarTemporal(tmp_cero);
+    generador.sacarTemporal(tmp_uno);
+    generador.sacarTemporal(tmp_dos);
+    let etiqueta_inicio_asignacion_cadena= generador.generarEtiqueta();
+    generador.agregarcodigo3d("concat_boolean_string(){");
+    generador.agregarExpresion(tmp_dos,"h","","");
+    generador.agregarExpresion(tmp_cero,"p","+","1");
+    generador.getValorStack(tmp_uno,tmp_cero);
+    let etiqueta_falso= generador.generarEtiqueta();
+    generador.agregarIf(tmp_uno,"==","0",etiqueta_falso);
+    generador.heap("h","116");
+    generador.siguienteHeap();
+    generador.heap("h","114");
+    generador.siguienteHeap();
+    generador.heap("h","117");
+    generador.siguienteHeap();
+    generador.heap("h","101");
+    generador.siguienteHeap();
+    generador.agregarGoTo(etiqueta_inicio_asignacion_cadena);
+    generador.agregarEtiqueta(etiqueta_falso);
+    generador.heap("h","102");
+    generador.siguienteHeap();
+    generador.heap("h","97");
+    generador.siguienteHeap();
+    generador.heap("h","108");
+    generador.siguienteHeap();
+    generador.heap("h","115");
+    generador.siguienteHeap();
+    generador.heap("h","101");
+    generador.siguienteHeap();
+    generador.agregarEtiqueta(etiqueta_inicio_asignacion_cadena);
+    generador.agregarExpresion(tmp_cero,tmp_cero,"+","1");
+    generador.getValorStack(tmp_uno,tmp_cero);
+    let etiqueta_inicio_cadena= generador.generarEtiqueta();
+    generador.agregarEtiqueta(etiqueta_inicio_cadena);
+    generador.getValorHeap(tmp_cero,tmp_uno);
+    let etiqueta_salida= generador.generarEtiqueta();
+    generador.agregarIf(tmp_cero,"==","-1",etiqueta_salida);
+    generador.heap("h",tmp_cero);
+    generador.siguienteHeap();
+    generador.agregarExpresion(tmp_uno,tmp_uno,"+","1");
+    generador.agregarGoTo(etiqueta_inicio_cadena);
+    generador.agregarEtiqueta(etiqueta_salida);
+    generador.heap("h","-1");
+    generador.siguienteHeap();
+    generador.stack("p", tmp_dos);
+    generador.agregarcodigo3d("return ;");
+    generador.agregarcodigo3d("}");
+
+
+//////////////////////////////////////////////////CONCATENACION STRING_BOOLEAN///////////////////////////////////
+
+    let tmp_tres= generador.generarTemporal();
+    generador.sacarTemporal(tmp_tres);
+    generador.agregarcodigo3d("concat_string_boolean(){");
+    generador.agregarExpresion(tmp_cero,"p","+","1");
+    generador.getValorStack(tmp_uno,tmp_cero);
+    generador.agregarExpresion(tmp_dos,"h","","");
+    let label_inicio_cadena= generador.generarEtiqueta();
+    generador.agregarEtiqueta(label_inicio_cadena);
+    generador.getValorHeap(tmp_tres,tmp_uno);
+    let label_fin_cadena= generador.generarEtiqueta();
+    generador.agregarIf(tmp_tres,"==","-1",label_fin_cadena);
+    generador.heap("h",tmp_tres);
+    generador.siguienteHeap();
+    generador.agregarExpresion(tmp_uno,tmp_uno,"+","1");
+    generador.agregarGoTo(label_inicio_cadena);
+    generador.agregarEtiqueta(label_fin_cadena);
+    
+    let etiqueta_fin_boolean= generador.generarEtiqueta();
+    generador.agregarExpresion(tmp_cero,tmp_cero,"+","1");
+    generador.getValorStack(tmp_uno,tmp_cero);
+    let etiqueta_falso2= generador.generarEtiqueta();
+    generador.agregarIf(tmp_uno,"==","0",etiqueta_falso2);
+    generador.heap("h","116");
+    generador.siguienteHeap();
+    generador.heap("h","114");
+    generador.siguienteHeap();
+    generador.heap("h","117");
+    generador.siguienteHeap();
+    generador.heap("h","101");
+    generador.siguienteHeap();
+    generador.agregarGoTo(etiqueta_fin_boolean);
+    generador.agregarEtiqueta(etiqueta_falso2);
+    generador.heap("h","102");
+    generador.siguienteHeap();
+    generador.heap("h","97");
+    generador.siguienteHeap();
+    generador.heap("h","108");
+    generador.siguienteHeap();
+    generador.heap("h","115");
+    generador.siguienteHeap();
+    generador.heap("h","101");
+    generador.siguienteHeap();
+    generador.agregarEtiqueta(etiqueta_fin_boolean);
+    generador.heap("h","-1");
+    generador.siguienteHeap();
+    generador.stack("p", tmp_dos);
+    generador.agregarcodigo3d("return ;");
+    generador.agregarcodigo3d("}");
+
+
 
     generador.agregarComentarios("FIN FUNCIONES NATIVAS");
 
