@@ -5,7 +5,11 @@ export class generacion{
     private setTemporales : Set<string>;
     private temporales: number;
     private etiquetas : number;
-    private codigo : string[];
+    public codigo : string[];
+    private codigoMain:string[];
+    private codigoFuncionesUsuario:string[];
+    private codigoFuncionesNativas:string[];
+
 
 
 
@@ -16,8 +20,29 @@ export class generacion{
         this.codigo = new Array();
     }
 
+    public setearMain(){
+        this.codigoMain= this.codigo;
+        this.codigo= new Array();
+    }
+
+    public setearFuncionesUsuario(){
+        this.codigoFuncionesUsuario= this.codigo;
+        this.codigo= new Array();
+    }
+
+    public setearFuncionesNativas(){
+        this.codigoFuncionesNativas= this.codigo;
+        this.codigo= new Array();
+    }
+
     public static getGenerador(){
         return this.generador || (this.generador = new this());
+    }
+
+   
+
+    public getCodigo(){
+        return this.codigo;
     }
 
     public limpiarTodo(){
@@ -52,9 +77,12 @@ export class generacion{
             }
         }
         
-        let c3d= this.codigo.join('\n');
+        let nativas= this.codigoFuncionesNativas.join('\n');
+        let usuario= this.codigoFuncionesUsuario.join('\n');
+        let voidMain= this.codigoMain.join('\n');
+        //let c3d= this.codigo.join('\n');
 
-        let codigofinal= encabezado + listatemporales + c3d;
+        let codigofinal= encabezado + listatemporales + nativas +'\n' +usuario+'\n' +voidMain;
         return codigofinal;
     }
 

@@ -7,8 +7,23 @@ var generacion = /** @class */ (function () {
         this.setTemporales = new Set();
         this.codigo = new Array();
     }
+    generacion.prototype.setearMain = function () {
+        this.codigoMain = this.codigo;
+        this.codigo = new Array();
+    };
+    generacion.prototype.setearFuncionesUsuario = function () {
+        this.codigoFuncionesUsuario = this.codigo;
+        this.codigo = new Array();
+    };
+    generacion.prototype.setearFuncionesNativas = function () {
+        this.codigoFuncionesNativas = this.codigo;
+        this.codigo = new Array();
+    };
     generacion.getGenerador = function () {
         return this.generador || (this.generador = new this());
+    };
+    generacion.prototype.getCodigo = function () {
+        return this.codigo;
     };
     generacion.prototype.limpiarTodo = function () {
         this.setTemporales = new Set();
@@ -38,8 +53,11 @@ var generacion = /** @class */ (function () {
                 listatemporales += "t" + i + ",";
             }
         }
-        var c3d = this.codigo.join('\n');
-        var codigofinal = encabezado + listatemporales + c3d;
+        var nativas = this.codigoFuncionesNativas.join('\n');
+        var usuario = this.codigoFuncionesUsuario.join('\n');
+        var voidMain = this.codigoMain.join('\n');
+        //let c3d= this.codigo.join('\n');
+        var codigofinal = encabezado + listatemporales + nativas + '\n' + usuario + '\n' + voidMain;
         return codigofinal;
     };
     //***********************METODOS PARA TEMPORALES Y ETIQUETAS  ***************** */

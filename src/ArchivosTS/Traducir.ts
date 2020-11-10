@@ -1,6 +1,6 @@
 import entorno from './entorno/entorno';
-import {almacen} from '../../src/app';
-import {limpiarconsola,tsfinal} from '../actions/ts.js';
+import { almacen } from '../../src/app';
+import { limpiarconsola, tsfinal } from '../actions/ts.js';
 import { declaracionfuncion } from './instrucciones/declaracionfuncion';
 import { tipo_ambito } from './entorno/tipo';
 import instruccion from './instrucciones/instruccion';
@@ -9,96 +9,106 @@ import { generarFuncionesNativas } from './helpers/nativas';
 
 
 
-function inicioTraduccion(ast:any){
+function inicioTraduccion(ast: any) {
     //LIMPIAR LA CONSOLA
     almacen.dispatch(limpiarconsola());
 
-//PRIMERO DECLARAMOS EL ENTORNO GLOBAL
-const entornoGlobal= new entorno("global",tipo_ambito.GLOBAL,);
+    //PRIMERO DECLARAMOS EL ENTORNO GLOBAL
+    const entornoGlobal = new entorno("global", tipo_ambito.GLOBAL,);
 
 
-console.log("Recibiendo el AST para EJECUTAR:");
-console.log(ast);
-traducir(ast,entornoGlobal);
-console.log("MI ENTORNO FINAL, CON TODAS LAS VARIABLES");
-console.log(entornoGlobal.tablasimbolos);
+    console.log("Recibiendo el AST para EJECUTAR:");
+    console.log(ast);
+    traducir(ast, entornoGlobal);
+    console.log("MI ENTORNO FINAL, CON TODAS LAS VARIABLES");
+    console.log(entornoGlobal.tablasimbolos);
 
 
-////**********************  CODIGO DONDE SE GUARDAN LAS FUNCIONES Y SIMBOLOS GLOBALES FINALES**********/
-let ts= entornoGlobal.tablasimbolos;
-//let tf= entornoGlobal.tablaf;
-let simbolosfinales=[];
-let funcionesfinales=[];
+    ////**********************  CODIGO DONDE SE GUARDAN LAS FUNCIONES Y SIMBOLOS GLOBALES FINALES**********/
+    let ts = entornoGlobal.tablasimbolos;
+    //let tf= entornoGlobal.tablaf;
+    let simbolosfinales = [];
+    let funcionesfinales = [];
 
-ts.forEach(element => {
-    simbolosfinales.push(element);
-});
+    ts.forEach(element => {
+        simbolosfinales.push(element);
+    });
 
-// tf.forEach(funcion => {
-//     funcionesfinales.push(funcion);
-// });
-almacen.dispatch(tsfinal(simbolosfinales,funcionesfinales));
+    // tf.forEach(funcion => {
+    //     funcionesfinales.push(funcion);
+    // });
+    almacen.dispatch(tsfinal(simbolosfinales, funcionesfinales));
 
 
 }
 
 
-function traducir(ast:any,entorno:entorno){
+function traducir(ast: any, entorno: entorno) {
 
+    let generador = generacion.getGenerador();
     //ANTES DE COMENZAR A TRADUCIR, TENGO QUE GUARDAR TYPES Y FUNCIONES, POR QUE 
     //PUEDE QUE DENTRO DE UN FUNCION VENGA OTRA FUNCION Y TENEMOS QUE GUARDARLAS
+    //PASO 0
     for (let i = 0; i < ast.length; i++) {
-        let funcion:instruccion= ast[i];
-        if(funcion instanceof declaracionfuncion){
-            let funcion2= entorno.existeFuncion(funcion.nombre);
+        let funcion: instruccion = ast[i];
+        if (funcion instanceof declaracionfuncion) {
+            let funcion2 = entorno.existeFuncion(funcion.nombre);
             //SI NO EXISTE
-            if(funcion2==null){
+            if (funcion2 == null) {
                 entorno.agregarFuncion(funcion);
-            }else{
+            } else {
                 //SI YA EXISTE ENTONCES NO LA GUARDAMOS Y REPORTAMOS UN ERROR
 
             }
         }
     }
-    console.log(entorno.tablaf);
 
 
-    
-   //EN LA PRIMERA PASADA LO QUE HAREMOS SERA TRADUCIR FUNCIONES Y TYPES
-   //FALTA AGREGAR TYPES
-   ast.forEach((ins:instruccion) => {
-       if(ins instanceof declaracionfuncion){
-            ins.traducir(entorno);
-       }
-   });
-    
-   //AQUI IRIA EL ESPACIO DONDE TENDRIAMOS QUE INGRESAR LA FUNCIONES NATIVAS
-   generarFuncionesNativas();
-
-    //AQUI COMIENZA LA SEGUNDA PASADA DONDE TRADUCIREMOS TODO A EXCEPCION DE LAS FUNCIONES Y TYPES
-    //PERO AQUI YA ESTAMOS EN EL AMBITO GLOBAL ENTONCES TENEMOS QUE PONER EN EL CODIGO el main()
-    let generador= generacion.getGenerador();
+    //PASO 1 - GUARDAR EL CODIGO DEL MAIN
     generador.agregarcodigo3d("void main(){");
-    ast.forEach((ins:instruccion) => {
+    ast.forEach((ins: instruccion) => {
 
-        if(!(typeof(ins)=="string")){
+        if (!(typeof (ins) == "string")) {
 
             //PENDIENTE
-        //IF(INSTRUCCION != TYPE ){ ENTONCES TRADUCIMOS}
+            //IF(INSTRUCCION != TYPE ){ ENTONCES TRADUCIMOS}
 
-        if(ins instanceof declaracionfuncion){
+            if (ins instanceof declaracionfuncion) {
 
-        }else{
-            ins.traducir(entorno);
+            } else {
+                ins.traducir(entorno);
+            }
+
         }
 
-        }
 
-     
     });
     //UNA VEZ YA TERMINAMOS DE TRADUCIR, TENEMOS QUE "CERRAR" EL AMBITO MAIN
     generador.agregarcodigo3d("return;");
     generador.agregarcodigo3d("}");
+    generador.setearMain();
+
+
+
+    //PASO 2
+    //TRADUCIR FUNCIONES Y TYPES
+    //FALTA AGREGAR TYPES
+    ast.forEach((ins: instruccion) => {
+        if (ins instanceof declaracionfuncion) {
+            ins.traducir(entorno);
+        }
+    });
+    generador.setearFuncionesUsuario();
+
+    //PASO 3
+    //AQUI IRIA EL ESPACIO DONDE TENDRIAMOS QUE INGRESAR LA FUNCIONES NATIVAS
+    generarFuncionesNativas();
+    generador.setearFuncionesNativas();
+
+    console.log(entorno.tablaf);
+    console.log(generador);
+    return;
+
 }
 
 export default inicioTraduccion;
