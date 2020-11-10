@@ -208,6 +208,23 @@ export class generacion{
         this.codigo.push("/*"+comentario+"*/");
     }
 
+    public imprimirTrue(){
+        this.printchar('t'.charCodeAt(0));
+        this.printchar('r'.charCodeAt(0));
+        this.printchar('u'.charCodeAt(0));
+        this.printchar('e'.charCodeAt(0));
+        this.printchar(10);
+    }
+
+
+    public imprimirFalse(){
+        this.printchar('f'.charCodeAt(0));
+        this.printchar('a'.charCodeAt(0));
+        this.printchar('l'.charCodeAt(0));
+        this.printchar('s'.charCodeAt(0));
+        this.printchar('e'.charCodeAt(0));
+        this.printchar(10);
+    }
     
 
     //*******************METODOS PARA EL MANEJO DEL HEAP Y STACK**************/

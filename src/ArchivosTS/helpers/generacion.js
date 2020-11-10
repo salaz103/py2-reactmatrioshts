@@ -162,6 +162,21 @@ var generacion = /** @class */ (function () {
     generacion.prototype.agregarComentarios = function (comentario) {
         this.codigo.push("/*" + comentario + "*/");
     };
+    generacion.prototype.imprimirTrue = function () {
+        this.printchar('t'.charCodeAt(0));
+        this.printchar('r'.charCodeAt(0));
+        this.printchar('u'.charCodeAt(0));
+        this.printchar('e'.charCodeAt(0));
+        this.printchar(10);
+    };
+    generacion.prototype.imprimirFalse = function () {
+        this.printchar('f'.charCodeAt(0));
+        this.printchar('a'.charCodeAt(0));
+        this.printchar('l'.charCodeAt(0));
+        this.printchar('s'.charCodeAt(0));
+        this.printchar('e'.charCodeAt(0));
+        this.printchar(10);
+    };
     //*******************METODOS PARA EL MANEJO DEL HEAP Y STACK**************/
     generacion.prototype.siguienteHeap = function () {
         this.codigo.push('h=h+1;');

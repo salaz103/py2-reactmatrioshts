@@ -28,12 +28,10 @@ var imprimir = /** @class */ (function () {
             var tmp_valorboolean = generador.generarTemporal();
             generador.sacarTemporal(tmp_valorboolean);
             generador.agregarEtiqueta(retornoexpresion.etiquetastrue);
-            generador.agregarExpresion(tmp_valorboolean, "1", "", "");
-            generador.printf("d", "int", tmp_valorboolean);
+            generador.imprimirTrue();
             generador.agregarGoTo(etiqueta_salida);
             generador.agregarEtiqueta(retornoexpresion.etiquetasfalse);
-            generador.agregarExpresion(tmp_valorboolean, "0", "", "");
-            generador.printf("d", "int", tmp_valorboolean);
+            generador.imprimirFalse();
             generador.agregarEtiqueta(etiqueta_salida);
         }
         else if (retornoexpresion.tipodato == tipo_1.tipo_dato.STRING) {
