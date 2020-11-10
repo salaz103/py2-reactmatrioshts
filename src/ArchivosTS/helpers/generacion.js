@@ -145,7 +145,7 @@ var generacion = /** @class */ (function () {
         this.codigo.push(tmp_guardar + "=" + "heap[(int)" + pos_stack + "];");
     };
     generacion.prototype.printf = function (formato, casteo, valor) {
-        this.codigo.push("printf(\"%" + formato + "\\" + "n" + "\",(" + casteo + ")" + valor + ");");
+        this.codigo.push("printf(\"%" + formato + "\",(" + casteo + ")" + valor + ");");
     };
     generacion.prototype.printchar = function (valor) {
         this.codigo.push("printf(\"%c\",(char)" + valor + ");");
@@ -167,7 +167,6 @@ var generacion = /** @class */ (function () {
         this.printchar('r'.charCodeAt(0));
         this.printchar('u'.charCodeAt(0));
         this.printchar('e'.charCodeAt(0));
-        this.printchar(10);
     };
     generacion.prototype.imprimirFalse = function () {
         this.printchar('f'.charCodeAt(0));
@@ -175,7 +174,6 @@ var generacion = /** @class */ (function () {
         this.printchar('l'.charCodeAt(0));
         this.printchar('s'.charCodeAt(0));
         this.printchar('e'.charCodeAt(0));
-        this.printchar(10);
     };
     //*******************METODOS PARA EL MANEJO DEL HEAP Y STACK**************/
     generacion.prototype.siguienteHeap = function () {

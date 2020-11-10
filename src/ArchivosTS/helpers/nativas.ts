@@ -66,7 +66,6 @@ export function generarFuncionesNativas() {
     generador.agregarGoTo(inicio_lectura);
     generador.agregarEtiqueta(etq_if_falsa);
     //IMPRIMIMOS UN SALTO DE LINEA
-    generador.printchar("10");
     generador.agregarcodigo3d("return ;");
     generador.agregarcodigo3d("}");
 

@@ -336,7 +336,7 @@ tipodato:
           ;
 
 
-imprimir  : RCONSOLE RPUNTO RLOG RPARA expresion RPARC RPUNTOCOMA
+imprimir  : RCONSOLE RPUNTO RLOG RPARA listaexpresiones RPARC RPUNTOCOMA
             {$$=new imprimir.imprimir($5);}
             ;  
 

@@ -297,7 +297,7 @@ tipodato:
 
 
 //LISTO
-imprimir  : RCONSOLE RPUNTO RLOG RPARA expresion RPARC RPUNTOCOMA
+imprimir  : RCONSOLE RPUNTO RLOG RPARA listaexpresiones RPARC RPUNTOCOMA
             {$$= nodobase.nuevonodo('IMPRIMIR',[$1,$2,$3,$4,$5,$6,$7],yylineno);} ;  
 
 //LISTO

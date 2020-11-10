@@ -183,7 +183,7 @@ export class generacion{
 
 
     public printf(formato:string,casteo:string, valor:any){
-        this.codigo.push("printf(\"%"+formato+"\\"+"n"+"\",("+casteo+")"+valor+");");
+        this.codigo.push("printf(\"%"+formato+"\",("+casteo+")"+valor+");");
     }
 
     public printchar(valor:any){
@@ -213,7 +213,6 @@ export class generacion{
         this.printchar('r'.charCodeAt(0));
         this.printchar('u'.charCodeAt(0));
         this.printchar('e'.charCodeAt(0));
-        this.printchar(10);
     }
 
 
@@ -223,7 +222,6 @@ export class generacion{
         this.printchar('l'.charCodeAt(0));
         this.printchar('s'.charCodeAt(0));
         this.printchar('e'.charCodeAt(0));
-        this.printchar(10);
     }
     
 
