@@ -59,12 +59,21 @@ var entorno = /** @class */ (function () {
     };
     entorno.prototype.existeFuncion = function (id) {
         for (var entornoactual = this; entornoactual != null; entornoactual = entornoactual.apuntadorPadre) {
-            var funcion = entornoactual.tablaf.get(id);
+            var funcion = entornoactual.tablaf.get(id.toLowerCase());
             if (funcion != null) {
                 return funcion;
             }
         }
         return null;
+    };
+    entorno.prototype.existeFuncionReal = function (id) {
+        for (var entornoactual = this; entornoactual != null; entornoactual = entornoactual.apuntadorPadre) {
+            var funcion = entornoactual.tablaf.get(id);
+            if (funcion != null) {
+                return true;
+            }
+        }
+        return false;
     };
     return entorno;
 }());

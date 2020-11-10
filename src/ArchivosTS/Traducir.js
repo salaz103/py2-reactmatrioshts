@@ -31,6 +31,22 @@ function inicioTraduccion(ast) {
     app_1.almacen.dispatch(ts_js_1.tsfinal(simbolosfinales, funcionesfinales));
 }
 function traducir(ast, entorno) {
+    //ANTES DE COMENZAR A TRADUCIR, TENGO QUE GUARDAR TYPES Y FUNCIONES, POR QUE 
+    //PUEDE QUE DENTRO DE UN FUNCION VENGA OTRA FUNCION Y TENEMOS QUE GUARDARLAS
+    for (var i = 0; i < ast.length; i++) {
+        var funcion = ast[i];
+        if (funcion instanceof declaracionfuncion_1.declaracionfuncion) {
+            var funcion2 = entorno.existeFuncion(funcion.nombre);
+            //SI NO EXISTE
+            if (funcion2 == null) {
+                entorno.agregarFuncion(funcion);
+            }
+            else {
+                //SI YA EXISTE ENTONCES NO LA GUARDAMOS Y REPORTAMOS UN ERROR
+            }
+        }
+    }
+    console.log(entorno.tablaf);
     //EN LA PRIMERA PASADA LO QUE HAREMOS SERA TRADUCIR FUNCIONES Y TYPES
     //FALTA AGREGAR TYPES
     ast.forEach(function (ins) {

@@ -30,13 +30,12 @@ export class declaracionfuncion implements instruccion{
         const generador= generacion.getGenerador();
 
         //PRIMERO BUSCAR SI LA FUNCION YA EXISTE
-        let funcion= ambito.existeFuncion(this.nombre.toLowerCase());
+        let funcion= ambito.existeFuncionReal(this.nombre);
 
-        if(funcion){
-            //console.log("Ya existe funcion");
+        if(!funcion){
             almacen.dispatch(errores({
                 tipo:'SEMANTICO',
-                descripcion:'YA EXISTE FUNCION CON NOMBRE: '+this.nombre.toLowerCase(),
+                descripcion:'FUNCION CON NOMBRE REPETIDO: '+this.nombre,
                 ambito:ambito.nombre,
                 linea:this.linea,
                 columna:this.columna
@@ -79,7 +78,11 @@ export class declaracionfuncion implements instruccion{
             generador.limpiarStoreTemporales();
             generador.agregarcodigo3d(this.nombre+"(){");
             for (let i = 0; i < this.listainstrucciones.length; i++) {  
-                let retorno_ins= this.listainstrucciones[i].traducir(ambito_funcion);
+                try {
+                    let retorno_ins = this.listainstrucciones[i].traducir(ambito_funcion);
+                } catch (error) {
+                    console.log(error);
+                }
             }
             generador.agregarEtiqueta(etiqueta_return);
             generador.agregarcodigo3d("return ;");

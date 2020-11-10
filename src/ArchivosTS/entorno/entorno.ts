@@ -41,7 +41,6 @@ class entorno{
 
     asignarValor(id:string,valor:object,tipo:tipo_dato){
 
-
     }
 
     setearFuncion(funcion:declaracionfuncion, etiqueta_retorno:string){
@@ -90,12 +89,22 @@ class entorno{
     existeFuncion(id:string):declaracionfuncion{
 
         for (let entornoactual:entorno = this; entornoactual!=null ; entornoactual=entornoactual.apuntadorPadre){
-            let funcion= entornoactual.tablaf.get(id);
+            let funcion= entornoactual.tablaf.get(id.toLowerCase());
             if(funcion!=null){
                 return funcion;
             }
         }
         return null;
+    }
+
+    existeFuncionReal(id:string){
+        for (let entornoactual:entorno = this; entornoactual!=null ; entornoactual=entornoactual.apuntadorPadre){
+            let funcion= entornoactual.tablaf.get(id);
+            if(funcion!=null){
+                return true;
+            }
+        }
+        return false;
     }
 
 }

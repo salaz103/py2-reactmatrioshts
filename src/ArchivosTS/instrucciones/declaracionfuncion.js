@@ -17,12 +17,11 @@ var declaracionfuncion = /** @class */ (function () {
     declaracionfuncion.prototype.traducir = function (ambito) {
         var generador = generacion_1.generacion.getGenerador();
         //PRIMERO BUSCAR SI LA FUNCION YA EXISTE
-        var funcion = ambito.existeFuncion(this.nombre.toLowerCase());
-        if (funcion) {
-            //console.log("Ya existe funcion");
+        var funcion = ambito.existeFuncionReal(this.nombre);
+        if (!funcion) {
             app_1.almacen.dispatch(ts_js_1.errores({
                 tipo: 'SEMANTICO',
-                descripcion: 'YA EXISTE FUNCION CON NOMBRE: ' + this.nombre.toLowerCase(),
+                descripcion: 'FUNCION CON NOMBRE REPETIDO: ' + this.nombre,
                 ambito: ambito.nombre,
                 linea: this.linea,
                 columna: this.columna
@@ -58,7 +57,12 @@ var declaracionfuncion = /** @class */ (function () {
             generador.limpiarStoreTemporales();
             generador.agregarcodigo3d(this.nombre + "(){");
             for (var i = 0; i < this.listainstrucciones.length; i++) {
-                var retorno_ins = this.listainstrucciones[i].traducir(ambito_funcion_1);
+                try {
+                    var retorno_ins = this.listainstrucciones[i].traducir(ambito_funcion_1);
+                }
+                catch (error) {
+                    console.log(error);
+                }
             }
             generador.agregarEtiqueta(etiqueta_return);
             generador.agregarcodigo3d("return ;");

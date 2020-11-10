@@ -337,7 +337,7 @@ tipodato:
 
 
 imprimir  : RCONSOLE RPUNTO RLOG RPARA listaexpresiones RPARC RPUNTOCOMA
-            {$$=new imprimir.imprimir($5);}
+            {$$=new imprimir.imprimir($5,@1.first_line,@1.first_column);}
             ;  
 
 instruccionreturn: RRETURN RPUNTOCOMA

@@ -198,7 +198,7 @@ case 60:
 this.$=tipo_dato.ARRAY;
 break;
 case 61:
-this.$=new imprimir.imprimir($$[$0-2]);
+this.$=new imprimir.imprimir($$[$0-2],_$[$0-6].first_line,_$[$0-6].first_column);
 break;
 case 62:
 this.$= new instruccionreturn.instruccionreturn(null,_$[$0-1].first_line,_$[$0-1].first_column);
