@@ -17,6 +17,8 @@ var tipo_1 = require("../../entorno/tipo");
 var generacion_1 = require("../../helpers/generacion");
 var traduccionexp_1 = require("../traduccionexp");
 var operacion_1 = require("./operacion");
+var app_1 = require("../../../../src/app");
+var ts_js_1 = require("../../../actions/ts.js");
 var diferenteque = /** @class */ (function (_super) {
     __extends(diferenteque, _super);
     function diferenteque(expiz, op, expder, linea, columna) {
@@ -43,6 +45,13 @@ var diferenteque = /** @class */ (function (_super) {
             }
             else {
                 //ERROR , IGUALDAD SOLO SE PUEDE ENTRE NUMEROS
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: retornoizquierdo + ' SOLO SE PUEDE != CON NUMBER, SE RECIBIO ' + retornoderecho.tipodato,
+                    ambito: ambito.nombre,
+                    linea: this.linea,
+                    columna: this.columna
+                }));
                 //COMO NO SE PUDO REALIZAR LA IGUALACION, HAY QUE SACAR EL TEMPORAL DEL LADO IZQUIERDO
                 retornoizquierdo.obtenerValor();
                 return new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.UNDEFINED, false);
@@ -84,7 +93,46 @@ var diferenteque = /** @class */ (function (_super) {
             else {
                 //ERROR - BOOLEAN SOLO SE PUEDE IGUALAR CON BOOLEAN
                 console.log("ERROR- BOOLEAN SOLO SE PUEDE IGUALAR CON BOOLEAN");
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'BOOLEAN SOLO SE PUEDE DIFERENCIAR CON BOOLEAN',
+                    ambito: ambito.nombre,
+                    linea: this.linea,
+                    columna: this.columna
+                }));
                 return new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.UNDEFINED, false);
+            }
+        }
+        else if (retornoizquierdo.tipodato == tipo_1.tipo_dato.STRING) {
+            var retornoderecho = this.expresionderecha.traducir(ambito);
+            if (retornoderecho.tipodato == tipo_1.tipo_dato.STRING) {
+                var temp_parametros = generador.generarTemporal();
+                generador.sacarTemporal(temp_parametros);
+                generador.agregarExpresion(temp_parametros, "p", "+", ambito.tamaño + 1);
+                generador.stack(temp_parametros, retornoizquierdo.obtenerValor());
+                generador.agregarExpresion(temp_parametros, temp_parametros, "+", "1");
+                generador.stack(temp_parametros, retornoderecho.obtenerValor());
+                generador.moverAmbito(ambito.tamaño);
+                generador.agregarcodigo3d("igualacion_strings();");
+                var temporal_resultado = generador.generarTemporal();
+                generador.getValorStack(temporal_resultado, "p");
+                generador.regresarAmbito(ambito.tamaño);
+                var etiqueta_true = generador.generarEtiqueta();
+                var etiqueta_false = generador.generarEtiqueta();
+                generador.agregarIf(temporal_resultado, "!=", "1", etiqueta_true);
+                generador.agregarGoTo(etiqueta_false);
+                var regreso = new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.BOOLEAN, true);
+                regreso.etiquetastrue = etiqueta_true;
+                regreso.etiquetasfalse = etiqueta_false;
+                return regreso;
+            }
+            else if (retornoderecho.tipodato == null) {
+                //PENDIENTE
+            }
+            else {
+                //SI NO SE PUEDE LA IGUALDAD ENTRE STRING, HAY QUE SACAR EL VALOR DEL LADO IZQUIERDO
+                retornoizquierdo.obtenerValor();
+                //ERROR
             }
         }
         return null;

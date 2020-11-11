@@ -543,6 +543,49 @@ export function generarFuncionesNativas() {
     generador.agregarcodigo3d("return ;");
     generador.agregarcodigo3d("}");
 
+////////////////////////////////////////////////IGUALDAD DE STRINGS/////////////////////////////
+    let temporalparap= generador.generarTemporal();
+    let acceso1= generador.generarTemporal();
+    let acceso2= generador.generarTemporal();
+    let lector1= generador.generarTemporal();
+    let lector2= generador.generarTemporal();
+    let valorigualdad= generador.generarTemporal();
+    generador.sacarTemporal(temporalparap);
+    generador.sacarTemporal(acceso1);
+    generador.sacarTemporal(acceso2);
+    generador.sacarTemporal(lector1);
+    generador.sacarTemporal(lector2);
+    generador.sacarTemporal(valorigualdad);
+    generador.agregarcodigo3d("igualacion_strings(){");
+    generador.agregarExpresion(valorigualdad,"1","","");
+    generador.agregarExpresion(temporalparap,"p","+","1");
+    generador.getValorStack(acceso1,temporalparap);
+    generador.agregarExpresion(temporalparap,temporalparap,"+","1");
+    generador.getValorStack(acceso2,temporalparap);
+    let etiqueta_lectura= generador.generarEtiqueta();
+    generador.agregarEtiqueta(etiqueta_lectura);
+    generador.getValorHeap(lector1,acceso1);
+    generador.getValorHeap(lector2,acceso2);
+    let etiquetatrueif_1= generador.generarEtiqueta();
+    let etiquetafalse_ambosif= generador.generarEtiqueta();
+    generador.agregarIf(lector1,"==","-1",etiquetatrueif_1);
+    generador.agregarGoTo(etiquetafalse_ambosif);
+    generador.agregarEtiqueta(etiquetatrueif_1);
+    let etiquetasalida= generador.generarEtiqueta();
+    generador.agregarIf(lector2,"==","-1",etiquetasalida);
+    generador.agregarGoTo(etiquetafalse_ambosif);
+    generador.agregarEtiqueta(etiquetafalse_ambosif);
+    let etiqueta_cambio_valor= generador.generarEtiqueta();
+    generador.agregarIf(lector1,"!=",lector2,etiqueta_cambio_valor);
+    generador.agregarExpresion(acceso1,acceso1,"+","1");
+    generador.agregarExpresion(acceso2,acceso2,"+","1");
+    generador.agregarGoTo(etiqueta_lectura);
+    generador.agregarEtiqueta(etiqueta_cambio_valor);
+    generador.agregarExpresion(valorigualdad,"0","","");
+    generador.agregarEtiqueta(etiquetasalida);
+    generador.stack("p", valorigualdad);
+    generador.agregarcodigo3d("return ;");
+    generador.agregarcodigo3d("}");
 
 
     generador.agregarComentarios("FIN FUNCIONES NATIVAS");

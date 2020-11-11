@@ -38,7 +38,13 @@ export class diferenteque extends operacion implements expresion{
                 return valorretorno;
             }else{
                 //ERROR , IGUALDAD SOLO SE PUEDE ENTRE NUMEROS
-
+                almacen.dispatch(errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: retornoizquierdo + ' SOLO SE PUEDE != CON NUMBER, SE RECIBIO ' + retornoderecho.tipodato,
+                    ambito: ambito.nombre,
+                    linea: this.linea,
+                    columna: this.columna
+                }));
                 //COMO NO SE PUDO REALIZAR LA IGUALACION, HAY QUE SACAR EL TEMPORAL DEL LADO IZQUIERDO
                 retornoizquierdo.obtenerValor();
                 return new traduccionexp("",false,tipo_dato.UNDEFINED,false);
@@ -79,9 +85,49 @@ export class diferenteque extends operacion implements expresion{
             }else{
                 //ERROR - BOOLEAN SOLO SE PUEDE IGUALAR CON BOOLEAN
                 console.log("ERROR- BOOLEAN SOLO SE PUEDE IGUALAR CON BOOLEAN");
+                almacen.dispatch(errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'BOOLEAN SOLO SE PUEDE DIFERENCIAR CON BOOLEAN',
+                    ambito: ambito.nombre,
+                    linea: this.linea,
+                    columna: this.columna
+                }));
 
                 return new traduccionexp("",false,tipo_dato.UNDEFINED,false);
             }
+
+        }else if(retornoizquierdo.tipodato==tipo_dato.STRING){
+            const retornoderecho = this.expresionderecha.traducir(ambito);
+            if (retornoderecho.tipodato == tipo_dato.STRING) {
+                const temp_parametros = generador.generarTemporal();
+                generador.sacarTemporal(temp_parametros);
+                generador.agregarExpresion(temp_parametros,"p","+",ambito.tamaño+1);
+                generador.stack(temp_parametros,retornoizquierdo.obtenerValor());
+                generador.agregarExpresion(temp_parametros,temp_parametros,"+","1");
+                generador.stack(temp_parametros,retornoderecho.obtenerValor());
+                generador.moverAmbito(ambito.tamaño);
+                generador.agregarcodigo3d("igualacion_strings();");
+                const temporal_resultado= generador.generarTemporal();
+                generador.getValorStack(temporal_resultado,"p");
+                generador.regresarAmbito(ambito.tamaño);
+
+                let etiqueta_true= generador.generarEtiqueta();
+                let etiqueta_false= generador.generarEtiqueta();
+                generador.agregarIf(temporal_resultado,"!=","1",etiqueta_true);
+                generador.agregarGoTo(etiqueta_false);
+                const regreso= new traduccionexp("",false,tipo_dato.BOOLEAN,true,);
+                regreso.etiquetastrue=etiqueta_true;
+                regreso.etiquetasfalse=etiqueta_false;
+                return regreso;
+
+            } else if (retornoderecho.tipodato == null) {
+                //PENDIENTE
+            } else {
+                //SI NO SE PUEDE LA IGUALDAD ENTRE STRING, HAY QUE SACAR EL VALOR DEL LADO IZQUIERDO
+                retornoizquierdo.obtenerValor();
+                //ERROR
+            }
+
 
         }
          
