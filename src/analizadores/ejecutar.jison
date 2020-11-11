@@ -128,6 +128,7 @@
   const instruccionbreak= require('../ArchivosTS/instrucciones/instruccionBreak');
   const instruccioncontinue= require('../ArchivosTS/instrucciones/instruccioncontinue');
   const asignacion = require('../ArchivosTS/instrucciones/asignacion');
+  const instruccionmasmenos= require('../ArchivosTS/instrucciones/instruccionmasmenos');
 
   //******************EXPRESIONES*************************************
   const numero= require('../ArchivosTS/expresiones/numero');
@@ -203,7 +204,8 @@ instruccion:  declaraciones RPUNTOCOMA{$$=$1;}
             | llamarfuncion RPUNTOCOMA 
               {$$= new instruccionllamarfuncion.instruccionllamarfuncion($1,@1.first_line,@1.first_column);}
             //| nativa RPUNTOCOMA {$$=$1;}
-            | masmenos RPUNTOCOMA {$$=$1;}
+            | masmenos RPUNTOCOMA
+              {$$= new instruccionmasmenos.instruccionmasmenos($1,@1.first_line,@1.first_column);}
             | RGRAFICAR RPARA RPARC RPUNTOCOMA
             | RBREAK RPUNTOCOMA
              {$$= new instruccionbreak.instruccionbreak(@1.first_line,@1.first_column);} 

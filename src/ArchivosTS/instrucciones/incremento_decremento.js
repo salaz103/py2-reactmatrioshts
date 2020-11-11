@@ -28,22 +28,37 @@ var incremento_decremento = /** @class */ (function () {
             if (sim.getReasignable()) {
                 //VALIDACION 2)
                 if (sim.getTipo() == tipo_1.tipo_dato.DECIMAL || tipo_1.tipo_dato.ENTERO) {
-                    var tmp_acceso = generador.generarTemporal();
-                    generador.sacarTemporal(tmp_acceso);
                     var tmp_guardado = generador.generarTemporal();
                     var tmp_retorno = generador.generarTemporal();
-                    generador.agregarExpresion(tmp_acceso, "p", "+", sim.direccionrelativa);
-                    generador.getValorStack(tmp_guardado, tmp_acceso);
-                    generador.agregarExpresion(tmp_retorno, tmp_guardado, "", "");
-                    generador.sacarTemporal(tmp_guardado);
-                    if (this.tipooperador == tipo_1.operador.INCREMENTO) {
-                        generador.agregarExpresion(tmp_guardado, tmp_guardado, "+", "1");
+                    if (sim.esGlobal) {
+                        generador.getValorStack(tmp_guardado, sim.direccionrelativa.toString());
+                        generador.agregarExpresion(tmp_retorno, tmp_guardado, "", "");
+                        generador.sacarTemporal(tmp_guardado);
+                        if (this.tipooperador == tipo_1.operador.INCREMENTO) {
+                            generador.agregarExpresion(tmp_guardado, tmp_guardado, "+", "1");
+                        }
+                        else {
+                            generador.agregarExpresion(tmp_guardado, tmp_guardado, "-", "1");
+                        }
+                        generador.stack(sim.direccionrelativa, tmp_guardado);
+                        return new traduccionexp_1.traduccionexp(tmp_retorno, true, sim.tipodato, false);
                     }
                     else {
-                        generador.agregarExpresion(tmp_guardado, tmp_guardado, "-", "1");
+                        var tmp_acceso = generador.generarTemporal();
+                        generador.sacarTemporal(tmp_acceso);
+                        generador.agregarExpresion(tmp_acceso, "p", "+", sim.direccionrelativa);
+                        generador.getValorStack(tmp_guardado, tmp_acceso);
+                        generador.agregarExpresion(tmp_retorno, tmp_guardado, "", "");
+                        generador.sacarTemporal(tmp_guardado);
+                        if (this.tipooperador == tipo_1.operador.INCREMENTO) {
+                            generador.agregarExpresion(tmp_guardado, tmp_guardado, "+", "1");
+                        }
+                        else {
+                            generador.agregarExpresion(tmp_guardado, tmp_guardado, "-", "1");
+                        }
+                        generador.stack(tmp_acceso, tmp_guardado);
+                        return new traduccionexp_1.traduccionexp(tmp_retorno, true, sim.tipodato, false);
                     }
-                    generador.stack(tmp_acceso, tmp_guardado);
-                    return new traduccionexp_1.traduccionexp(tmp_retorno, true, sim.tipodato, false);
                 }
                 else {
                     app_1.almacen.dispatch(ts_js_1.errores({

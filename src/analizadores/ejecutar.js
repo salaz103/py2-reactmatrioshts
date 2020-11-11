@@ -92,7 +92,7 @@ break;
 case 3: case 24: case 39: case 53:
 this.$=[$$[$0]];
 break;
-case 4: case 12: case 17: case 84:
+case 4: case 17: case 84:
 this.$=$$[$0-1];
 break;
 case 5: case 6: case 7: case 8: case 9: case 10: case 16: case 92:
@@ -100,6 +100,9 @@ this.$=$$[$0];
 break;
 case 11:
 this.$= new instruccionllamarfuncion.instruccionllamarfuncion($$[$0-1],_$[$0-1].first_line,_$[$0-1].first_column);
+break;
+case 12:
+this.$= new instruccionmasmenos.instruccionmasmenos($$[$0-1],_$[$0-1].first_line,_$[$0-1].first_column);
 break;
 case 14:
 this.$= new instruccionbreak.instruccionbreak(_$[$0-1].first_line,_$[$0-1].first_column);
@@ -568,6 +571,7 @@ _handle_error:
   const instruccionbreak= require('../ArchivosTS/instrucciones/instruccionBreak');
   const instruccioncontinue= require('../ArchivosTS/instrucciones/instruccioncontinue');
   const asignacion = require('../ArchivosTS/instrucciones/asignacion');
+  const instruccionmasmenos= require('../ArchivosTS/instrucciones/instruccionmasmenos');
 
   //******************EXPRESIONES*************************************
   const numero= require('../ArchivosTS/expresiones/numero');
