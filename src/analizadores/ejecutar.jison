@@ -127,6 +127,7 @@
   const instruccionswitch= require('../ArchivosTS/instrucciones/instruccionswitch');
   const instruccionbreak= require('../ArchivosTS/instrucciones/instruccionBreak');
   const instruccioncontinue= require('../ArchivosTS/instrucciones/instruccioncontinue');
+  const asignacion = require('../ArchivosTS/instrucciones/asignacion');
 
   //******************EXPRESIONES*************************************
   const numero= require('../ArchivosTS/expresiones/numero');
@@ -255,7 +256,9 @@ tipovariable: RLET  {$$=tipo_variable.LET;}
             | RCONST {$$=tipo_variable.CONST;} 
             ;
 
-asignacion: IDENTIFICADOR RIGUAL expresion;
+asignacion: IDENTIFICADOR RIGUAL expresion
+            {$$ = new asignacion.asignacion($1,$3,@1.first_line,@1.first_column);}
+            ;
 
 
 
@@ -395,7 +398,7 @@ expresion:
           |RPARA expresion RPARC  {$$=$2;}
           |expresion RINTERROGACION expresion RDOSPUNTOS expresion
            {$$= new operadorternario.operadorternario($1,$3,$5,@1.first_line,@1.first_column);}
-          |NUM              {$$=new numero.numero(Number($1),tipo_dato.NUMBER,@1.first_line,@1.first_column);}      
+          |NUM              {$$=new numero.numero($1,tipo_dato.NUMBER,@1.first_line,@1.first_column);}      
           |RTRUE            {$$=new valorLogico.valorLogico("TRUE",tipo_dato.BOOLEAN,@1.first_line,@1.first_column);}     
           |RFALSE           {$$=new valorLogico.valorLogico("FALSE",tipo_dato.BOOLEAN,@1.first_line,@1.first_column);}      
           |CADENACOMILLADOBLE {$$=new cadena.cadena($1,tipo_dato.STRING,@1.first_line,@1.first_column);}     

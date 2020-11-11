@@ -137,6 +137,9 @@ break;
 case 32:
 this.$=tipo_variable.CONST;
 break;
+case 33:
+this.$ = new asignacion.asignacion($$[$0-2],$$[$0],_$[$0-2].first_line,_$[$0-2].first_column);
+break;
 case 34:
 this.$= new instruccionif.instruccionif($$[$0-4],$$[$0-1],null,_$[$0-6].first_line,_$[$0-6].first_column);
 break;
@@ -261,7 +264,7 @@ case 85:
 this.$= new operadorternario.operadorternario($$[$0-4],$$[$0-2],$$[$0],_$[$0-4].first_line,_$[$0-4].first_column);
 break;
 case 86:
-this.$=new numero.numero(Number($$[$0]),tipo_dato.NUMBER,_$[$0].first_line,_$[$0].first_column);
+this.$=new numero.numero($$[$0],tipo_dato.NUMBER,_$[$0].first_line,_$[$0].first_column);
 break;
 case 87:
 this.$=new valorLogico.valorLogico("TRUE",tipo_dato.BOOLEAN,_$[$0].first_line,_$[$0].first_column);
@@ -564,6 +567,7 @@ _handle_error:
   const instruccionswitch= require('../ArchivosTS/instrucciones/instruccionswitch');
   const instruccionbreak= require('../ArchivosTS/instrucciones/instruccionBreak');
   const instruccioncontinue= require('../ArchivosTS/instrucciones/instruccioncontinue');
+  const asignacion = require('../ArchivosTS/instrucciones/asignacion');
 
   //******************EXPRESIONES*************************************
   const numero= require('../ArchivosTS/expresiones/numero');

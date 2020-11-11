@@ -20,26 +20,50 @@ var identificador = /** @class */ (function () {
             //console.log("SI ENCONTRE EL ID: "+this.id);
             sim = ambito.getSimbolo(this.id);
         }
-        //AQUI COMIENZAN LAS OPERACIONES PARA VER SI ENCONTRO O NO EL SIMBOLO
+        //ESTE TEMPORAL SERA EL TEMPORAL QUE RETORNAREMOS
+        var tmp_guardado = generador.generarTemporal();
         if (sim) {
-            var tmp_acceso = generador.generarTemporal();
-            generador.sacarTemporal(tmp_acceso);
-            var tmp_guardado = generador.generarTemporal();
-            generador.agregarExpresion(tmp_acceso, "p", "+", sim.direccionrelativa);
-            generador.getValorStack(tmp_guardado, tmp_acceso);
-            if (sim.getTipoDato() == tipo_1.tipo_dato.BOOLEAN) {
-                var etqtrue = generador.generarEtiqueta();
-                var etqfalse = generador.generarEtiqueta();
-                var retvalor = new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.BOOLEAN, true);
-                generador.sacarTemporal(tmp_guardado);
-                generador.agregarIf(tmp_guardado, "==", "1", etqtrue);
-                generador.agregarGoTo(etqfalse);
-                retvalor.etiquetastrue = etqtrue;
-                retvalor.etiquetasfalse = etqfalse;
-                return retvalor;
+            //SI ENTRO AQUÍ ES POR QUE SI EXISTE LA VARIABLE PERO ANTES DE TRADUCIRLA, TOCA VER SI ES GLOBAL O LOCAL
+            if (sim.esGlobal) {
+                //SI EL SIMBOLO ES GLOBAL, SOLO VOY A LA POSICION QUE TIENE DIRECTAMENTE AL STACK
+                generador.getValorStack(tmp_guardado, sim.direccionrelativa.toString());
+                //SI NO ES BOOLEAN, SOLO REGRESO EL TEMPORAL DONDE GUARDE EL VALOR QUE OBTUVE DEL STACK
+                if (sim.tipodato != tipo_1.tipo_dato.BOOLEAN) {
+                    return new traduccionexp_1.traduccionexp(tmp_guardado, true, sim.tipodato, false, sim);
+                }
+                else {
+                    var retorno_boolean = new traduccionexp_1.traduccionexp("", false, sim.tipodato, true, sim);
+                    var etqtrue = generador.generarEtiqueta();
+                    var etqfalse = generador.generarEtiqueta();
+                    generador.sacarTemporal(tmp_guardado);
+                    generador.agregarIf(tmp_guardado, "==", "1", etqtrue);
+                    generador.agregarGoTo(etqfalse);
+                    retorno_boolean.etiquetastrue = etqtrue;
+                    retorno_boolean.etiquetasfalse = etqfalse;
+                    return retorno_boolean;
+                }
             }
             else {
-                return new traduccionexp_1.traduccionexp(tmp_guardado, true, sim.getTipoDato(), false);
+                //SIGNIFICA QUE EL IDENTIFICADOR ES UN VALOR LOCAL, POR LO QUE HAY QUE UTILIZAR
+                //UN PUNTERO P PARA QUE ESTE SE MUEVA LA POSICION RELATIVA QUE TIENE EL ID
+                var tmp_acceso = generador.generarTemporal();
+                generador.sacarTemporal(tmp_acceso);
+                generador.agregarExpresion(tmp_acceso, "p", "+", sim.direccionrelativa);
+                generador.getValorStack(tmp_guardado, tmp_acceso);
+                if (sim.tipodato != tipo_1.tipo_dato.BOOLEAN) {
+                    return new traduccionexp_1.traduccionexp(tmp_guardado, true, sim.tipodato, false, sim);
+                }
+                else {
+                    var retorno_boolean = new traduccionexp_1.traduccionexp("", false, sim.tipodato, true, sim);
+                    var etqtrue = generador.generarEtiqueta();
+                    var etqfalse = generador.generarEtiqueta();
+                    generador.sacarTemporal(tmp_guardado);
+                    generador.agregarIf(tmp_guardado, "==", "1", etqtrue);
+                    generador.agregarGoTo(etqfalse);
+                    retorno_boolean.etiquetastrue = etqtrue;
+                    retorno_boolean.etiquetasfalse = etqfalse;
+                    return retorno_boolean;
+                }
             }
         }
         else {

@@ -24,7 +24,8 @@ export class numero implements expresion{
 
         //EL VALOR PUEDE QUE SEA ENTERO Y DECIMAL, PRIMERO TENEMOS QUE VER QUE TIPO ES
         let ret:traduccionexp= new traduccionexp(this.valor.toString(),false,tipo_dato.UNDEFINED,false);
-        if(Number.isInteger(this.valor)){
+        console.log(isInt(this.valor));
+        if(isInt(this.valor)){
             ret.tipodato=tipo_dato.ENTERO;
         }else{
             ret.tipodato=tipo_dato.DECIMAL;
@@ -34,5 +35,13 @@ export class numero implements expresion{
     }
 
 
-
 }
+
+function isInt(value) {
+    var x;
+    if (isNaN(value)) {
+      return false;
+    }
+    x = parseFloat(value);
+    return (x | 0) === x;
+  }
