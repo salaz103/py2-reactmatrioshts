@@ -49,7 +49,7 @@ function traducir(ast, entorno) {
         }
     }
     //PASO 1 - GUARDAR EL CODIGO DEL MAIN
-    generador.agregarcodigo3d("void main(){");
+    //generador.agregarcodigo3d("void main(){");
     ast.forEach(function (ins) {
         if (!(typeof (ins) == "string")) {
             //PENDIENTE
@@ -62,8 +62,8 @@ function traducir(ast, entorno) {
         }
     });
     //UNA VEZ YA TERMINAMOS DE TRADUCIR, TENEMOS QUE "CERRAR" EL AMBITO MAIN
-    generador.agregarcodigo3d("return;");
-    generador.agregarcodigo3d("}");
+    //generador.agregarcodigo3d("return;");
+    //generador.agregarcodigo3d("}");
     generador.setearMain();
     //PASO 2
     //TRADUCIR FUNCIONES Y TYPES

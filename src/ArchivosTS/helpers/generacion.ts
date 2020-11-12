@@ -82,7 +82,7 @@ export class generacion{
         let voidMain= this.codigoMain.join('\n');
         //let c3d= this.codigo.join('\n');
 
-        let codigofinal= encabezado + listatemporales + nativas +'\n' +usuario+'\n' +voidMain;
+        let codigofinal= encabezado + listatemporales + nativas +'\n' +usuario+'\n' +"void main(){ \n"+voidMain+"\n return ;\n}";
         return codigofinal;
     }
 

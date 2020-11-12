@@ -57,7 +57,7 @@ var generacion = /** @class */ (function () {
         var usuario = this.codigoFuncionesUsuario.join('\n');
         var voidMain = this.codigoMain.join('\n');
         //let c3d= this.codigo.join('\n');
-        var codigofinal = encabezado + listatemporales + nativas + '\n' + usuario + '\n' + voidMain;
+        var codigofinal = encabezado + listatemporales + nativas + '\n' + usuario + '\n' + "void main(){ \n" + voidMain + "\n return ;\n}";
         return codigofinal;
     };
     //***********************METODOS PARA TEMPORALES Y ETIQUETAS  ***************** */
