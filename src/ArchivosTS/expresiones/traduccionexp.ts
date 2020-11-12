@@ -12,8 +12,9 @@ export class traduccionexp{
     etiquetastrue:string;
     etiquetasfalse:string;
     sim:simbolo;
+    dimensiones:number;
 
-    constructor(val:string,temp:boolean,tipodato:tipo_dato,etiquetas:boolean,sim?:simbolo){
+    constructor(val:string,temp:boolean,tipodato:tipo_dato,etiquetas:boolean,sim?:simbolo,dimensiones?:number){
         this.valor=val;
         this.es_temporal= temp;
         this.tipodato=tipodato;
@@ -21,6 +22,7 @@ export class traduccionexp{
         this.etiquetastrue= '';
         this.etiquetasfalse= '';
         this.sim=sim;
+        this.dimensiones=dimensiones==null?0:dimensiones;
     }
 
     public obtenerValor(){

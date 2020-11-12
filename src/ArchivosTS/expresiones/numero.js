@@ -12,7 +12,7 @@ var numero = /** @class */ (function () {
     numero.prototype.traducir = function (ambito) {
         //EL VALOR PUEDE QUE SEA ENTERO Y DECIMAL, PRIMERO TENEMOS QUE VER QUE TIPO ES
         var ret = new traduccionexp_1.traduccionexp(this.valor.toString(), false, tipo_1.tipo_dato.UNDEFINED, false);
-        console.log(isInt(this.valor));
+        //console.log(isInt(this.valor));
         if (isInt(this.valor)) {
             ret.tipodato = tipo_1.tipo_dato.ENTERO;
         }

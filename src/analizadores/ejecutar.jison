@@ -23,6 +23,7 @@
 "false"               return 'RFALSE';
 "void"                return 'RVOID';
 "Array"               return 'RARRAY';
+"new"                 return 'RNEW';
 //FUNCIONES
 "graficar_ts"         return 'RGRAFICAR';
 "function"            return 'RFUNCTION';
@@ -144,6 +145,8 @@
   const operadorternario= require('../ArchivosTS/expresiones/operadorternario');
   const nativastring= require('../ArchivosTS/expresiones/nativastring');
   const stringmetodos= require('../ArchivosTS/expresiones/stringmetodos');
+  const newArray= require('../ArchivosTS/expresiones/newArray');
+  const arreglo= require('../ArchivosTS/expresiones/arreglo');
 
   //******************INTERMEDIOS************************************
   const variable= require('../ArchivosTS/expresiones/variable');
@@ -243,16 +246,17 @@ listavariables:   listavariables RCOMA variable {$1.push($3); $$=$1;}
 
 
 variable:  IDENTIFICADOR RDOSPUNTOS tipodato RIGUAL expresion
-          {$$=new variable.variable($1,$3,@1.first_line,@1.first_column,$5);} 
+          {$$=new variable.variable($1,$3,@1.first_line,@1.first_column,$5,false,null);} 
          | IDENTIFICADOR RDOSPUNTOS tipodato
-          {$$=new variable.variable($1,$3,@1.first_line,@1.first_column,null);}
+          {$$=new variable.variable($1,$3,@1.first_line,@1.first_column,null,false,null);}
          ///*****ARREGLOS****////
          | IDENTIFICADOR RDOSPUNTOS tipodato dimensiones  RIGUAL expresion
+         {$$=new variable.variable($1,$3,@1.first_line,@1.first_column,$6,true,$4);}
          | IDENTIFICADOR RIGUAL expresion
          ;
 
-dimensiones: dimensiones RCORCHETEA RCORCHETEC
-            | RCORCHETEA RCORCHETEC ;
+dimensiones: dimensiones RCORCHETEA RCORCHETEC {$$=$1+1;}
+            | RCORCHETEA RCORCHETEC {$$=1;};
 
 tipovariable: RLET  {$$=tipo_variable.LET;}  
             | RCONST {$$=tipo_variable.CONST;} 
@@ -407,6 +411,10 @@ expresion:
           |CADENACOMILLASIMPLE {$$=new cadena.cadena($1,tipo_dato.STRING,@1.first_line,@1.first_column);}      
           |IDENTIFICADOR      {$$=new identificador.identificador($1,@1.first_line,@1.first_column);}
           /*ARREGLOS*/
+          |RNEW RARRAY RPARA expresion RPARC
+          {$$= new newArray.newArray($4,@1.first_line,@1.first_column);}
+          |RCORCHETEA listaexpresiones RCORCHETEC
+          {$$= new arreglo.arreglo($2,@1.first_line,@1.first_column);}
           /*|RCORCHETEA listaerrores RCORCHETEC
           |RCORCHETEA RCORCHETEC */         
           //LLAMADA A FUNCIONES 

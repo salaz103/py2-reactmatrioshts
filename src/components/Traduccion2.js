@@ -76,11 +76,11 @@ class Traduccion2 extends React.Component {
   traducir=()=>{
 
     //PRIMERO EL AST
-      let ast1;
+      /*let ast1;
       let graphviz;
       ast1 = Traducir.parse(this.state.codigoDesanidado);
       graphviz= AST_grafo(ast1);
-      this.props.agregarCodigo(graphviz);
+      this.props.agregarCodigo(graphviz);*/
 
     //CODIGO 3D
     listaerrores.obtenerLista().limpiar();
