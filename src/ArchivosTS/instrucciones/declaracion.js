@@ -113,7 +113,7 @@ var declaracion = /** @class */ (function () {
                         generador.agregarComentarios("INICIO-DECLARACION ARREGLO");
                         var retorno_expresion = this.variables[i].exp.traducir(ambito);
                         //GUARDAMOS LA VARIABLE
-                        var nuevoarreglo = ambito.agregarSimbolo(this.variables[i].id, retorno_expresion.tipodato, ambito.nombre, this.variables[i].linea, this.variables[i].columna, true);
+                        var nuevoarreglo = ambito.agregarSimbolo(this.variables[i].id, retorno_expresion.tipodato, ambito.nombre, this.variables[i].linea, this.variables[i].columna, true, this.variables[i].dimensiones);
                         //AHORA VAMOS A VALIDAR SI LA EXPRESION ES "NEW ARRAY()" Ó "[LISTA_EXPRESIONES]"
                         if (retorno_expresion.tipodato == tipo_1.tipo_dato.ARRAY) {
                             //SI ENTRO AQUI, ES POR QUE ES UN "NEW ARRAY()"
@@ -143,7 +143,7 @@ var declaracion = /** @class */ (function () {
                             generador.agregarEtiqueta(etiqueta_fin);
                         }
                         else {
-                            if (this.variables[i].tipodato == tipo_1.tipo_dato.NUMBER && retorno_expresion.tipodato == tipo_1.tipo_dato.DECIMAL) {
+                            if (this.variables[i].tipodato == tipo_1.tipo_dato.NUMBER && retorno_expresion.tipodato == tipo_1.tipo_dato.ENTERO) {
                             }
                             else if (this.variables[i].tipodato != retorno_expresion.tipodato) {
                                 app_1.almacen.dispatch(ts_js_1.errores({

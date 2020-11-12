@@ -55,8 +55,8 @@ export class arreglo implements expresion {
             tipo_resultante = retorno_expresion.tipodato;
         });
 
-        if (tipo_resultante == tipo_dato.ENTERO) {
-            tipo_resultante = tipo_dato.DECIMAL;
+        if (tipo_resultante == tipo_dato.DECIMAL) {
+            tipo_resultante = tipo_dato.ENTERO;
         }
         console.log(dimension);
         return new traduccionexp(temporal_inicio_arreglo, true, tipo_resultante, false, null, dimension);

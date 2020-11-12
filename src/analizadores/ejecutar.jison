@@ -147,6 +147,7 @@
   const stringmetodos= require('../ArchivosTS/expresiones/stringmetodos');
   const newArray= require('../ArchivosTS/expresiones/newArray');
   const arreglo= require('../ArchivosTS/expresiones/arreglo');
+  const accesoarray= require('../ArchivosTS/expresiones/accesoarray');
 
   //******************INTERMEDIOS************************************
   const variable= require('../ArchivosTS/expresiones/variable');
@@ -409,7 +410,8 @@ expresion:
           |RFALSE           {$$=new valorLogico.valorLogico("FALSE",tipo_dato.BOOLEAN,@1.first_line,@1.first_column);}      
           |CADENACOMILLADOBLE {$$=new cadena.cadena($1,tipo_dato.STRING,@1.first_line,@1.first_column);}     
           |CADENACOMILLASIMPLE {$$=new cadena.cadena($1,tipo_dato.STRING,@1.first_line,@1.first_column);}      
-          |IDENTIFICADOR      {$$=new identificador.identificador($1,@1.first_line,@1.first_column);}
+          //|IDENTIFICADOR      {$$=new identificador.identificador($1,@1.first_line,@1.first_column);}
+          |accesos {$$=$1;}
           /*ARREGLOS*/
           |RNEW RARRAY RPARA expresion RPARC
           {$$= new newArray.newArray($4,@1.first_line,@1.first_column);}
@@ -425,6 +427,11 @@ expresion:
           ;
 
 
+accesos:  accesos RCORCHETEA expresion RCORCHETEC
+          {$$= new accesoarray.accesoarray($1,$3,@1.first_line,@1.first_column);}
+         |IDENTIFICADOR
+          {$$=new identificador.identificador($1,@1.first_line,@1.first_column);}
+          ;
 
 
 listametodos:   listametodos RPUNTO metodos {$1.push($3); $$=$1;}

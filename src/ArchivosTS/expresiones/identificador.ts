@@ -42,7 +42,7 @@ export class identificador implements expresion {
 
                 //SI NO ES BOOLEAN, SOLO REGRESO EL TEMPORAL DONDE GUARDE EL VALOR QUE OBTUVE DEL STACK
                 if (sim.tipodato != tipo_dato.BOOLEAN) {
-                    return new traduccionexp(tmp_guardado, true, sim.tipodato, false, sim);
+                    return new traduccionexp(tmp_guardado, true, sim.tipodato, false, sim,sim.dimensiones);
                 } else {
                     const retorno_boolean = new traduccionexp("", false, sim.tipodato, true, sim);
                     let etqtrue = generador.generarEtiqueta();

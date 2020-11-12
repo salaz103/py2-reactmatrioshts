@@ -141,7 +141,7 @@ export class declaracion implements instruccion {
                         generador.agregarComentarios("INICIO-DECLARACION ARREGLO");
                         const retorno_expresion = this.variables[i].exp.traducir(ambito);
                         //GUARDAMOS LA VARIABLE
-                        let nuevoarreglo: simbolo = ambito.agregarSimbolo(this.variables[i].id, retorno_expresion.tipodato, ambito.nombre, this.variables[i].linea, this.variables[i].columna, true)
+                        let nuevoarreglo: simbolo = ambito.agregarSimbolo(this.variables[i].id, retorno_expresion.tipodato, ambito.nombre, this.variables[i].linea, this.variables[i].columna, true,this.variables[i].dimensiones);
                         //AHORA VAMOS A VALIDAR SI LA EXPRESION ES "NEW ARRAY()" Ó "[LISTA_EXPRESIONES]"
                         if (retorno_expresion.tipodato == tipo_dato.ARRAY) {
                             //SI ENTRO AQUI, ES POR QUE ES UN "NEW ARRAY()"
@@ -169,7 +169,7 @@ export class declaracion implements instruccion {
                             generador.agregarGoTo(etiqueta_inicio);
                             generador.agregarEtiqueta(etiqueta_fin);
                         } else{
-                            if(this.variables[i].tipodato==tipo_dato.NUMBER && retorno_expresion.tipodato==tipo_dato.DECIMAL){
+                            if(this.variables[i].tipodato==tipo_dato.NUMBER && retorno_expresion.tipodato==tipo_dato.ENTERO){
 
                             }else if(this.variables[i].tipodato!=retorno_expresion.tipodato){
                                 almacen.dispatch(errores({

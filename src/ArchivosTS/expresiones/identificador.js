@@ -29,7 +29,7 @@ var identificador = /** @class */ (function () {
                 generador.getValorStack(tmp_guardado, sim.direccionrelativa.toString());
                 //SI NO ES BOOLEAN, SOLO REGRESO EL TEMPORAL DONDE GUARDE EL VALOR QUE OBTUVE DEL STACK
                 if (sim.tipodato != tipo_1.tipo_dato.BOOLEAN) {
-                    return new traduccionexp_1.traduccionexp(tmp_guardado, true, sim.tipodato, false, sim);
+                    return new traduccionexp_1.traduccionexp(tmp_guardado, true, sim.tipodato, false, sim, sim.dimensiones);
                 }
                 else {
                     var retorno_boolean = new traduccionexp_1.traduccionexp("", false, sim.tipodato, true, sim);

@@ -46,8 +46,8 @@ var arreglo = /** @class */ (function () {
             }
             tipo_resultante = retorno_expresion.tipodato;
         });
-        if (tipo_resultante == tipo_1.tipo_dato.ENTERO) {
-            tipo_resultante = tipo_1.tipo_dato.DECIMAL;
+        if (tipo_resultante == tipo_1.tipo_dato.DECIMAL) {
+            tipo_resultante = tipo_1.tipo_dato.ENTERO;
         }
         console.log(dimension);
         return new traduccionexp_1.traduccionexp(temporal_inicio_arreglo, true, tipo_resultante, false, null, dimension);

@@ -28,8 +28,8 @@ class entorno{
         this.etq_continue= ambitoPadre!=null? ambitoPadre.etq_continue:null;
     }
 
-    agregarSimbolo(id:string,tipodato:tipo_dato,nombreambito:string,fila:number,columna:number,reasignable:boolean){
-        const nuevosim= new simbolo(id,tipodato,nombreambito,fila,columna,this.apuntadorPadre==null,reasignable,this.tamaño++);
+    agregarSimbolo(id:string,tipodato:tipo_dato,nombreambito:string,fila:number,columna:number,reasignable:boolean,dimensiones?:number){
+        const nuevosim= new simbolo(id,tipodato,nombreambito,fila,columna,this.apuntadorPadre==null,reasignable,this.tamaño++,dimensiones);
         this.tablasimbolos.set(id,nuevosim);
         return nuevosim;
     }

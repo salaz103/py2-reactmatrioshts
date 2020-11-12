@@ -14,8 +14,8 @@ var entorno = /** @class */ (function () {
         this.etq_break = ambitoPadre != null ? ambitoPadre.etq_break : null;
         this.etq_continue = ambitoPadre != null ? ambitoPadre.etq_continue : null;
     }
-    entorno.prototype.agregarSimbolo = function (id, tipodato, nombreambito, fila, columna, reasignable) {
-        var nuevosim = new simbolo_1["default"](id, tipodato, nombreambito, fila, columna, this.apuntadorPadre == null, reasignable, this.tamaño++);
+    entorno.prototype.agregarSimbolo = function (id, tipodato, nombreambito, fila, columna, reasignable, dimensiones) {
+        var nuevosim = new simbolo_1["default"](id, tipodato, nombreambito, fila, columna, this.apuntadorPadre == null, reasignable, this.tamaño++, dimensiones);
         this.tablasimbolos.set(id, nuevosim);
         return nuevosim;
     };

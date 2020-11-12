@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var simbolo = /** @class */ (function () {
-    function simbolo(id_e, tipo_d, amb, fila, columna, esGlobal, reasignable, direccion) {
+    function simbolo(id_e, tipo_d, amb, fila, columna, esGlobal, reasignable, direccion, dimensiones) {
         this.nombre = id_e;
         this.tipodato = tipo_d;
         this.ambito = amb;
@@ -10,6 +10,7 @@ var simbolo = /** @class */ (function () {
         this.esGlobal = esGlobal;
         this.reasignable = reasignable;
         this.direccionrelativa = direccion != null ? direccion : 0;
+        this.dimensiones = dimensiones == null ? 0 : dimensiones;
     }
     simbolo.prototype.getNombre = function () {
         return this.nombre;
