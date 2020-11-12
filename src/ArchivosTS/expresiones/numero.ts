@@ -25,7 +25,10 @@ export class numero implements expresion{
         //EL VALOR PUEDE QUE SEA ENTERO Y DECIMAL, PRIMERO TENEMOS QUE VER QUE TIPO ES
         let ret:traduccionexp= new traduccionexp(this.valor.toString(),false,tipo_dato.UNDEFINED,false);
         //console.log(isInt(this.valor));
-        if(isInt(this.valor)){
+
+        if(this.valor.toString()=='0.0'){
+            ret.tipodato=tipo_dato.DECIMAL
+        }else if(isInt(this.valor)){
             ret.tipodato=tipo_dato.ENTERO;
         }else{
             ret.tipodato=tipo_dato.DECIMAL;

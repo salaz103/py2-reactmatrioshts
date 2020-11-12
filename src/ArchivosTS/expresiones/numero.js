@@ -13,7 +13,10 @@ var numero = /** @class */ (function () {
         //EL VALOR PUEDE QUE SEA ENTERO Y DECIMAL, PRIMERO TENEMOS QUE VER QUE TIPO ES
         var ret = new traduccionexp_1.traduccionexp(this.valor.toString(), false, tipo_1.tipo_dato.UNDEFINED, false);
         //console.log(isInt(this.valor));
-        if (isInt(this.valor)) {
+        if (this.valor.toString() == '0.0') {
+            ret.tipodato = tipo_1.tipo_dato.DECIMAL;
+        }
+        else if (isInt(this.valor)) {
             ret.tipodato = tipo_1.tipo_dato.ENTERO;
         }
         else {
