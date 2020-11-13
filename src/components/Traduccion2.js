@@ -106,6 +106,7 @@ class Traduccion2 extends React.Component {
   }
 
   optimizar = () => {
+    //ANTES TOCA LIMPIAR TODO 
 
     let astC3D;
     astC3D = Optimizar.parse(this.state.valorEditor3D);

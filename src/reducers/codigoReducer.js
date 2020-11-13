@@ -6,6 +6,7 @@ const codigoReducerDefaultState={
     funcionesfinales:[],
     simbolos:[],
     errores:[],
+    optimizaciones:[],
     encabezado:'#include <stdio.h> \n double heap[16384]; \n double stack[16394]; \n double p;\n double h;\n',
     temporales:'',
     etiquetas:'',
@@ -67,6 +68,11 @@ const reducerGeneral=(state=codigoReducerDefaultState,action)=>{
                 simbolos: [],
                 errores: []
             }
+        case 'LIMPIAR_OPTIMIZACIONES':
+            return{
+                ...state,
+                optimizaciones: []
+            }
         case 'ENTORNOFINAL':
             return{
                 ...state,
@@ -82,6 +88,11 @@ const reducerGeneral=(state=codigoReducerDefaultState,action)=>{
             return{
                 ...state,
                 errores: state.errores.concat(action.error_e)
+            }
+        case 'OPTIMIZACION':
+            return{
+                ...state,
+                optimizaciones: state.optimizaciones.concat(action.optimizacion)
             }
         default:
             return state;

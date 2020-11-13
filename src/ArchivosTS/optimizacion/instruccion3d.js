@@ -1,5 +1,7 @@
 "use strict";
 exports.__esModule = true;
+var app_1 = require("../../../src/app");
+var ts_js_1 = require("../../actions/ts.js");
 var instruccion3d = /** @class */ (function () {
     function instruccion3d(codigoAnterior, objetivo, izquierdo, op, derecho, linea) {
         this.codigoAnterior = codigoAnterior;
@@ -150,6 +152,13 @@ var instruccion3d = /** @class */ (function () {
         if (cambio) {
             codigo_nuevo = codigo_nuevo + '\n';
             //AQUI VAN LOS REPORTES
+            app_1.almacen.dispatch(ts_js_1.optimizaciones({
+                tipo: 'Mirilla',
+                regla: regla_aplicada,
+                codigoanterior: codigo_anterior,
+                codigonuevo: codigo_nuevo,
+                fila: this.linea
+            }));
         }
         return codigo_nuevo;
     };

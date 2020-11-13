@@ -42,6 +42,10 @@ export const limpiarconsola=()=>({
     type:'LIMPIAR_CONSOLA',
 });
 
+export const limpiarOptimizaciones=()=>({
+    type:'LIMPIAR_OPTIMIZACIONES',
+});
+
 export const tsfinal=(simbolosfinales,funcionesfinales)=>({
     type:'ENTORNOFINAL',
     simbolosfinales,
@@ -56,4 +60,9 @@ export const reportets=(simbolosactuales)=>({
 export const errores=(error_e)=>({
     type:'ERROR',
     error_e
+});
+
+export const optimizaciones=(optimizacion)=>({
+    type:'OPTIMIZACION',
+    optimizacion
 });

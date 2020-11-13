@@ -1,5 +1,7 @@
 import instruccion from "./instruccion";
 import { literal } from "./literal";
+import { almacen } from '../../../src/app';
+import { optimizaciones } from '../../actions/ts.js';
 
 export class instruccion3d implements instruccion {
 
@@ -154,6 +156,13 @@ export class instruccion3d implements instruccion {
         if (cambio) {
             codigo_nuevo = codigo_nuevo + '\n';
             //AQUI VAN LOS REPORTES
+            almacen.dispatch(optimizaciones({
+                tipo: 'Mirilla',
+                regla: regla_aplicada,
+                codigoanterior: codigo_anterior,
+                codigonuevo: codigo_nuevo,
+                fila: this.linea
+            }));
         }
 
         return codigo_nuevo;

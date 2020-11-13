@@ -9,6 +9,7 @@ const Header = (props) => (
       <button><NavLink to="/" activeClassName="is-active" exact={true}>Traduccion</NavLink></button>
       <button><NavLink to="/ast" activeClassName="is-active" >AST</NavLink></button>
       <button><NavLink to="/ts" activeClassName="is-active" >Reporte TS</NavLink></button>
+      <button><NavLink to="/optimizaciones" activeClassName="is-active" >Reporte Optimizaciones</NavLink></button>
       <button><NavLink to="/errores" activeClassName="is-active" >Reporte errores</NavLink></button>
   </div>
   
