@@ -25,6 +25,13 @@ var generacion = /** @class */ (function () {
     generacion.prototype.getCodigo = function () {
         return this.codigo;
     };
+    generacion.prototype.getCodigoParaOptimizar = function () {
+        var codigo1 = this.codigoFuncionesNativas.join('\n');
+        var codigo2 = this.codigoFuncionesUsuario.join('\n');
+        var codigo3 = this.codigoMain.join('\n');
+        var fin = codigo1 + '\n' + codigo2 + '\n' + codigo3;
+        return fin;
+    };
     generacion.prototype.limpiarTodo = function () {
         this.setTemporales = new Set();
         this.temporales = 0;
@@ -57,7 +64,7 @@ var generacion = /** @class */ (function () {
         var usuario = this.codigoFuncionesUsuario.join('\n');
         var voidMain = this.codigoMain.join('\n');
         //let c3d= this.codigo.join('\n');
-        var codigofinal = encabezado + listatemporales + nativas + '\n' + usuario + '\n' + "void main(){ \n" + voidMain + "\n return ;\n}";
+        var codigofinal = encabezado + listatemporales + nativas + '\n' + usuario + '\n' + voidMain;
         return codigofinal;
     };
     //***********************METODOS PARA TEMPORALES Y ETIQUETAS  ***************** */

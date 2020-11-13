@@ -12,14 +12,18 @@ export function generarFuncionesNativas() {
     let t2 = generador.generarTemporal();
     let t3 = generador.generarTemporal();
     let t4 = generador.generarTemporal();
+    let tmpparap= generador.generarTemporal();
     generador.sacarTemporal(t0);
     generador.sacarTemporal(t2);
     generador.sacarTemporal(t3);
     generador.sacarTemporal(t4);
+    generador.sacarTemporal(tmpparap);
     generador.agregarExpresion(t0, "1", "", "");
     generador.agregarExpresion(t2, "0", "", "");
-    generador.getValorStack(t3, "p+1");
-    generador.getValorStack(t4, "p+2");
+    generador.agregarExpresion(tmpparap,"p","+","1");
+    generador.getValorStack(t3, tmpparap);
+    generador.agregarExpresion(tmpparap,tmpparap,"+","1");
+    generador.getValorStack(t4, tmpparap);
     let etiquetaInicio = generador.generarEtiqueta();
     generador.agregarEtiqueta(etiquetaInicio);
 

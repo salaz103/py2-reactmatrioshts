@@ -45,6 +45,14 @@ export class generacion{
         return this.codigo;
     }
 
+    public getCodigoParaOptimizar():string{
+        let codigo1= this.codigoFuncionesNativas.join('\n');
+        let codigo2= this.codigoFuncionesUsuario.join('\n');
+        let codigo3= this.codigoMain.join('\n');
+        let fin:string= codigo1+'\n'+codigo2+'\n'+codigo3;
+        return fin;
+    }
+
     public limpiarTodo(){
         this.setTemporales= new Set();
         this.temporales=0;
@@ -82,7 +90,7 @@ export class generacion{
         let voidMain= this.codigoMain.join('\n');
         //let c3d= this.codigo.join('\n');
 
-        let codigofinal= encabezado + listatemporales + nativas +'\n' +usuario+'\n' +"void main(){ \n"+voidMain+"\n return ;\n}";
+        let codigofinal= encabezado + listatemporales + nativas +'\n' +usuario+'\n' +voidMain;
         return codigofinal;
     }
 
