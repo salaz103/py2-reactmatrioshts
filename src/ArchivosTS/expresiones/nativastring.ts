@@ -34,7 +34,7 @@ export class nativastring implements expresion {
         generador.sacarTemporal(tmp);
 
         
-        if (retorno_id.tipodato == tipo_dato.STRING) {
+        if (retorno_id.tipodato == tipo_dato.STRING && retorno_id.dimensiones==0) {
             let retorno_final = new traduccionexp("", true, tipo_dato.STRING, false);
             const tmp_resultado = generador.generarTemporal();
             generador.sacarTemporal(tmp_resultado);
@@ -170,9 +170,12 @@ export class nativastring implements expresion {
 
             return retorno_final;
 
-        } else if(retorno_id.tipodato==tipo_dato.ARRAY) {
-
-            
+        } else if(retorno_id.dimensiones>0) {
+            //SIGNIFICA QUE ES UN ARREGLO Y EL LARGO ESTA GUARDADO EN LA PRIMERA POSICION
+            //ES DECIR EN EL STACK QUE TIENE EL INICIO DEL ARREGLO EN EL HEAP
+            const largo_arreglo= generador.generarTemporal();
+            generador.getValorHeap(largo_arreglo,retorno_id.obtenerValor());
+            return new traduccionexp(largo_arreglo,true,tipo_dato.ENTERO,false,null,retorno_id.dimensiones);
 
         }else{
 

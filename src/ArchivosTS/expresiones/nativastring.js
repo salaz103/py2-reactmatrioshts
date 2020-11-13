@@ -18,7 +18,7 @@ var nativastring = /** @class */ (function () {
         var retorno_id = this.id_string.traducir(ambito);
         var tmp = generador.generarTemporal();
         generador.sacarTemporal(tmp);
-        if (retorno_id.tipodato == tipo_1.tipo_dato.STRING) {
+        if (retorno_id.tipodato == tipo_1.tipo_dato.STRING && retorno_id.dimensiones == 0) {
             var retorno_final = new traduccionexp_1.traduccionexp("", true, tipo_1.tipo_dato.STRING, false);
             var tmp_resultado = generador.generarTemporal();
             generador.sacarTemporal(tmp_resultado);
@@ -141,7 +141,12 @@ var nativastring = /** @class */ (function () {
             }
             return retorno_final;
         }
-        else if (retorno_id.tipodato == tipo_1.tipo_dato.ARRAY) {
+        else if (retorno_id.dimensiones > 0) {
+            //SIGNIFICA QUE ES UN ARREGLO Y EL LARGO ESTA GUARDADO EN LA PRIMERA POSICION
+            //ES DECIR EN EL STACK QUE TIENE EL INICIO DEL ARREGLO EN EL HEAP
+            var largo_arreglo = generador.generarTemporal();
+            generador.getValorHeap(largo_arreglo, retorno_id.obtenerValor());
+            return new traduccionexp_1.traduccionexp(largo_arreglo, true, tipo_1.tipo_dato.ENTERO, false, null, retorno_id.dimensiones);
         }
         else {
             app_1.almacen.dispatch(ts_js_1.errores({
