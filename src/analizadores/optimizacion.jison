@@ -1,6 +1,7 @@
 /* lexical grammar */
 %lex
 %options case-insensitive
+%option yylineno
 %locations
 
 %%
@@ -58,8 +59,6 @@
 
 <<EOF>>               return 'EOF';
 .					{ 
-  const e= new error.error("Léxico","Error lexico con caracter: "+yytext,yylloc.first_line,yylloc.first_column);
-  lista.listaerrores.obtenerLista().guardar(e);
           }
 
 
@@ -67,6 +66,10 @@
 /lex
 
 %{
+  const literal= require('../ArchivosTS/optimizacion/literal');
+  const funcion= require('../ArchivosTS/optimizacion/funcion');
+  const instruccion3d= require('../ArchivosTS/optimizacion/instruccion3d');
+  const asignaciondirecta= require('../ArchivosTS/optimizacion/asignaciondirecta');
   
 
 %}
@@ -90,12 +93,14 @@ s : voids EOF { return $1; }
   ;
 
 
-voids: voids funcion
-      |funcion;
+voids: voids funcion {$1.push($2); $$=$1;}
+      |funcion {$$=[$1];};
 
 
 funcion: RVOID IDENTIFICADOR RPARA RPARC RLLAVEA lista RLLAVEC
-        | IDENTIFICADOR RPARA RPARC RLLAVEA lista RLLAVEC
+        {$$=new funcion.funcion(`${$1} ${$2}`,$6,yylineno);}
+        |IDENTIFICADOR RPARA RPARC RLLAVEA lista RLLAVEC
+        {$$=new funcion.funcion($1,$5,yylineno);}
         ;
 
 lista : lista instruccion {$1.push($2); $$=$1;}
@@ -103,29 +108,29 @@ lista : lista instruccion {$1.push($2); $$=$1;}
       ;
 
 
-instruccion: principal 
-            |printf
-            |if
-            |goto
-            |etiqueta
-            |return
-            |llamada_funcion
+instruccion: principal {$$=$1;}
+            |printf    {$$=$1;} 
+            |if        {$$=$1;}
+            |goto      {$$=$1;}
+            |etiqueta  {$$=$1;}
+            |return    {$$=$1;}
+            |llamada_funcion {$$=$1;}
             ;
 
 principal: IDENTIFICADOR RIGUAL literal operador literal RPUNTOCOMA
+          {$$= new instruccion3d.instruccion3d(`${$1}${$2}${$3}${$4}${$5}${$6}\n`,$1,$3,$4,$5,yylineno);}
           |IDENTIFICADOR RIGUAL literal RPUNTOCOMA
-          |stack RIGUAL literal RPUNTOCOMA
-          |heap RIGUAL literal RPUNTOCOMA
-          |IDENTIFICADOR RIGUAL stack RPUNTOCOMA
-          |IDENTIFICADOR RIGUAL heap RPUNTOCOMA
+          {$$= new asignaciondirecta.asignaciondirecta($1,$3,yylineno);}
+          |heap_stack RIGUAL literal RPUNTOCOMA
+          |IDENTIFICADOR RIGUAL heap_stack RPUNTOCOMA
           |IDENTIFICADOR RIGUAL RFMOD RPARA literal RCOMA literal RPARC RPUNTOCOMA
           ;
 
 printf: RPRINTF RPARA CADENA RCOMA RPARA casteo RPARC literal RPARC RPUNTOCOMA;
 
-casteo: RINT
-       |RCHAR
-       |RFLOAT
+casteo: RINT {$$=$1;}
+       |RCHAR {$$=$1;} 
+       |RFLOAT {$$=$1;}
        ;
 
 if: RIF RPARA literal relacional literal RPARC RGOTO IDENTIFICADOR RPUNTOCOMA
@@ -139,30 +144,35 @@ return: RRETURN RPUNTOCOMA ;
 
 llamada_funcion: IDENTIFICADOR RPARA RPARC RPUNTOCOMA;
 
-operador: RMAS
-         |RMENOS
-         |RPOR
-         |RDIVISION
+operador: RMAS {$$=$1;}
+         |RMENOS {$$=$1;}
+         |RPOR {$$=$1;}
+         |RDIVISION {$$=$1;}
          ;
 
-relacional: RMENORQUE
-           |RMAYORQUE
-           |RMENORIGUALQUE
-           |RMAYORIGUALQUE
-           |RDIFERENTEQUE
-           |RIGUALQUE;
+relacional: RMENORQUE {$$=$1;}
+           |RMAYORQUE {$$=$1;}
+           |RMENORIGUALQUE {$$=$1;}
+           |RMAYORIGUALQUE {$$=$1;}
+           |RDIFERENTEQUE {$$=$1;}
+           |RIGUALQUE {$$=$1;}
+           ;
 
 literal: IDENTIFICADOR
-        {$$=$1;}
+        {$$=new literal.literal(1,$1);}
         |NUM
-        {$$=$1;}
+        {$$=new literal.literal(2,$1);}
         |RMENOS NUM
-        {$$= $1+$2;}
+        {$$=new literal.literal(2,`${$1}${$2}`);}
         ;
 
 
-stack: RSTACK RCORCHETEA RPARA RINT RPARC literal RCORCHETEC
-       ;
 
-heap: RHEAP RCORCHETEA RPARA RINT RPARC literal RCORCHETEC
-      ;
+heap_stack: RHEAP RCORCHETEA RPARA RINT RPARC IDENTIFICADOR RCORCHETEC
+            {$$ = `${$1}${$2}${$3}${$4}${$5}${$6}${$7}`;}
+            |RHEAP RCORCHETEA RPARA RINT RPARC NUM RCORCHETEC
+            {$$ = `${$1}${$2}${$3}${$4}${$5}${$6}${$7}`;}
+            |RSTACK RCORCHETEA RPARA RINT RPARC IDENTIFICADOR RCORCHETEC
+            {$$ = `${$1}${$2}${$3}${$4}${$5}${$6}${$7}`;}
+            |RSTACK RCORCHETEA RPARA RINT RPARC NUM RCORCHETEC
+            {$$ = `${$1}${$2}${$3}${$4}${$5}${$6}${$7}`;};

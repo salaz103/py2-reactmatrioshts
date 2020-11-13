@@ -15,6 +15,7 @@ import { desanidar, AST_grafo } from '../ArchivosTS/Desanidar';
 import { entorno } from '../ArchivosTS/desanidamiento/entorno';
 import { listaerrores } from '../ArchivosTS/entorno/listaerrores';
 import inicioTraduccion from '../ArchivosTS/Traducir';
+import inicioOptimizacion from '../ArchivosTS/optimizar';
 import { codigo3dfinal, limpiarTodo, agregarErrores_L_S } from '../ArchivosTS/helpers/helpers';
 import { generacion } from '../ArchivosTS/helpers/generacion';
 
@@ -111,8 +112,11 @@ class Traduccion2 extends React.Component {
     //C3D QUE ESTA EN EL SIGLETON
     let generador= generacion.getGenerador();
     let codigoAOptimizar= generador.getCodigoParaOptimizar();
-    console.log(codigoAOptimizar);
+    //console.log(codigoAOptimizar);
+    //let prueba= "void main(){ \n t1=t2+0; \n }";
     astC3D = Optimizar.parse(codigoAOptimizar);
+    //console.log(astC3D);
+    inicioOptimizacion(astC3D);
   }
 
 
