@@ -21,7 +21,12 @@ var instruccionif = /** @class */ (function () {
         if (retornocondicion.tipodato == tipo_1.tipo_dato.BOOLEAN) {
             generador.agregarEtiqueta(retornocondicion.etiquetastrue);
             for (var i = 0; i < this.instrucciones.length; i++) {
-                var retornoinstrucciones = this.instrucciones[i].traducir(ambitoif);
+                try {
+                    var retornoinstrucciones = this.instrucciones[i].traducir(ambitoif);
+                }
+                catch (error) {
+                    console.log(error);
+                }
             }
             if (this.elseif_else != null) {
                 var etiquetasalida = generador.generarEtiqueta();
@@ -36,7 +41,12 @@ var instruccionif = /** @class */ (function () {
                     //HACER OTRO AMBITO Y RECORRER LA LISTA DEL ELSE
                     var ambitoelse = new entorno_1["default"]("Else", tipo_1.tipo_ambito.LOCAL, ambito);
                     for (var i = 0; i < this.elseif_else.length; i++) {
-                        var retornoinstrucciones = this.elseif_else[i].traducir(ambitoelse);
+                        try {
+                            var retornoinstrucciones = this.elseif_else[i].traducir(ambitoelse);
+                        }
+                        catch (error) {
+                            console.log(error);
+                        }
                     }
                 }
                 generador.agregarEtiqueta(etiquetasalida);

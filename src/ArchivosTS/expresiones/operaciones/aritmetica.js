@@ -341,7 +341,7 @@ var aritmetica = /** @class */ (function (_super) {
                 generador.getValorStack(temporalresultado, "p");
                 //REGRESAMOS AL AMBITO DE DONDE HICIMOS LA LLAMADA
                 generador.regresarAmbito(ambito.tamaño);
-                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.DECIMAL, false);
+                return new traduccionexp_1.traduccionexp(temporalresultado, true, tipo_1.tipo_dato.ENTERO, false);
             }
             else {
                 app_1.almacen.dispatch(ts_js_1.errores({

@@ -33,7 +33,12 @@ export class instruccionif implements instruccion{
         if(retornocondicion.tipodato==tipo_dato.BOOLEAN){
             generador.agregarEtiqueta(retornocondicion.etiquetastrue);
             for (let i = 0; i < this.instrucciones.length; i++) {
-                let retornoinstrucciones= this.instrucciones[i].traducir(ambitoif);
+                try {
+                    let retornoinstrucciones= this.instrucciones[i].traducir(ambitoif);
+                } catch (error) {
+                    console.log(error);
+                }
+                
             }
             if(this.elseif_else!=null){
                 const etiquetasalida= generador.generarEtiqueta();
@@ -47,7 +52,11 @@ export class instruccionif implements instruccion{
                     //HACER OTRO AMBITO Y RECORRER LA LISTA DEL ELSE
                     const ambitoelse= new entorno("Else",tipo_ambito.LOCAL,ambito);
                     for (let i = 0; i < this.elseif_else.length; i++) {
-                        let retornoinstrucciones= this.elseif_else[i].traducir(ambitoelse);
+                        try {
+                            let retornoinstrucciones= this.elseif_else[i].traducir(ambitoelse);
+                        } catch (error) {
+                            console.log(error);
+                        }
                     }
                 }
                 generador.agregarEtiqueta(etiquetasalida);
