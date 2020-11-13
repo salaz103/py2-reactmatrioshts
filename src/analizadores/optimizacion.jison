@@ -24,6 +24,8 @@
 "fmod"                return 'RFMOD';
 "void"                return 'RVOID';
 "printf"              return 'RPRINTF';
+"include"             return 'RINCLUDE';
+"double"              return 'RDOUBLE';
 
 
 //OPERACIONES ARITMETICAS
@@ -48,6 +50,7 @@
 "]"                   return 'RCORCHETEC';
 "{"                   return 'RLLAVEA';
 "}"                   return 'RLLAVEC';
+"#"                   return 'RNUMERAL';  
 "."                   return 'RPUNTO';
 ","                   return 'RCOMA';
 
@@ -69,8 +72,15 @@
   const literal= require('../ArchivosTS/optimizacion/literal');
   const funcion= require('../ArchivosTS/optimizacion/funcion');
   const instruccion3d= require('../ArchivosTS/optimizacion/instruccion3d');
+
+  //CLASES QUE SOLO DEVUELVEN CODIGO
   const asignaciondirecta= require('../ArchivosTS/optimizacion/asignaciondirecta');
-  
+  const heap_stack= require('../ArchivosTS/optimizacion/heap_stack');
+  const lector= require('../ArchivosTS/optimizacion/lector');
+  const instrucciongoto= require('../ArchivosTS/optimizacion/goto');
+  const instruccionif= require('../ArchivosTS/optimizacion/instruccionif');
+  const printf= require('../ArchivosTS/optimizacion/printf');
+  const fmod= require('../ArchivosTS/optimizacion/fmod');
 
 %}
 
@@ -89,9 +99,40 @@
 %% /* language grammar */
 
 
-s : voids EOF { return $1; }               
+
+s : c3d EOF { return $1; }               
   ;
 
+c3d: encabezado voids {$$=$1.concat($2);};
+
+encabezado: includes estructuras temporales  {$$=$1.concat($2).concat($3);};
+
+includes: includes include {$1.push($2); $$=$1;}
+          |include {$$=[$1];};
+
+include: RNUMERAL RINCLUDE RMENORQUE IDENTIFICADOR RPUNTO IDENTIFICADOR RMAYORQUE
+         {$$= new lector.lector(`${$1}${$2} ${$3}${$4}${$5}${$6}${$7}`,yylineno);}
+         ;
+
+estructuras: estructuras estructura {$1.push($2); $$=$1;}
+            |estructura {$$=[$1];};
+
+estructura: RDOUBLE RHEAP RCORCHETEA NUM RCORCHETEC RPUNTOCOMA
+           {$$= new lector.lector(`${$1} ${$2}${$3}${$4}${$5}${$6}`,yylineno);}
+           |RDOUBLE RSTACK RCORCHETEA NUM RCORCHETEC RPUNTOCOMA
+           {$$= new lector.lector(`${$1} ${$2}${$3}${$4}${$5}${$6}`,yylineno);} 
+            ;
+
+temporales: temporales temporal {$1.push($2); $$=$1;}
+           |temporal {$$=[$1];}
+            ;
+
+temporal: RDOUBLE listatemporales RPUNTOCOMA
+          {$$= new lector.lector(`${$1} ${$2}${$3}`,yylineno);}
+          ;
+
+listatemporales: listatemporales RCOMA IDENTIFICADOR {$$=`${$1}${$2}${$3}`;}
+                | IDENTIFICADOR {$$=$1;};
 
 voids: voids funcion {$1.push($2); $$=$1;}
       |funcion {$$=[$1];};
@@ -122,11 +163,16 @@ principal: IDENTIFICADOR RIGUAL literal operador literal RPUNTOCOMA
           |IDENTIFICADOR RIGUAL literal RPUNTOCOMA
           {$$= new asignaciondirecta.asignaciondirecta($1,$3,yylineno);}
           |heap_stack RIGUAL literal RPUNTOCOMA
+          {$$= new heap_stack.heap_stack($1,$3,yylineno);}
           |IDENTIFICADOR RIGUAL heap_stack RPUNTOCOMA
+          {$$= new lector.lector(`${$1}${$2}${$3}${$4}`,yylineno);}
           |IDENTIFICADOR RIGUAL RFMOD RPARA literal RCOMA literal RPARC RPUNTOCOMA
+          {$$= new fmod.fmod($1,$5,$7,yylineno);}      
           ;
 
-printf: RPRINTF RPARA CADENA RCOMA RPARA casteo RPARC literal RPARC RPUNTOCOMA;
+printf: RPRINTF RPARA CADENA RCOMA RPARA casteo RPARC literal RPARC RPUNTOCOMA
+        {$$= new printf.printf($3,$6,$8,yylineno);}
+        ;
 
 casteo: RINT {$$=$1;}
        |RCHAR {$$=$1;} 
@@ -134,15 +180,24 @@ casteo: RINT {$$=$1;}
        ;
 
 if: RIF RPARA literal relacional literal RPARC RGOTO IDENTIFICADOR RPUNTOCOMA
+    {$$= new instruccionif.instruccionif($3,$4,$5,$8,yylineno);}   
     ;
 
-goto: RGOTO IDENTIFICADOR RPUNTOCOMA; 
+goto: RGOTO IDENTIFICADOR RPUNTOCOMA
+      {$$= new instrucciongoto.goto(`${$1} ${$2}${$3}`,yylineno);}
+      ; 
 
-etiqueta: IDENTIFICADOR RDOSPUNTOS;
+etiqueta: IDENTIFICADOR RDOSPUNTOS
+          {$$= new lector.lector(`${$1}${$2}`,yylineno);}
+          ;
 
-return: RRETURN RPUNTOCOMA ;
+return: RRETURN RPUNTOCOMA 
+        {$$= new lector.lector(`${$1} ${$2}`,yylineno);}
+        ;
 
-llamada_funcion: IDENTIFICADOR RPARA RPARC RPUNTOCOMA;
+llamada_funcion: IDENTIFICADOR RPARA RPARC RPUNTOCOMA
+                 {$$= new lector.lector(`${$1}${$2}${$3}${$4}`,yylineno);}
+                 ;
 
 operador: RMAS {$$=$1;}
          |RMENOS {$$=$1;}

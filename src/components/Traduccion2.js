@@ -108,13 +108,7 @@ class Traduccion2 extends React.Component {
   optimizar = () => {
 
     let astC3D;
-    //LO QUE HAREMOS AQUÍ SERA IR A TRAER LAS FUNCIONES NATIVAS, DE USUARIO Y MAIN DEL 
-    //C3D QUE ESTA EN EL SIGLETON
-    let generador= generacion.getGenerador();
-    let codigoAOptimizar= generador.getCodigoParaOptimizar();
-    //console.log(codigoAOptimizar);
-    //let prueba= "void main(){ \n t1=t2+0; \n }";
-    astC3D = Optimizar.parse(codigoAOptimizar);
+    astC3D = Optimizar.parse(this.state.valorEditor3D);
     //console.log(astC3D);
     inicioOptimizacion(astC3D);
   }
