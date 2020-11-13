@@ -39,6 +39,11 @@ function codigo3dfinal() {
     return codigofinal;
 }
 exports.codigo3dfinal = codigo3dfinal;
+function codigoOptimizado() {
+    var codigofinal = generacion_1.generacion.getGenerador().getCodigoOptimizadoFinal();
+    return codigofinal;
+}
+exports.codigoOptimizado = codigoOptimizado;
 function limpiarTodo() {
     generacion_1.generacion.getGenerador().limpiarTodo();
 }

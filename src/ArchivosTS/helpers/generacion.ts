@@ -9,6 +9,7 @@ export class generacion{
     private codigoMain:string[];
     private codigoFuncionesUsuario:string[];
     private codigoFuncionesNativas:string[];
+    private codigoOptimizado:string;
 
 
 
@@ -19,6 +20,15 @@ export class generacion{
         this.setTemporales = new Set();
         this.codigo = new Array();
     }
+
+    public setearCodigoOptimizado(codigo:string){
+        this.codigoOptimizado=codigo;
+    }
+
+    public getCodigoOptimizadoFinal():string{
+        return this.codigoOptimizado;
+    }
+
 
     public setearMain(){
         this.codigoMain= this.codigo;

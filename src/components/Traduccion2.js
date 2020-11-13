@@ -16,7 +16,7 @@ import { entorno } from '../ArchivosTS/desanidamiento/entorno';
 import { listaerrores } from '../ArchivosTS/entorno/listaerrores';
 import inicioTraduccion from '../ArchivosTS/Traducir';
 import inicioOptimizacion from '../ArchivosTS/optimizar';
-import { codigo3dfinal, limpiarTodo, agregarErrores_L_S } from '../ArchivosTS/helpers/helpers';
+import { codigo3dfinal, limpiarTodo, agregarErrores_L_S,codigoOptimizado} from '../ArchivosTS/helpers/helpers';
 import { generacion } from '../ArchivosTS/helpers/generacion';
 
 class Traduccion2 extends React.Component {
@@ -26,7 +26,8 @@ class Traduccion2 extends React.Component {
     valorEditor3D: " ",
     textot: '',
     encabezado: '',
-    codigo3d: ''
+    codigo3d: '',
+    codigooptimizado:''
   };
 
   onChange = (newvalue) => {
@@ -56,6 +57,13 @@ class Traduccion2 extends React.Component {
   setearC3D = (codigo) => {
     this.setState(() => ({
       valorEditor3D: codigo
+    }))
+  };
+
+  
+  setearOptimizacion = (codigo) => {
+    this.setState(() => ({
+      codigooptimizado: codigo
     }))
   };
 
@@ -112,6 +120,11 @@ class Traduccion2 extends React.Component {
     astC3D = Optimizar.parse(this.state.valorEditor3D);
     //console.log(astC3D);
     inicioOptimizacion(astC3D);
+    //UNA VEZ TERMINE EL CODIGO OPTIMIZADO ESTA EN EL GENERADOR
+    let c3doptimizado= codigoOptimizado();
+
+    this.setearOptimizacion(c3doptimizado);
+
   }
 
 
@@ -172,6 +185,19 @@ class Traduccion2 extends React.Component {
 
 
           <Consola />
+
+          <div className='container-inline2'>
+            <h1>SALIDA C3D OPTIMIZADO</h1>
+          </div>
+          <AceEditor
+              width='1200px'
+              height='400px'
+              mode="c_cpp"
+              theme="tomorrow_night_blue"
+              name="editor1"
+              value={this.state.codigooptimizado}
+              fontSize='20px'
+            />
         </div>
       </div>
     );

@@ -7,6 +7,12 @@ var generacion = /** @class */ (function () {
         this.setTemporales = new Set();
         this.codigo = new Array();
     }
+    generacion.prototype.setearCodigoOptimizado = function (codigo) {
+        this.codigoOptimizado = codigo;
+    };
+    generacion.prototype.getCodigoOptimizadoFinal = function () {
+        return this.codigoOptimizado;
+    };
     generacion.prototype.setearMain = function () {
         this.codigoMain = this.codigo;
         this.codigo = new Array();

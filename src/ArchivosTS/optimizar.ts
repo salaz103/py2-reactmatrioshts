@@ -16,11 +16,13 @@ function inicioOptimizacion(arbolInstrucciones: any) {
 
 
 function optimizar(ast: any) {
+    const generador= generacion.getGenerador();
     let salida:string="";
     ast.forEach((ins:instruccion) => {
         salida=salida+ins.optimizar();
     });
 
+    generador.setearCodigoOptimizado(salida);
    //console.log("CODIGO SALIDA, DESPUES DE OPTIMIZAR"); 
    //console.log(salida);
 }

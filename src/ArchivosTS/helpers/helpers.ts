@@ -49,6 +49,11 @@ export function codigo3dfinal():string{
 
 }
 
+export function codigoOptimizado():string{
+    const codigofinal:string = generacion.getGenerador().getCodigoOptimizadoFinal();
+    return codigofinal;
+}
+
 export function limpiarTodo(){
     generacion.getGenerador().limpiarTodo();
 }
