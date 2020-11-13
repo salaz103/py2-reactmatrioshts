@@ -22,11 +22,13 @@ function inicioTraduccion(ast: any) {
     traducir(ast, entornoGlobal);
     console.log("MI ENTORNO FINAL, CON TODAS LAS VARIABLES");
     console.log(entornoGlobal.tablasimbolos);
+    console.log("MI ENTORNO FINAL, CON TODAS LAS FUNCIONES");
+    console.log(entornoGlobal.tablaf);
 
 
     ////**********************  CODIGO DONDE SE GUARDAN LAS FUNCIONES Y SIMBOLOS GLOBALES FINALES**********/
     let ts = entornoGlobal.tablasimbolos;
-    //let tf= entornoGlobal.tablaf;
+    let tf= entornoGlobal.tablaf;
     let simbolosfinales = [];
     let funcionesfinales = [];
 
@@ -34,9 +36,9 @@ function inicioTraduccion(ast: any) {
         simbolosfinales.push(element);
     });
 
-    // tf.forEach(funcion => {
-    //     funcionesfinales.push(funcion);
-    // });
+    tf.forEach(funcion => {
+         funcionesfinales.push(funcion);
+     });
     almacen.dispatch(tsfinal(simbolosfinales, funcionesfinales));
 
 

@@ -17,17 +17,19 @@ function inicioTraduccion(ast) {
     traducir(ast, entornoGlobal);
     console.log("MI ENTORNO FINAL, CON TODAS LAS VARIABLES");
     console.log(entornoGlobal.tablasimbolos);
+    console.log("MI ENTORNO FINAL, CON TODAS LAS FUNCIONES");
+    console.log(entornoGlobal.tablaf);
     ////**********************  CODIGO DONDE SE GUARDAN LAS FUNCIONES Y SIMBOLOS GLOBALES FINALES**********/
     var ts = entornoGlobal.tablasimbolos;
-    //let tf= entornoGlobal.tablaf;
+    var tf = entornoGlobal.tablaf;
     var simbolosfinales = [];
     var funcionesfinales = [];
     ts.forEach(function (element) {
         simbolosfinales.push(element);
     });
-    // tf.forEach(funcion => {
-    //     funcionesfinales.push(funcion);
-    // });
+    tf.forEach(function (funcion) {
+        funcionesfinales.push(funcion);
+    });
     app_1.almacen.dispatch(ts_js_1.tsfinal(simbolosfinales, funcionesfinales));
 }
 function traducir(ast, entorno) {

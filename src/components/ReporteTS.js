@@ -17,6 +17,8 @@ const ReporteTS= (props)=>(
         <th>Tipo</th>
         <th>Ambito</th>
         <th>Tipo Variable</th>
+        <th>Dimensiones</th>
+        <th>Parametros</th>
         <th>Fila</th>
         <th>Columna</th>
         </tr>
@@ -44,6 +46,8 @@ function renderTableData(ts) {
                   <td>{simbolo.tipodato}</td>
                   <td>{simbolo.ambito}</td>
                   <td>{simbolo.reasignable?"LET":"CONST"}</td>
+                  <td>{simbolo.dimensiones?simbolo.dimensiones:0}</td>
+                  <td>{"N/A"}</td>
                   <td>{simbolo.fila}</td>
                   <td>{simbolo.columna}</td>
                </tr>
@@ -59,8 +63,12 @@ function renderTableData(ts) {
              <tr key={index}>
                 <td>{funcion.nombre}</td>
                 <td>{funcion.tipodato}</td>
-                <td>Parametros: {funcion.parametros!=null?funcion.parametros.length:"0"}</td>
-                <td>Funcion</td>
+                <td>{"Global"}</td>
+                <td>{"Funcion"}</td>
+                <td>{"N/A"}</td>
+                <td> {funcion.parametros!=null?funcion.parametros.length:"0"}</td>
+                <td>{funcion.linea}</td>
+                <td>{funcion.columna}</td>
              </tr>
       ))
   }
