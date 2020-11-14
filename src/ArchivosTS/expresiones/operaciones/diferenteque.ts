@@ -120,19 +120,56 @@ export class diferenteque extends operacion implements expresion{
                 regreso.etiquetasfalse=etiqueta_false;
                 return regreso;
 
-            } else if (retornoderecho.tipodato == null) {
-                //PENDIENTE
+            } else if (retornoderecho.tipodato == tipo_dato.NULL) {
+                let etiquetatrue= generador.generarEtiqueta();
+                let etiquetafalse= generador.generarEtiqueta();
+                generador.agregarIf(retornoizquierdo.obtenerValor(),"!=",retornoderecho.obtenerValor(),etiquetatrue);
+                generador.agregarGoTo(etiquetafalse);
+                const valorretorno= new traduccionexp("",false,tipo_dato.BOOLEAN,true);
+                valorretorno.etiquetastrue= etiquetatrue;
+                valorretorno.etiquetasfalse= etiquetafalse;
+                return valorretorno;
             } else {
                 //SI NO SE PUEDE LA IGUALDAD ENTRE STRING, HAY QUE SACAR EL VALOR DEL LADO IZQUIERDO
                 retornoizquierdo.obtenerValor();
-                //ERROR
+                almacen.dispatch(errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'STRING NO SE PUEDE DIFERENCIAR CON: '+retornoderecho.tipodato,
+                    ambito: ambito.nombre,
+                    linea: this.linea,
+                    columna: this.columna
+                }));
+                return new traduccionexp("",false,tipo_dato.UNDEFINED,false);
             }
 
+
+        }else if(retornoizquierdo.tipodato==tipo_dato.NULL){
+            const retornoderecho = this.expresionderecha.traducir(ambito);
+            if ((retornoderecho.tipodato == tipo_dato.STRING) || (retornoderecho.tipodato == tipo_dato.NULL)) {
+                let etiquetatrue = generador.generarEtiqueta();
+                let etiquetafalse = generador.generarEtiqueta();
+                generador.agregarIf(retornoizquierdo.obtenerValor(), "!=", retornoderecho.obtenerValor(), etiquetatrue);
+                generador.agregarGoTo(etiquetafalse);
+                const valorretorno = new traduccionexp("", false, tipo_dato.BOOLEAN, true);
+                valorretorno.etiquetastrue = etiquetatrue;
+                valorretorno.etiquetasfalse = etiquetafalse;
+                return valorretorno;
+
+            }else {
+                almacen.dispatch(errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'NULL NO SE PUEDE DIFERENCIAR CON: '+retornoderecho.tipodato,
+                    ambito: ambito.nombre,
+                    linea: this.linea,
+                    columna: this.columna
+                }));
+                return new traduccionexp("", false, tipo_dato.UNDEFINED, false);
+            }
 
         }
          
 
-        return null;
+        return new traduccionexp("",false,tipo_dato.UNDEFINED,false);
     }
 
 }

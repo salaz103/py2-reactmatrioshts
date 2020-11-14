@@ -125,16 +125,53 @@ var igualdad = /** @class */ (function (_super) {
                 regreso.etiquetasfalse = etiqueta_false;
                 return regreso;
             }
-            else if (retornoderecho.tipodato == null) {
-                //PENDIENTE
+            else if (retornoderecho.tipodato == tipo_1.tipo_dato.NULL) {
+                var etiquetatrue = generador.generarEtiqueta();
+                var etiquetafalse = generador.generarEtiqueta();
+                generador.agregarIf(retornoizquierdo.obtenerValor(), "==", retornoderecho.obtenerValor(), etiquetatrue);
+                generador.agregarGoTo(etiquetafalse);
+                var valorretorno = new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.BOOLEAN, true);
+                valorretorno.etiquetastrue = etiquetatrue;
+                valorretorno.etiquetasfalse = etiquetafalse;
+                return valorretorno;
             }
             else {
                 //SI NO SE PUEDE LA IGUALDAD ENTRE STRING, HAY QUE SACAR EL VALOR DEL LADO IZQUIERDO
                 retornoizquierdo.obtenerValor();
-                //ERROR
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'STRING NO SE PUEDE IGUALAR CON: ' + retornoderecho.tipodato,
+                    ambito: ambito.nombre,
+                    linea: this.linea,
+                    columna: this.columna
+                }));
+                return new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.UNDEFINED, false);
             }
         }
-        return null;
+        else if (retornoizquierdo.tipodato == tipo_1.tipo_dato.NULL) {
+            var retornoderecho = this.expresionderecha.traducir(ambito);
+            if ((retornoderecho.tipodato == tipo_1.tipo_dato.STRING) || (retornoderecho.tipodato == tipo_1.tipo_dato.NULL)) {
+                var etiquetatrue = generador.generarEtiqueta();
+                var etiquetafalse = generador.generarEtiqueta();
+                generador.agregarIf(retornoizquierdo.obtenerValor(), "==", retornoderecho.obtenerValor(), etiquetatrue);
+                generador.agregarGoTo(etiquetafalse);
+                var valorretorno = new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.BOOLEAN, true);
+                valorretorno.etiquetastrue = etiquetatrue;
+                valorretorno.etiquetasfalse = etiquetafalse;
+                return valorretorno;
+            }
+            else {
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'NULL NO SE PUEDE IGUALAR CON: ' + retornoderecho.tipodato,
+                    ambito: ambito.nombre,
+                    linea: this.linea,
+                    columna: this.columna
+                }));
+                return new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.UNDEFINED, false);
+            }
+        }
+        return new traduccionexp_1.traduccionexp("", false, tipo_1.tipo_dato.UNDEFINED, false);
     };
     return igualdad;
 }(operacion_1["default"]));
