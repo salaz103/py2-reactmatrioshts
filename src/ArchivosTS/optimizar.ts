@@ -1,7 +1,7 @@
 import { generacion } from './helpers/generacion';
 import instruccion from './optimizacion/instruccion';
 import {almacen} from '../../src/app';
-import {limpiarOptimizaciones} from '../actions/ts.js';
+import {limpiarOptimizaciones,codigoconsola} from '../actions/ts.js';
 
 
 function inicioOptimizacion(arbolInstrucciones: any) {
@@ -10,7 +10,7 @@ function inicioOptimizacion(arbolInstrucciones: any) {
     console.log("Recibiendo el ARBOL DEL CODIGO 3D para OPTIMIZAR:");
     console.log(arbolInstrucciones);
     optimizar(arbolInstrucciones);
-
+    almacen.dispatch(codigoconsola("CODIGO OPTIMIZADO\n"));
 
 }
 

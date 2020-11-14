@@ -1,6 +1,6 @@
 import entorno from './entorno/entorno';
 import { almacen } from '../../src/app';
-import { limpiarconsola, tsfinal } from '../actions/ts.js';
+import { limpiarconsola, tsfinal,codigoconsola } from '../actions/ts.js';
 import { declaracionfuncion } from './instrucciones/declaracionfuncion';
 import { tipo_ambito } from './entorno/tipo';
 import instruccion from './instrucciones/instruccion';
@@ -41,6 +41,7 @@ function inicioTraduccion(ast: any) {
      });
     almacen.dispatch(tsfinal(simbolosfinales, funcionesfinales));
 
+    almacen.dispatch(codigoconsola("TRADUCCION FINALIZADA\n"));
 
 }
 

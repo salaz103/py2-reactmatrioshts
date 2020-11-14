@@ -8,6 +8,7 @@ function inicioOptimizacion(arbolInstrucciones) {
     console.log("Recibiendo el ARBOL DEL CODIGO 3D para OPTIMIZAR:");
     console.log(arbolInstrucciones);
     optimizar(arbolInstrucciones);
+    app_1.almacen.dispatch(ts_js_1.codigoconsola("CODIGO OPTIMIZADO\n"));
 }
 function optimizar(ast) {
     var generador = generacion_1.generacion.getGenerador();

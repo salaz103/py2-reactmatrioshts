@@ -31,6 +31,7 @@ function inicioTraduccion(ast) {
         funcionesfinales.push(funcion);
     });
     app_1.almacen.dispatch(ts_js_1.tsfinal(simbolosfinales, funcionesfinales));
+    app_1.almacen.dispatch(ts_js_1.codigoconsola("TRADUCCION FINALIZADA\n"));
 }
 function traducir(ast, entorno) {
     var generador = generacion_1.generacion.getGenerador();
