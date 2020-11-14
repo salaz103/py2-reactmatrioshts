@@ -131,6 +131,26 @@ export class declaracion implements instruccion {
                              TYPE-> NULL
                              ARRAY-> NULL
                              */
+                            if (this.variables[i].tipodato == tipo_dato.NUMBER) {
+                                let nuevosim: simbolo = ambito.agregarSimbolo(this.variables[i].id, tipo_dato.ENTERO, ambito.nombre, this.variables[i].linea, this.variables[i].columna, true);
+                                let tmp = generador.generarTemporal();
+                                generador.sacarTemporal(tmp);
+                                generador.agregarExpresion(tmp, "p", "+", nuevosim.direccionrelativa);
+                                generador.stack(tmp, 0);
+                            } else if (this.variables[i].tipodato == tipo_dato.BOOLEAN) {
+                                let nuevosim: simbolo = ambito.agregarSimbolo(this.variables[i].id, tipo_dato.BOOLEAN, ambito.nombre, this.variables[i].linea, this.variables[i].columna, true);
+                                let tmp = generador.generarTemporal();
+                                generador.sacarTemporal(tmp);
+                                generador.agregarExpresion(tmp, "p", "+", nuevosim.direccionrelativa);
+                                generador.stack(tmp, 0);
+
+                            }else if(this.variables[i].tipodato== tipo_dato.STRING){
+                                let nuevosim: simbolo = ambito.agregarSimbolo(this.variables[i].id, tipo_dato.STRING, ambito.nombre, this.variables[i].linea, this.variables[i].columna, true);
+                                let tmp = generador.generarTemporal();
+                                generador.sacarTemporal(tmp);
+                                generador.agregarExpresion(tmp, "p", "+", nuevosim.direccionrelativa);
+                                generador.stack(tmp, -1);
+                            }
 
                         }
 
@@ -141,7 +161,7 @@ export class declaracion implements instruccion {
                         generador.agregarComentarios("INICIO-DECLARACION ARREGLO");
                         const retorno_expresion = this.variables[i].exp.traducir(ambito);
                         //GUARDAMOS LA VARIABLE
-                        let nuevoarreglo: simbolo = ambito.agregarSimbolo(this.variables[i].id, retorno_expresion.tipodato, ambito.nombre, this.variables[i].linea, this.variables[i].columna, true,this.variables[i].dimensiones);
+                        let nuevoarreglo: simbolo = ambito.agregarSimbolo(this.variables[i].id, retorno_expresion.tipodato, ambito.nombre, this.variables[i].linea, this.variables[i].columna, true, this.variables[i].dimensiones);
                         //AHORA VAMOS A VALIDAR SI LA EXPRESION ES "NEW ARRAY()" Ó "[LISTA_EXPRESIONES]"
                         if (retorno_expresion.tipodato == tipo_dato.ARRAY) {
                             //SI ENTRO AQUI, ES POR QUE ES UN "NEW ARRAY()"
@@ -168,18 +188,162 @@ export class declaracion implements instruccion {
                             generador.agregarExpresion(temporal_asignacion, temporal_asignacion, "+", "1");
                             generador.agregarGoTo(etiqueta_inicio);
                             generador.agregarEtiqueta(etiqueta_fin);
-                        } else{
-                            if(this.variables[i].tipodato==tipo_dato.NUMBER && retorno_expresion.tipodato==tipo_dato.ENTERO){
+                        } else {
+                            if (this.variables[i].tipodato == tipo_dato.NUMBER && retorno_expresion.tipodato == tipo_dato.ENTERO) {
 
-                            }else if(this.variables[i].tipodato!=retorno_expresion.tipodato){
+                            } else if (this.variables[i].tipodato != retorno_expresion.tipodato) {
                                 almacen.dispatch(errores({
                                     tipo: 'SEMANTICO',
-                                    descripcion: 'TIPOS DE DATOS NO COMPATIBLES EN ARREGLO:'+this.variables[i].id,
+                                    descripcion: 'TIPOS DE DATOS NO COMPATIBLES EN ARREGLO:' + this.variables[i].id,
                                     ambito: ambito.nombre,
                                     linea: this.variables[i].linea,
                                     columna: this.variables[i].columna
                                 }));
-                                return ;
+                                return;
+                            }
+                        }
+                        //DESPUES DE HABER ASIGNADO, AHORA GUARDO LA VARIABLE
+                        let tmp = generador.generarTemporal();
+                        generador.sacarTemporal(tmp);
+                        generador.agregarExpresion(tmp, "p", "+", nuevoarreglo.direccionrelativa);
+                        generador.stack(tmp, retorno_expresion.obtenerValor());
+                        generador.agregarComentarios("FIN -DECLARACION ARREGLO");
+                    }
+
+                } else if (this.tipovariable == tipo_variable.CONST) {
+                    //SI ENTRO AQUI ES POR QUE ES UNA VARIABLE CONST
+                    
+
+                    
+                    if (!this.variables[i].array) {
+                        //SIGNIFICA QUE ES UNA VARIABLE CONST PLANA
+                        //HAY 1 SOLO TIPO:
+                        //1. ID:TIPODATO= EXPRESION
+                        if (this.variables[i].exp != null) {
+                            //SIGNIFICA QUE LA VARIABLE CONST TRAE UNA EXPRESION
+                            let retornoexpresion: traduccionexp = this.variables[i].exp.traducir(ambito);
+                            //VALIDAMOS QUE EL TIPO DE DATO ENTRANTE ES SIMILAR A LA DE LA EXPRESION
+
+                            if (this.variables[i].tipodato == tipo_dato.NUMBER) {
+
+                                if (retornoexpresion.tipodato == tipo_dato.ENTERO || retornoexpresion.tipodato == tipo_dato.DECIMAL) {
+                                    let nuevosim: simbolo = ambito.agregarSimbolo(this.variables[i].id, retornoexpresion.tipodato, ambito.nombre, this.variables[i].linea, this.variables[i].columna, false);
+                                    let tmp = generador.generarTemporal();
+                                    generador.sacarTemporal(tmp);
+                                    generador.agregarExpresion(tmp, "p", "+", nuevosim.direccionrelativa);
+                                    generador.stack(tmp, retornoexpresion.obtenerValor());
+                                } else {
+
+                                    almacen.dispatch(errores({
+                                        tipo: 'SEMANTICO',
+                                        descripcion: 'VARIABLE ' + this.variables[i].id + ' NO ES COMPATIBLE CON ' + retornoexpresion.tipodato,
+                                        ambito: ambito.nombre,
+                                        linea: this.variables[i].linea,
+                                        columna: this.variables[i].columna
+                                    }));
+
+                                }
+
+
+                            } else if (this.variables[i].tipodato == retornoexpresion.tipodato) {
+                                //SI SON IGUALES ENTONCES GUARDAMOS LA VARIABLE EN LA TS Y COMIENZA 
+                                //LA TRADUCCION
+                                let nuevosim: simbolo = ambito.agregarSimbolo(this.variables[i].id, retornoexpresion.tipodato, ambito.nombre, this.variables[i].linea, this.variables[i].columna, false);
+
+                                if (nuevosim.tipodato == tipo_dato.BOOLEAN) {
+                                    const tmp_guardado = generador.generarTemporal();
+                                    generador.sacarTemporal(tmp_guardado);
+                                    const etiqueta_salida = generador.generarEtiqueta();
+                                    generador.agregarEtiqueta(retornoexpresion.etiquetastrue);
+                                    generador.agregarExpresion(tmp_guardado, "1", "", "",);
+                                    generador.agregarGoTo(etiqueta_salida);
+                                    generador.agregarEtiqueta(retornoexpresion.etiquetasfalse);
+                                    generador.agregarExpresion(tmp_guardado, "0", "", "",);
+                                    generador.agregarEtiqueta(etiqueta_salida);
+                                    let tmp = generador.generarTemporal();
+                                    generador.sacarTemporal(tmp);
+                                    generador.agregarExpresion(tmp, "p", "+", nuevosim.direccionrelativa);
+                                    generador.stack(tmp, tmp_guardado);
+
+                                } else {
+                                    let tmp = generador.generarTemporal();
+                                    generador.sacarTemporal(tmp);
+                                    generador.agregarExpresion(tmp, "p", "+", nuevosim.direccionrelativa);
+                                    generador.stack(tmp, retornoexpresion.obtenerValor());
+                                }
+
+
+                            } else {
+                                //ERROR - SEMANTICO - TIPO DATO VARIABLE NO COMPATIBLE CON TIPO DATO DE EXPRESION
+                                almacen.dispatch(errores({
+                                    tipo: 'SEMANTICO',
+                                    descripcion: 'VARIABLE ' + this.variables[i].id + ' NO ES COMPATIBLE CON ' + retornoexpresion.tipodato,
+                                    ambito: ambito.nombre,
+                                    linea: this.variables[i].linea,
+                                    columna: this.variables[i].columna
+                                }));
+
+                            }
+
+                        } else {
+                            //SIGNIFICA QUE LA VARIABLE CONST NO TRAE EXPRESION, 
+                            //SE DEBE MANDAR ERROR, YA QUE ESTAS SE DEBEN INICIALIZAR
+                            almacen.dispatch(errores({
+                                tipo: 'SEMANTICO',
+                                descripcion: 'VARIABLE CONST' + this.variables[i].id + ' NO SE INICIALIZO ',
+                                ambito: ambito.nombre,
+                                linea: this.variables[i].linea,
+                                columna: this.variables[i].columna
+                            }));
+
+                        }
+
+
+                    } else {
+                        //SIGNIFICA QUE ES UN ARREGLO
+                        //console.log(this.variables[i]);
+                        generador.agregarComentarios("INICIO-DECLARACION ARREGLO");
+                        const retorno_expresion = this.variables[i].exp.traducir(ambito);
+                        //GUARDAMOS LA VARIABLE
+                        let nuevoarreglo: simbolo = ambito.agregarSimbolo(this.variables[i].id, retorno_expresion.tipodato, ambito.nombre, this.variables[i].linea, this.variables[i].columna, false, this.variables[i].dimensiones);
+                        //AHORA VAMOS A VALIDAR SI LA EXPRESION ES "NEW ARRAY()" Ó "[LISTA_EXPRESIONES]"
+                        if (retorno_expresion.tipodato == tipo_dato.ARRAY) {
+                            //SI ENTRO AQUI, ES POR QUE ES UN "NEW ARRAY()"
+                            const temporal_asignacion = generador.generarTemporal();
+                            generador.sacarTemporal(temporal_asignacion);
+                            const etiqueta_inicio = generador.generarEtiqueta();
+                            const etiqueta_fin = generador.generarEtiqueta();
+                            //COLOCAMOS AL ASIGNADOR EN LA PRIMERA POSICION DEL ARREGLO
+                            generador.agregarExpresion(temporal_asignacion, retorno_expresion.obtenerValor(), "+", "1");
+                            generador.agregarEtiqueta(etiqueta_inicio);
+                            generador.agregarIf(temporal_asignacion, "==", "h", etiqueta_fin);
+                            if (this.variables[i].dimensiones == retorno_expresion.dimensiones) {
+                                //SI LAS DIMENSIONES SON IGUALES, ENTONCES PONEMOS LOS VALORES POR DEFECTO
+                                if (this.variables[i].tipodato == tipo_dato.NUMBER || this.variables[i].tipodato == tipo_dato.BOOLEAN) {
+                                    generador.heap(temporal_asignacion, "0");
+                                } else {
+                                    generador.heap(temporal_asignacion, "-1");
+                                }
+
+                            } else {
+                                //SI LAS DIMENSIONES NO SON IGUALES, ENTONCES SOLO SE LLENA DE -1
+                                generador.heap(temporal_asignacion, "-1");
+                            }
+                            generador.agregarExpresion(temporal_asignacion, temporal_asignacion, "+", "1");
+                            generador.agregarGoTo(etiqueta_inicio);
+                            generador.agregarEtiqueta(etiqueta_fin);
+                        } else {
+                            if (this.variables[i].tipodato == tipo_dato.NUMBER && retorno_expresion.tipodato == tipo_dato.ENTERO) {
+
+                            } else if (this.variables[i].tipodato != retorno_expresion.tipodato) {
+                                almacen.dispatch(errores({
+                                    tipo: 'SEMANTICO',
+                                    descripcion: 'TIPOS DE DATOS NO COMPATIBLES EN ARREGLO:' + this.variables[i].id,
+                                    ambito: ambito.nombre,
+                                    linea: this.variables[i].linea,
+                                    columna: this.variables[i].columna
+                                }));
+                                return;
                             }
                         }
                         //DESPUES DE HABER ASIGNADO, AHORA GUARDO LA VARIABLE
@@ -191,15 +355,7 @@ export class declaracion implements instruccion {
                     }
 
 
-
-                } else if (this.tipovariable == tipo_variable.CONST) {
-                    //SI ENTRO AQUI ES POR QUE ES UNA VARIABLE CONST
-
-                }
-
-
-
-
+                }//FINALIZACION VARIABLES CONST
 
             }//FINALIZACION DE GUARDAR VARIABLE
 
