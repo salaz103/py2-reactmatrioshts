@@ -12,6 +12,7 @@ var tipo_dato;
     tipo_dato["ANY"] = "ANY";
     tipo_dato["ARRAY"] = "ARRAY";
     tipo_dato["UNDEFINED"] = "UNDEFINED";
+    tipo_dato["NULL"] = "NULL";
 })(tipo_dato || (tipo_dato = {}));
 exports.tipo_dato = tipo_dato;
 var tipo_ambito;

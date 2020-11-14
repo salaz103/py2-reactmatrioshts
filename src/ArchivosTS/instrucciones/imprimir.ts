@@ -55,7 +55,9 @@ export class imprimir implements instruccion {
                 generador.regresarAmbito(ambito.tamaño);
          }else if(retorno_expresion.tipodato==tipo_dato.NUMBER){
              generador.printf("d","int",retorno_expresion.obtenerValor());
-         }else{
+         }else if(retorno_expresion.tipodato==tipo_dato.NULL){
+             generador.imprimirNulo();
+        }else{
              almacen.dispatch(errores({
                  tipo:'SEMANTICO',
                  descripcion:'NO SE PUEDE IMPRIMIR EL TIPO DE DATO:' +retorno_expresion.tipodato,

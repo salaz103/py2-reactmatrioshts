@@ -8,7 +8,8 @@
     VOID="VOID",
     ANY="ANY",
     ARRAY= "ARRAY",
-    UNDEFINED= "UNDEFINED"
+    UNDEFINED= "UNDEFINED",
+    NULL= "NULL"
 }
 
 enum tipo_ambito{

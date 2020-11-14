@@ -48,6 +48,9 @@ var imprimir = /** @class */ (function () {
             else if (retorno_expresion.tipodato == tipo_1.tipo_dato.NUMBER) {
                 generador.printf("d", "int", retorno_expresion.obtenerValor());
             }
+            else if (retorno_expresion.tipodato == tipo_1.tipo_dato.NULL) {
+                generador.imprimirNulo();
+            }
             else {
                 app_1.almacen.dispatch(ts_js_1.errores({
                     tipo: 'SEMANTICO',

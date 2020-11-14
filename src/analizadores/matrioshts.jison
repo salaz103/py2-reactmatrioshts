@@ -16,6 +16,7 @@
 "break"               return 'RBREAK';
 "continue"            return 'RCONTINUE';
 "return"              return 'RRETURN';
+"null"                return 'RNULL';
 //////TIPO DE DATO
 "string"              return 'RSTRING';
 "number"              return 'RNUMBER';
@@ -344,6 +345,7 @@ expresion:
           |RFALSE                 {$$= nodobase.nuevonodo('FALSE',[$1],yylineno);}  //LISTO
           |CADENACOMILLADOBLE  {$$= nodobase.nuevonodo('COMILLA_DOBLE',[$1],yylineno);} //LISTO
           |CADENACOMILLASIMPLE {$$= nodobase.nuevonodo('COMILLA_SIMPLE',[$1],yylineno);} //LISTO
+          |RNULL               {$$= nodobase.nuevonodo('VALOR_NULO',[$1],yylineno);}
           |accesos {$$=$1;}
           //|IDENTIFICADOR       {$$= nodobase.nuevonodo('IDENTIFICADOR',[$1],yylineno);}  //LISTO
           //ARREGLOS

@@ -15,6 +15,7 @@
 "break"               return 'RBREAK';
 "continue"            return 'RCONTINUE';
 "return"              return 'RRETURN';
+"null"                return 'RNULL';
 //////TIPO DE DATO
 "string"              return 'RSTRING';
 "number"              return 'RNUMBER';
@@ -148,6 +149,7 @@
   const newArray= require('../ArchivosTS/expresiones/newArray');
   const arreglo= require('../ArchivosTS/expresiones/arreglo');
   const accesoarray= require('../ArchivosTS/expresiones/accesoarray');
+  const valornulo= require('../ArchivosTS/expresiones/valornulo');
 
   //******************INTERMEDIOS************************************
   const variable= require('../ArchivosTS/expresiones/variable');
@@ -410,6 +412,7 @@ expresion:
           |RFALSE           {$$=new valorLogico.valorLogico("FALSE",tipo_dato.BOOLEAN,@1.first_line,@1.first_column);}      
           |CADENACOMILLADOBLE {$$=new cadena.cadena($1,tipo_dato.STRING,@1.first_line,@1.first_column);}     
           |CADENACOMILLASIMPLE {$$=new cadena.cadena($1,tipo_dato.STRING,@1.first_line,@1.first_column);}      
+          |RNULL               {$$= new valornulo.valornulo(tipo_dato.NULL,@1.first_line,@1.first_column);}
           //|IDENTIFICADOR      {$$=new identificador.identificador($1,@1.first_line,@1.first_column);}
           |accesos {$$=$1;}
           /*ARREGLOS*/

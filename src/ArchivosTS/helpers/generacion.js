@@ -206,6 +206,12 @@ var generacion = /** @class */ (function () {
         this.printchar('s'.charCodeAt(0));
         this.printchar('e'.charCodeAt(0));
     };
+    generacion.prototype.imprimirNulo = function () {
+        this.printchar('n'.charCodeAt(0));
+        this.printchar('u'.charCodeAt(0));
+        this.printchar('l'.charCodeAt(0));
+        this.printchar('l'.charCodeAt(0));
+    };
     //*******************METODOS PARA EL MANEJO DEL HEAP Y STACK**************/
     generacion.prototype.siguienteHeap = function () {
         this.codigo.push('h=h+1;');
